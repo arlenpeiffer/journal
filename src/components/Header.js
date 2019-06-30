@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function Header(props) {
-  const { loggedIn } = props;
+  const { isLoggedIn } = props;
   return (
     <div>
       <h1>Callie's Journal</h1>
-      {loggedIn && (
+      {isLoggedIn && (
         <div>
           <Link to="/">View Entries</Link>
           <Link to="/add">Add Entry</Link>
@@ -18,7 +18,7 @@ function Header(props) {
 }
 
 const mapStateToProps = state => ({
-  loggedIn: state.user.userInfo.loggedIn
+  isLoggedIn: state.user.userInfo.isLoggedIn
 });
 
 export default connect(mapStateToProps)(Header);

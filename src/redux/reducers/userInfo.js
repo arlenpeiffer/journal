@@ -1,5 +1,5 @@
-const initialState = {
-  loggedIn: false,
+const defaultState = {
+  isLoggedIn: false,
   name: {
     first: 'Callie',
     middle: 'Elissa',
@@ -10,13 +10,13 @@ const initialState = {
   password: 'callie11'
 };
 
-export default (state = initialState, action) => {
+export default (state = defaultState, action) => {
   switch (action.type) {
-    case 'SET_LOGGED_IN':
+    case 'SET_IS_LOGGED_IN':
       if (action.payload === state.password) {
         return {
           ...state,
-          loggedIn: true
+          isLoggedIn: true
         };
       } else {
         return state;

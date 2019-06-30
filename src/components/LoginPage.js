@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from './Header';
 import Login from './Login';
-import { setLoggedIn } from '../redux/actions/userInfo';
+import { setIsLoggedIn } from '../redux/actions/userInfo';
 
 class LoginPage extends React.Component {
   onSubmit = password => {
-    this.props.setLoggedIn(password);
+    this.props.setIsLoggedIn(password);
   };
   render() {
     return (
@@ -19,7 +19,7 @@ class LoginPage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setLoggedIn: password => dispatch(setLoggedIn(password))
+  setIsLoggedIn: password => dispatch(setIsLoggedIn(password))
 });
 
 export default connect(

@@ -1,7 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import Entry from './Entry';
 
-function ViewEntries() {
-  return <div>ViewEntries.js</div>;
+function ViewEntries(props) {
+  return (
+    <div>
+      ViewEntries.js
+      {props.journal.map(entry => (
+        <Entry entry={entry} />
+      ))}
+    </div>
+  );
 }
 
-export default ViewEntries;
+const mapStateToProps = state => ({
+  journal: state.user.journal
+});
+
+export default connect(mapStateToProps)(ViewEntries);

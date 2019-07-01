@@ -1,3 +1,5 @@
+import { SET_IS_LOGGED_IN } from '../actions';
+
 const defaultState = {
   isLoggedIn: false,
   name: {
@@ -12,8 +14,8 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case 'SET_IS_LOGGED_IN':
-      if (action.payload === state.password) {
+    case SET_IS_LOGGED_IN:
+      if (action.payload.password === state.password) {
         return {
           ...state,
           isLoggedIn: true

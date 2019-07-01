@@ -13,7 +13,7 @@ function DashboardPage() {
         <Switch>
           <Route exact path="/" component={ViewEntries} />
           <Route path="/add" component={AddEntry} />
-          <Route path="/edit:id" component={EditEntry} />
+          <Route path="/edit/:id" component={EditEntry} />
         </Switch>
       </div>
     </Router>

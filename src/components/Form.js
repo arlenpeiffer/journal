@@ -1,10 +1,14 @@
 import React from 'react';
 
 class Form extends React.Component {
-  state = {
-    date: '',
-    notes: ''
-  };
+  constructor(props) {
+    super(props);
+    const { entry } = this.props;
+    this.state = {
+      date: entry ? entry.date : '',
+      notes: entry ? entry.notes : ''
+    };
+  }
   onDateChange = event => {
     const date = event.target.value;
     this.setState({ date });

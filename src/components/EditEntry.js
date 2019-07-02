@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Form from './Form';
+import EntryForm from './EntryForm';
 import { editEntry } from '../redux/actions/journal';
 
 class EditEntry extends React.Component {
@@ -14,7 +14,7 @@ class EditEntry extends React.Component {
     return (
       <div>
         EditEntry.js
-        <Form entry={entry} onSubmit={this.onSubmit} />
+        <EntryForm entry={entry} onSubmit={this.onSubmit} />
       </div>
     );
   }

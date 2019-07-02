@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Form from './Form';
+import EntryForm from './EntryForm';
 import { addEntry } from '../redux/actions/journal';
 
 class AddEntry extends React.Component {
@@ -12,7 +12,7 @@ class AddEntry extends React.Component {
     return (
       <div>
         AddEntry.js
-        <Form onSubmit={this.onSubmit} />
+        <EntryForm onSubmit={this.onSubmit} />
       </div>
     );
   }

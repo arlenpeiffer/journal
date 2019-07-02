@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, DatePicker, Form, Input } from 'antd';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 class EntryForm extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class EntryForm extends React.Component {
       .valueOf();
     this.state = {
       date: entry ? entry.date : today,
+      dateError: false,
       notes: entry ? entry.notes : ''
     };
   }
@@ -18,7 +20,8 @@ class EntryForm extends React.Component {
     this.setState({
       date: moment(date)
         .startOf('day')
-        .valueOf()
+        .valueOf(),
+      dateError: false
     });
   };
   onNotesChange = event => {
@@ -28,14 +31,25 @@ class EntryForm extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     const { date, notes } = this.state;
-    this.props.onSubmit({ date, notes });
+    const { journal } = this.props;
+    if (journal.some(entry => entry.date === date)) {
+      this.setState({
+        dateError: true
+      });
+    } else {
+      this.props.onSubmit({ date, notes });
+    }
   };
   render() {
-    const { date, notes } = this.state;
+    const { date, dateError, notes } = this.state;
     return (
       <div>
         <Form>
-          <Form.Item label="Date">
+          <Form.Item
+            label="Date"
+            validateStatus={dateError && 'warning'}
+            help={dateError && `There is already an entry for that date.`}
+          >
             <DatePicker
               allowClear={false}
               format={`MMM D, YYYY`}
@@ -59,4 +73,8 @@ class EntryForm extends React.Component {
   }
 }
 
-export default EntryForm;
+const mapStateToProps = state => ({
+  journal: state.user.journal
+});
+
+export default connect(mapStateToProps)(EntryForm);

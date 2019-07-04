@@ -2,75 +2,89 @@ import React from 'react';
 import { Button, DatePicker, Form, Input } from 'antd';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { Formik, Field } from 'formik';
 
-class EntryForm extends React.Component {
-  constructor(props) {
-    super(props);
-    const { entry } = this.props;
-    const today = moment()
-      .startOf('day')
-      .valueOf();
-    this.state = {
-      date: entry ? entry.date : today,
-      dateError: false,
-      notes: entry ? entry.notes : ''
-    };
-  }
-  onDateChange = date => {
-    this.setState({
-      date: moment(date)
-        .startOf('day')
-        .valueOf(),
-      dateError: false
-    });
-  };
-  onNotesChange = event => {
-    const notes = event.target.value;
-    this.setState({ notes });
-  };
-  onSubmit = event => {
-    event.preventDefault();
-    const { date, notes } = this.state;
-    const { journal } = this.props;
-    if (journal.some(entry => entry.date === date)) {
-      this.setState({
-        dateError: true
-      });
-    } else {
-      this.props.onSubmit({ date, notes });
+const FormItem = Form.Item;
+const TextArea = Input.TextArea;
+
+const newEntry = {
+  date: moment()
+    .startOf('day')
+    .valueOf(),
+  notes: ''
+};
+
+function EntryForm(props) {
+  const { entry, journal } = props;
+  const dateError = errorMessage => value => {
+    if (entry && entry.date === value) {
+      return undefined;
+    } else if (journal.some(entry => entry.date === value)) {
+      return errorMessage;
     }
+    return undefined;
   };
-  render() {
-    const { date, dateError, notes } = this.state;
-    return (
-      <div>
-        <Form>
-          <Form.Item
-            label="Date"
-            validateStatus={dateError && 'warning'}
-            help={dateError && `There is already an entry for that date.`}
-          >
-            <DatePicker
-              allowClear={false}
-              format={`MMM D, YYYY`}
-              onChange={this.onDateChange}
-              value={moment(date)}
+  return (
+    <Formik
+      initialValues={entry ? entry : newEntry}
+      onSubmit={values => props.onSubmit(values)}
+      render={({
+        handleSubmit,
+        handleChange,
+        values,
+        errors,
+        // touched,
+        setFieldValue
+        // setFieldTouched,
+        // validateField
+        // validateForm
+      }) => (
+        <div>
+          <Form onSubmit={handleSubmit}>
+            <Field
+              name="date"
+              validate={dateError('There is already an entry for that date.')}
+              render={({ field, form: { errors, touched } }) => (
+                <FormItem
+                  label="Date"
+                  validateStatus={errors.date && touched.date ? 'warning' : ''}
+                  help={touched.date && errors.date}
+                >
+                  <DatePicker
+                    {...field}
+                    allowClear={false}
+                    defaultValue={moment(values.date)}
+                    format={`MMM D, YYYY`}
+                    name="date"
+                    onChange={(date, dateString) =>
+                      setFieldValue(
+                        'date',
+                        moment(date)
+                          .startOf('day')
+                          .valueOf()
+                      )
+                    }
+                    value={moment(values.date)}
+                  />
+                </FormItem>
+              )}
             />
-          </Form.Item>
-          <Form.Item label="Notes">
-            <Input.TextArea
-              onChange={this.onNotesChange}
-              placeholder={`Notes`}
-              value={notes}
-            />
-          </Form.Item>
-          <Button onClick={this.onSubmit} type={`primary`}>
-            Add
-          </Button>
-        </Form>
-      </div>
-    );
-  }
+            <FormItem label="Notes">
+              <TextArea
+                name="notes"
+                onChange={handleChange}
+                placeholder={`Notes`}
+                value={values.notes}
+              />
+            </FormItem>
+            <Button onClick={handleSubmit} type={`primary`}>
+              Add
+            </Button>
+          </Form>
+        </div>
+      )}
+    />
+  );
 }
 
 const mapStateToProps = state => ({

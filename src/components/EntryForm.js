@@ -31,11 +31,11 @@ class EntryForm extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     const { date, notes } = this.state;
-    const { journal } = this.props;
-    if (journal.some(entry => entry.date === date)) {
-      this.setState({
-        dateError: true
-      });
+    const { entry, journal } = this.props;
+    if (entry && entry.date === date) {
+      this.props.onSubmit({ date, notes });
+    } else if (journal.some(entry => entry.date === date)) {
+      this.setState({ dateError: true });
     } else {
       this.props.onSubmit({ date, notes });
     }

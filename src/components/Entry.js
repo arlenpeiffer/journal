@@ -4,6 +4,7 @@ import moment from 'moment';
 
 function Entry(props) {
   const { date, id, notes } = props.entry;
+  const { location } = props.entry.travel;
   return (
     <div>
       <p>
@@ -12,6 +13,8 @@ function Entry(props) {
         id: {id}
         <br />
         notes: {notes}
+        <br />
+        location: {location}
       </p>
       <Link to={`/edit/${id}`}>
         <button>Edit</button>

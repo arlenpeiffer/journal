@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DatePicker, Form, Input } from 'antd';
+import { Button, DatePicker, Form, Input, Radio } from 'antd';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
@@ -11,7 +11,11 @@ const newEntry = {
   date: moment()
     .startOf('day')
     .valueOf(),
-  notes: ''
+  notes: '',
+  location: {
+    isTraveling: false,
+    name: 'LA'
+  }
 };
 
 function EntryForm(props) {
@@ -69,6 +73,25 @@ function EntryForm(props) {
                 </FormItem>
               )}
             />
+
+            <FormItem label="Traveling">
+              <Radio.Group
+                name="location.isTraveling"
+                onChange={handleChange}
+                value={values.location.isTraveling}
+              >
+                <Radio value={false}>No</Radio>
+                <Radio value={true}>Yes</Radio>
+              </Radio.Group>
+              <Input
+                name="location.name"
+                disabled={!values.location.isTraveling}
+                onChange={handleChange}
+                placeholder={values.location.isTraveling ? '' : 'LA'}
+                value={values.location.name}
+              />
+            </FormItem>
+
             <FormItem label="Notes">
               <TextArea
                 name="notes"
@@ -77,6 +100,7 @@ function EntryForm(props) {
                 value={values.notes}
               />
             </FormItem>
+
             <Button onClick={handleSubmit} type={`primary`}>
               Add
             </Button>

@@ -1,20 +1,18 @@
 import React from 'react';
-import { Button, DatePicker, Form, Input, Radio } from 'antd';
+import { Button, Form } from 'antd';
+import { DatePicker, Input, RadioGroup, TextArea } from './AntFields';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
-
-const FormItem = Form.Item;
-const TextArea = Input.TextArea;
 
 const newEntry = {
   date: moment()
     .startOf('day')
     .valueOf(),
   notes: '',
-  location: {
+  travel: {
     isTraveling: false,
-    name: 'LA'
+    location: 'Home'
   }
 };
 
@@ -36,7 +34,7 @@ function EntryForm(props) {
         handleSubmit,
         handleChange,
         values,
-        errors,
+        // errors,
         // touched,
         setFieldValue
         // setFieldTouched,
@@ -46,63 +44,61 @@ function EntryForm(props) {
         <div>
           <Form onSubmit={handleSubmit}>
             <Field
+              allowClear={false}
+              component={DatePicker}
+              format="MMM D, YYYY"
+              label="Date"
               name="date"
+              onChange={date =>
+                setFieldValue(
+                  'date',
+                  moment(date)
+                    .startOf('day')
+                    .valueOf()
+                )
+              }
               validate={dateError('There is already an entry for that date.')}
-              render={({ field, form: { errors, touched } }) => (
-                <FormItem
-                  label="Date"
-                  validateStatus={errors.date && touched.date ? 'warning' : ''}
-                  help={touched.date && errors.date}
-                >
-                  <DatePicker
-                    {...field}
-                    allowClear={false}
-                    defaultValue={moment(values.date)}
-                    format={`MMM D, YYYY`}
-                    name="date"
-                    onChange={(date, dateString) =>
-                      setFieldValue(
-                        'date',
-                        moment(date)
-                          .startOf('day')
-                          .valueOf()
-                      )
-                    }
-                    value={moment(values.date)}
-                  />
-                </FormItem>
-              )}
+              value={moment(values.date)}
             />
 
-            <FormItem label="Traveling">
-              <Radio.Group
-                name="location.isTraveling"
-                onChange={handleChange}
-                value={values.location.isTraveling}
-              >
-                <Radio value={false}>No</Radio>
-                <Radio value={true}>Yes</Radio>
-              </Radio.Group>
-              <Input
-                name="location.name"
-                disabled={!values.location.isTraveling}
-                onChange={handleChange}
-                placeholder={values.location.isTraveling ? '' : 'LA'}
-                value={values.location.name}
-              />
-            </FormItem>
+            <Field
+              component={RadioGroup}
+              name="travel.isTraveling"
+              label="Traveling"
+              onChange={event => {
+                const isTraveling = event.target.value;
+                const location = isTraveling ? '' : 'Home';
+                setFieldValue('travel', { isTraveling, location });
+              }}
+              options={[
+                { label: 'No', value: false },
+                { label: 'Yes', value: true }
+              ]}
+            />
 
-            <FormItem label="Notes">
-              <TextArea
-                name="notes"
-                onChange={handleChange}
-                placeholder={`Notes`}
-                value={values.notes}
-              />
-            </FormItem>
+            <Field
+              autoComplete="off"
+              autoFocus
+              allowClear={values.travel.isTraveling}
+              component={Input}
+              disabled={!values.travel.isTraveling}
+              name="travel.location"
+              placeholder="Where ya at?"
+              // value={
+              //   values.travel.isTraveling ? values.travel.location : 'Home'
+              // }
+            />
 
-            <Button onClick={handleSubmit} type={`primary`}>
-              Add
+            <Field
+              component={TextArea}
+              name="notes"
+              label="Notes"
+              placeholder="Notes"
+              // type="text"
+            />
+
+            <Button onClick={handleSubmit} type="primary">
+              Submit
             </Button>
           </Form>
         </div>

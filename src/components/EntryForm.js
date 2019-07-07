@@ -1,6 +1,14 @@
 import React from 'react';
-import { Button, Form, Icon } from 'antd';
-import { DatePicker, Input, RadioGroup, Switch, TextArea } from './AntFields';
+import { Button, Divider, Form, Icon, Radio } from 'antd';
+import {
+  DatePicker,
+  Input,
+  InputNumber,
+  RadioGroup,
+  Select,
+  Switch,
+  TextArea
+} from './AntFields';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
@@ -14,7 +22,10 @@ const newEntry = {
     rating: null,
     details: '',
     nsaid: {
-      isTaken: false
+      amountTaken: 0,
+      isTaken: false,
+      timesTaken: 0,
+      type: undefined
     }
   },
   travel: {
@@ -69,17 +80,17 @@ function EntryForm(props) {
             />
 
             <Field
+              buttonStyle="solid"
               component={RadioGroup}
               name="pain.rating"
               label="Pain"
-              options={[
-                { label: 'None', value: 0 },
-                { label: 'Low', value: 1 },
-                { label: 'Medium', value: 2 },
-                { label: 'High', value: 3 },
-                { label: 'Extreme', value: 4 }
-              ]}
-            />
+            >
+              <Radio.Button value={0}>None</Radio.Button>
+              <Radio.Button value={1}>Low</Radio.Button>
+              <Radio.Button value={2}>Medium</Radio.Button>
+              <Radio.Button value={3}>High</Radio.Button>
+              <Radio.Button value={4}>Extreme</Radio.Button>
+            </Field>
 
             <Field
               component={Input}
@@ -92,9 +103,49 @@ function EntryForm(props) {
               component={Switch}
               name="pain.nsaid.isTaken"
               label="Did you take an NSAID?"
-              onChange={checked => setFieldValue('pain.nsaid.isTaken', checked)}
+              onChange={checked =>
+                checked
+                  ? setFieldValue('pain.nsaid.isTaken', checked)
+                  : setFieldValue('pain.nsaid', newEntry.pain.nsaid)
+              }
               // checkedChildren={<Icon type="check" />}
               // unCheckedChildren={<Icon type="close" />}
+            />
+
+            <Field
+              component={Select}
+              disabled={!values.pain.nsaid.isTaken}
+              // dropdownRender={menu => (
+              //   <div>
+              //     {menu}
+              //     <Divider style={{ margin: '4px 0' }} />
+              //     <div style={{ padding: '8px', cursor: 'pointer' }}>
+              //       <Icon type="plus" /> Add item
+              //     </div>
+              //   </div>
+              // )}
+              name="pain.nsaid.type"
+              onSelect={type => setFieldValue('pain.nsaid.type', type)}
+              placeholder="Choose one"
+            >
+              <option value="Advil">Advil</option>
+              <option value="Aleve">Aleve</option>
+            </Field>
+
+            <Field
+              component={InputNumber}
+              disabled={!values.pain.nsaid.isTaken}
+              label="Number of times taken"
+              name="pain.nsaid.timesTaken"
+              onChange={value => setFieldValue('pain.nsaid.timesTaken', value)}
+            />
+
+            <Field
+              component={InputNumber}
+              disabled={!values.pain.nsaid.isTaken}
+              label="Total amount taken"
+              name="pain.nsaid.amountTaken"
+              onChange={value => setFieldValue('pain.nsaid.amountTaken', value)}
             />
 
             <Field

@@ -3,7 +3,9 @@ import {
   DatePicker as AntDatePicker,
   Form,
   Input as AntInput,
+  InputNumber as AntInputNumber,
   Radio as AntRadio,
+  Select as AntSelect,
   Switch as AntSwitch
 } from 'antd';
 
@@ -46,6 +48,8 @@ const CreateAntField = Component => ({
 
 export const DatePicker = CreateAntField(AntDatePicker);
 export const Input = CreateAntField(AntInput);
+export const InputNumber = CreateAntField(AntInputNumber);
 export const RadioGroup = CreateAntField(AntRadio.Group);
+export const Select = CreateAntField(AntSelect);
 export const Switch = CreateAntField(AntSwitch);
 export const TextArea = CreateAntField(AntInput.TextArea);

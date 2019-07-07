@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Form } from 'antd';
-import { DatePicker, Input, RadioGroup, TextArea } from './AntFields';
+import { Button, Form, Icon } from 'antd';
+import { DatePicker, Input, RadioGroup, Switch, TextArea } from './AntFields';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
@@ -10,6 +10,13 @@ const newEntry = {
     .startOf('day')
     .valueOf(),
   notes: '',
+  pain: {
+    rating: null,
+    details: '',
+    nsaid: {
+      isTaken: false
+    }
+  },
   travel: {
     isTraveling: false,
     location: 'Home'
@@ -59,6 +66,35 @@ function EntryForm(props) {
               }
               validate={dateError('There is already an entry for that date.')}
               value={moment(values.date)}
+            />
+
+            <Field
+              component={RadioGroup}
+              name="pain.rating"
+              label="Pain"
+              options={[
+                { label: 'None', value: 0 },
+                { label: 'Low', value: 1 },
+                { label: 'Medium', value: 2 },
+                { label: 'High', value: 3 },
+                { label: 'Extreme', value: 4 }
+              ]}
+            />
+
+            <Field
+              component={Input}
+              name="pain.details"
+              placeholder="Details"
+            />
+
+            <Field
+              checked={values.pain.nsaid.isTaken}
+              component={Switch}
+              name="pain.nsaid.isTaken"
+              label="Did you take an NSAID?"
+              onChange={checked => setFieldValue('pain.nsaid.isTaken', checked)}
+              // checkedChildren={<Icon type="check" />}
+              // unCheckedChildren={<Icon type="close" />}
             />
 
             <Field

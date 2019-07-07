@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 function Entry(props) {
-  const { date, id, notes, travel } = props.entry;
+  const { date, id, notes, pain, travel } = props.entry;
   return (
     <div>
       <p>
@@ -14,6 +14,8 @@ function Entry(props) {
         notes: {notes}
         <br />
         location: {travel.location}
+        <br />
+        pain: {pain.rating} - {pain.details}
       </p>
       <Link to={`/edit/${id}`}>
         <button>Edit</button>

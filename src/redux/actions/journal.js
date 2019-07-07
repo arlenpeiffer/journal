@@ -1,7 +1,7 @@
 import { ADD_ENTRY, EDIT_ENTRY } from '../actions';
 import uuid from 'uuid';
 
-export const addEntry = ({ date, notes, travel }) => {
+export const addEntry = ({ date, notes, pain, travel }) => {
   return {
     type: ADD_ENTRY,
     payload: {
@@ -9,6 +9,7 @@ export const addEntry = ({ date, notes, travel }) => {
         id: uuid(),
         date,
         notes,
+        pain,
         travel
       }
     }

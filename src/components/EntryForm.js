@@ -12,6 +12,7 @@ import {
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
+import * as Yup from 'yup';
 
 const newEntry = {
   date: moment()
@@ -34,6 +35,37 @@ const newEntry = {
   }
 };
 
+const validationSchema = Yup.object().shape({
+  date: Yup.number().required(),
+  notes: Yup.string(),
+  pain: Yup.object().shape({
+    rating: Yup.number().typeError('Pain Rating is required.'),
+    details: Yup.string(),
+    nsaid: Yup.object().shape({
+      amountTaken: Yup.number().when('isTaken', {
+        is: true,
+        then: Yup.number()
+          .min(1, 'Amount must be greater than zero.')
+          .typeError('Gotta be a number, sorry.'), // keep exploring how to validate for number or ''
+        otherwise: Yup.number().typeError('Gotta be a number, sorry.') // keep exploring how to validate for number or ''
+      }),
+      isTaken: Yup.boolean(),
+      timesTaken: Yup.number().when('isTaken', {
+        is: true,
+        then: Yup.number()
+          .min(1, 'Number of times must be greater than zero.')
+          .typeError('Gotta be a number, sorry.'), // keep exploring how to validate for number or ''
+        otherwise: Yup.number().typeError('Gotta be a number, sorry.') // keep exploring how to validate for number or ''
+      }),
+      type: Yup.string().required('Please select an NSAID type.')
+    })
+  }),
+  travel: Yup.object().shape({
+    isTraveling: Yup.boolean(),
+    location: Yup.string().required('Location name is required.')
+  })
+});
+
 function EntryForm(props) {
   const { entry, journal } = props;
   const dateError = errorMessage => value => {
@@ -44,14 +76,11 @@ function EntryForm(props) {
     }
     return undefined;
   };
-  const requiredError = errorMessage => values => {
-    console.log('requiredError - value', values);
-    return !values ? errorMessage : undefined;
-  };
   return (
     <Formik
       initialValues={entry ? entry : newEntry}
       onSubmit={values => props.onSubmit(values)}
+      validationSchema={validationSchema}
       render={({
         handleSubmit,
         handleChange,
@@ -88,13 +117,12 @@ function EntryForm(props) {
               component={RadioGroup}
               name="pain.rating"
               label="Pain"
-              validate={requiredError('Pain Rating is required')}
             >
-              <Radio.Button value={1}>None</Radio.Button>
-              <Radio.Button value={2}>Low</Radio.Button>
-              <Radio.Button value={3}>Medium</Radio.Button>
-              <Radio.Button value={4}>High</Radio.Button>
-              <Radio.Button value={5}>Extreme</Radio.Button>
+              <Radio.Button value={0}>None</Radio.Button>
+              <Radio.Button value={1}>Low</Radio.Button>
+              <Radio.Button value={2}>Medium</Radio.Button>
+              <Radio.Button value={3}>High</Radio.Button>
+              <Radio.Button value={4}>Extreme</Radio.Button>
             </Field>
 
             <Field
@@ -141,6 +169,7 @@ function EntryForm(props) {
               component={InputNumber}
               disabled={!values.pain.nsaid.isTaken}
               label="Number of times taken"
+              min={0}
               name="pain.nsaid.timesTaken"
               onChange={value => setFieldValue('pain.nsaid.timesTaken', value)}
             />
@@ -149,6 +178,7 @@ function EntryForm(props) {
               component={InputNumber}
               disabled={!values.pain.nsaid.isTaken}
               label="Total amount taken"
+              min={0}
               name="pain.nsaid.amountTaken"
               onChange={value => setFieldValue('pain.nsaid.amountTaken', value)}
             />

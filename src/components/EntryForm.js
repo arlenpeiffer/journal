@@ -57,7 +57,11 @@ const validationSchema = Yup.object().shape({
           .typeError('Gotta be a number, sorry.'), // keep exploring how to validate for number or ''
         otherwise: Yup.number().typeError('Gotta be a number, sorry.') // keep exploring how to validate for number or ''
       }),
-      type: Yup.string().required('Please select an NSAID type.')
+      type: Yup.string().when('isTaken', {
+        is: true,
+        then: Yup.string().required('Please select an NSAID type.'),
+        otherwise: Yup.string()
+      })
     })
   }),
   travel: Yup.object().shape({

@@ -44,6 +44,10 @@ function EntryForm(props) {
     }
     return undefined;
   };
+  const requiredError = errorMessage => values => {
+    console.log('requiredError - value', values);
+    return !values ? errorMessage : undefined;
+  };
   return (
     <Formik
       initialValues={entry ? entry : newEntry}
@@ -84,12 +88,13 @@ function EntryForm(props) {
               component={RadioGroup}
               name="pain.rating"
               label="Pain"
+              validate={requiredError('Pain Rating is required')}
             >
-              <Radio.Button value={0}>None</Radio.Button>
-              <Radio.Button value={1}>Low</Radio.Button>
-              <Radio.Button value={2}>Medium</Radio.Button>
-              <Radio.Button value={3}>High</Radio.Button>
-              <Radio.Button value={4}>Extreme</Radio.Button>
+              <Radio.Button value={1}>None</Radio.Button>
+              <Radio.Button value={2}>Low</Radio.Button>
+              <Radio.Button value={3}>Medium</Radio.Button>
+              <Radio.Button value={4}>High</Radio.Button>
+              <Radio.Button value={5}>Extreme</Radio.Button>
             </Field>
 
             <Field

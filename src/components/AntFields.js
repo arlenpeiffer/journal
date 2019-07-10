@@ -8,6 +8,7 @@ import {
   Select as AntSelect,
   Switch as AntSwitch
 } from 'antd';
+import { getIn } from 'formik';
 
 const CreateAntField = Component => ({
   field,
@@ -18,7 +19,7 @@ const CreateAntField = Component => ({
   type,
   ...props
 }) => {
-  const error = form.errors[field.name];
+  const error = getIn(form.errors, field.name);
   const onBlur = () => form.setFieldTouched(field.name, true);
   // const onChange = value => form.setFieldValue(field.name, value);
   // const onInputChange = event => {
@@ -27,8 +28,9 @@ const CreateAntField = Component => ({
   // };
   const submitted = submitCount > 0;
   const submittedError = error && submitted;
-  const touched = form.touched[field.name];
+  const touched = getIn(form.touched, field.name);
   const touchedError = error && touched;
+  console.log(field.name, error);
   return (
     <Form.Item
       // hasFeedback

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Divider, Form, Icon, Radio } from 'antd';
 import {
+  CheckboxGroup,
   DatePicker,
   Input,
   InputNumber,
@@ -29,6 +30,7 @@ const newEntry = {
       type: undefined
     }
   },
+  supplements: [],
   travel: {
     isTraveling: false,
     location: 'Home'
@@ -64,6 +66,7 @@ const validationSchema = Yup.object().shape({
       })
     })
   }),
+  supplements: Yup.array(),
   travel: Yup.object().shape({
     isTraveling: Yup.boolean(),
     location: Yup.string().required('Location name is required.')
@@ -114,6 +117,16 @@ function EntryForm(props) {
               }
               validate={dateError('There is already an entry for that date.')}
               value={moment(values.date)}
+            />
+
+            <Field
+              component={CheckboxGroup}
+              name="supplements"
+              label="Supplements"
+              onChange={checkedValues =>
+                setFieldValue('supplements', checkedValues)
+              }
+              options={props.logs.supplements}
             />
 
             <Field
@@ -234,7 +247,8 @@ function EntryForm(props) {
 }
 
 const mapStateToProps = state => ({
-  journal: state.user.journal
+  journal: state.user.journal,
+  logs: state.user.logs
 });
 
 export default connect(mapStateToProps)(EntryForm);

@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Checkbox as AntCheckbox,
   DatePicker as AntDatePicker,
   Form,
   Input as AntInput,
@@ -30,7 +31,6 @@ const CreateAntField = Component => ({
   const submittedError = error && submitted;
   const touched = getIn(form.touched, field.name);
   const touchedError = error && touched;
-  console.log(field.name, error);
   return (
     <Form.Item
       // hasFeedback
@@ -48,6 +48,7 @@ const CreateAntField = Component => ({
   );
 };
 
+export const CheckboxGroup = CreateAntField(AntCheckbox.Group);
 export const DatePicker = CreateAntField(AntDatePicker);
 export const Input = CreateAntField(AntInput);
 export const InputNumber = CreateAntField(AntInputNumber);

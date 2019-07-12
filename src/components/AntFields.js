@@ -16,6 +16,7 @@ const CreateAntField = Component => ({
   form,
   // hasFeedback,
   label,
+  style,
   submitCount,
   type,
   ...props
@@ -36,6 +37,7 @@ const CreateAntField = Component => ({
       // hasFeedback
       help={submittedError || touchedError ? error : undefined}
       label={label}
+      style={style}
       validateStatus={submittedError || touchedError ? 'warning' : ''}
     >
       <Component

@@ -15,6 +15,8 @@ import { connect } from 'react-redux';
 import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 
+import Supplements from './Supplements';
+
 const newEntry = {
   date: moment()
     .startOf('day')
@@ -119,15 +121,7 @@ function EntryForm(props) {
               value={moment(values.date)}
             />
 
-            <Field
-              component={CheckboxGroup}
-              name="supplements"
-              label="Supplements"
-              onChange={checkedValues =>
-                setFieldValue('supplements', checkedValues)
-              }
-              options={props.logs.supplements}
-            />
+            <Supplements setFieldValue={setFieldValue} />
 
             <Field
               buttonStyle="solid"
@@ -247,8 +241,7 @@ function EntryForm(props) {
 }
 
 const mapStateToProps = state => ({
-  journal: state.user.journal,
-  logs: state.user.logs
+  journal: state.user.journal
 });
 
 export default connect(mapStateToProps)(EntryForm);

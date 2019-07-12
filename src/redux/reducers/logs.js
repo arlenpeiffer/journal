@@ -1,4 +1,4 @@
-import { ADD_SUPPLEMENT } from '../actions';
+import { ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
 
 const defaultState = {
   supplements: [
@@ -16,6 +16,13 @@ export default (state = defaultState, action) => {
     case ADD_SUPPLEMENT:
       const { supplement } = action.payload;
       return { ...state, supplements: [...state.supplements, supplement] };
+    case REMOVE_SUPPLEMENT:
+      return {
+        ...state,
+        supplements: state.supplements.filter(
+          supplement => supplement !== action.payload.supplement
+        )
+      };
     default:
       return state;
   }

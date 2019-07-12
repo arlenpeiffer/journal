@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { CheckboxGroup } from './AntFields';
-import { Button, Checkbox, Form, Icon, Input } from 'antd';
-import { addSupplement } from '../redux/actions/logs';
+import { Button, Checkbox, Form, Icon, Input, Popconfirm } from 'antd';
+import { addSupplement, removeSupplement } from '../redux/actions/logs';
 
 class Supplements extends React.Component {
   state = {
@@ -48,6 +48,14 @@ class Supplements extends React.Component {
           {logs.supplements.map(item => (
             <div key={item} style={{ display: 'flex', alignItems: 'center' }}>
               <Checkbox value={item}>{item}</Checkbox>
+              <Popconfirm
+                title={`Are you sure you want to delete ${item}?`}
+                onConfirm={() => this.props.removeSupplement(item)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Icon theme="twoTone" type="close-circle" />
+              </Popconfirm>
             </div>
           ))}
         </Field>
@@ -93,7 +101,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchtoProps = dispatch => ({
-  addSupplement: supplement => dispatch(addSupplement(supplement))
+  addSupplement: supplement => dispatch(addSupplement(supplement)),
+  removeSupplement: supplement => dispatch(removeSupplement(supplement))
 });
 
 export default connect(

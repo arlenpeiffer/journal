@@ -7,3 +7,4 @@ export const EDIT_ENTRY = 'EDIT_ENTRY';
 
 // log
 export const ADD_SUPPLEMENT = 'ADD_SUPPLEMENT';
+export const REMOVE_SUPPLEMENT = 'REMOVE_SUPPLEMENT';

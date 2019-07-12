@@ -10,13 +10,18 @@ function Supplements(props) {
   const [isAddingSupplement, setIsAddingSupplement] = useState(false);
   const [error, setError] = useState('');
 
-  const { addSupplement, removeSupplement, setFieldValue } = props;
-  const { supplements } = props.logs;
+  const {
+    addSupplement,
+    logs,
+    removeSupplement,
+    setFieldValue,
+    supplements
+  } = props;
 
-  const handleSubmit = () => {
+  const handleAddSupplement = () => {
     if (input.trim() === '') {
       setError('Uh oh, needs a name..');
-    } else if (supplements.find(supplement => input === supplement)) {
+    } else if (logs.supplements.find(supplement => input === supplement)) {
       setError("There's already one of those..");
     } else {
       addSupplement(input);
@@ -24,6 +29,14 @@ function Supplements(props) {
       setError('');
       setIsAddingSupplement(false);
     }
+  };
+
+  const handleRemoveSupplement = removedSupplement => {
+    removeSupplement(removedSupplement);
+    setFieldValue(
+      'supplements',
+      supplements.filter(supplement => supplement !== removedSupplement)
+    );
   };
 
   return (
@@ -37,7 +50,7 @@ function Supplements(props) {
         }}
         style={{ marginBottom: 0 }}
       >
-        {supplements.map(supplement => (
+        {logs.supplements.map(supplement => (
           <div
             key={supplement}
             style={{ display: 'flex', alignItems: 'center' }}
@@ -46,7 +59,7 @@ function Supplements(props) {
             <Popconfirm
               cancelText="No"
               okText="Yes"
-              onConfirm={() => removeSupplement(supplement)}
+              onConfirm={() => handleRemoveSupplement(supplement)}
               title={`Are you sure you want to delete ${supplement}?`}
             >
               <Icon theme="twoTone" type="close-circle" />
@@ -66,13 +79,13 @@ function Supplements(props) {
                 allowClear
                 autoFocus
                 onChange={event => setInput(event.target.value)}
-                onPressEnter={handleSubmit}
+                onPressEnter={handleAddSupplement}
                 value={input}
               />
             </Form.Item>
             <Form.Item>
               <Button
-                onClick={handleSubmit}
+                onClick={handleAddSupplement}
                 style={{ marginLeft: 8, marginRight: 8 }}
                 type="primary"
               >

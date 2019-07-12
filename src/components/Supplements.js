@@ -1,99 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { CheckboxGroup } from './AntFields';
 import { Button, Checkbox, Form, Icon, Input, Popconfirm } from 'antd';
 import { addSupplement, removeSupplement } from '../redux/actions/logs';
 
-class Supplements extends React.Component {
-  state = {
-    error: '',
-    isAddingSupplement: false,
-    value: ''
-  };
-  onChange = event => {
-    const { value } = event.target;
-    this.setState({ value });
-  };
-  onSubmit = () => {
-    const { value } = this.state;
-    const { logs } = this.props;
-    if (value.trim() === '') {
-      this.setState({ error: 'Uh oh, needs a name..' });
-    } else if (logs.supplements.find(item => item === value)) {
-      this.setState({ error: "There's already one of those.." });
+function Supplements(props) {
+  const [input, setInput] = useState('');
+  const [isAddingSupplement, setIsAddingSupplement] = useState(false);
+  const [error, setError] = useState('');
+
+  const { addSupplement, removeSupplement, setFieldValue } = props;
+  const { supplements } = props.logs;
+
+  const handleSubmit = () => {
+    if (input.trim() === '') {
+      setError('Uh oh, needs a name..');
+    } else if (supplements.find(supplement => input === supplement)) {
+      setError("There's already one of those..");
     } else {
-      this.props.addSupplement(value);
-      this.setState({
-        error: '',
-        isAddingSupplement: false,
-        value: ''
-      });
+      addSupplement(input);
+      setInput('');
+      setError('');
+      setIsAddingSupplement(false);
     }
   };
-  render() {
-    const { error, isAddingSupplement, value } = this.state;
-    const { logs, setFieldValue } = this.props;
-    return (
-      <div>
-        <Field
-          component={CheckboxGroup}
-          name="supplements"
-          label="Supplements"
-          onChange={checkedValues => {
-            setFieldValue('supplements', checkedValues.sort());
-          }}
-          style={{ marginBottom: 0 }}
-        >
-          {logs.supplements.map(item => (
-            <div key={item} style={{ display: 'flex', alignItems: 'center' }}>
-              <Checkbox value={item}>{item}</Checkbox>
-              <Popconfirm
-                title={`Are you sure you want to delete ${item}?`}
-                onConfirm={() => this.props.removeSupplement(item)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Icon theme="twoTone" type="close-circle" />
-              </Popconfirm>
-            </div>
-          ))}
-        </Field>
-        <div style={{ marginBottom: 24 }}>
+
+  return (
+    <div>
+      <Field
+        component={CheckboxGroup}
+        name="supplements"
+        label="Supplements"
+        onChange={checkedValues => {
+          setFieldValue('supplements', checkedValues.sort());
+        }}
+        style={{ marginBottom: 0 }}
+      >
+        {supplements.map(supplement => (
           <div
-            onClick={() =>
-              this.setState({ isAddingSupplement: !isAddingSupplement })
-            }
+            key={supplement}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
-            <Icon type={isAddingSupplement ? 'down' : 'plus'} />
-            <span style={{ paddingLeft: 8, paddingRight: 8 }}>Add new</span>
+            <Checkbox value={supplement}>{supplement}</Checkbox>
+            <Popconfirm
+              cancelText="No"
+              okText="Yes"
+              onConfirm={() => removeSupplement(supplement)}
+              title={`Are you sure you want to delete ${supplement}?`}
+            >
+              <Icon theme="twoTone" type="close-circle" />
+            </Popconfirm>
           </div>
-          {isAddingSupplement ? (
-            <div style={{ display: 'flex' }}>
-              <Form.Item help={error} validateStatus={error ? 'warning' : ''}>
-                <Input
-                  allowClear
-                  autoFocus
-                  onChange={this.onChange}
-                  onPressEnter={this.onSubmit}
-                  value={value}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  onClick={this.onSubmit}
-                  style={{ marginLeft: 8, marginRight: 8 }}
-                  type="primary"
-                >
-                  Add
-                </Button>
-              </Form.Item>
-            </div>
-          ) : null}
+        ))}
+      </Field>
+      <div style={{ marginBottom: 24 }}>
+        <div onClick={() => setIsAddingSupplement(!isAddingSupplement)}>
+          <Icon type={isAddingSupplement ? 'down' : 'plus'} />
+          <span style={{ paddingLeft: 8, paddingRight: 8 }}>Add new</span>
         </div>
+        {isAddingSupplement ? (
+          <div style={{ display: 'flex' }}>
+            <Form.Item help={error} validateStatus={error ? 'warning' : ''}>
+              <Input
+                allowClear
+                autoFocus
+                onChange={event => setInput(event.target.value)}
+                onPressEnter={handleSubmit}
+                value={input}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                onClick={handleSubmit}
+                style={{ marginLeft: 8, marginRight: 8 }}
+                type="primary"
+              >
+                Add
+              </Button>
+            </Form.Item>
+          </div>
+        ) : null}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const mapStateToProps = state => ({

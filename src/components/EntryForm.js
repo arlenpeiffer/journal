@@ -1,21 +1,14 @@
 import React from 'react';
-import { Button, Divider, Form, Icon, Radio } from 'antd';
-import {
-  CheckboxGroup,
-  DatePicker,
-  Input,
-  InputNumber,
-  RadioGroup,
-  Select,
-  Switch,
-  TextArea
-} from './AntFields';
-import moment from 'moment';
-import { connect } from 'react-redux';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
+import { Button, Form } from 'antd';
 import * as Yup from 'yup';
+import moment from 'moment';
 
+import Date from './Date';
+import Notes from './Notes';
+import Pain from './Pain';
 import Supplements from './Supplements';
+import Travel from './Travel';
 
 const newEntry = {
   date: moment()
@@ -76,15 +69,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function EntryForm(props) {
-  const { entry, journal } = props;
-  const dateError = errorMessage => value => {
-    if (entry && entry.date === value) {
-      return undefined;
-    } else if (journal.some(entry => entry.date === value)) {
-      return errorMessage;
-    }
-    return undefined;
-  };
+  const { entry } = props;
   return (
     <Formik
       initialValues={entry ? entry : newEntry}
@@ -92,7 +77,7 @@ function EntryForm(props) {
       validationSchema={validationSchema}
       render={({
         handleSubmit,
-        handleChange,
+        // handleChange,
         values,
         // errors,
         // touched,
@@ -103,133 +88,15 @@ function EntryForm(props) {
       }) => (
         <div>
           <Form onSubmit={handleSubmit}>
-            <Field
-              allowClear={false}
-              component={DatePicker}
-              format="MMM D, YYYY"
-              label="Date"
-              name="date"
-              onChange={date =>
-                setFieldValue(
-                  'date',
-                  moment(date)
-                    .startOf('day')
-                    .valueOf()
-                )
-              }
-              validate={dateError('There is already an entry for that date.')}
-              value={moment(values.date)}
+            <Date
+              date={values.date}
+              entry={entry}
+              setFieldValue={setFieldValue}
             />
-
             <Supplements setFieldValue={setFieldValue} />
-
-            <Field
-              buttonStyle="solid"
-              component={RadioGroup}
-              name="pain.rating"
-              label="Pain"
-            >
-              <Radio.Button value={0}>None</Radio.Button>
-              <Radio.Button value={1}>Low</Radio.Button>
-              <Radio.Button value={2}>Medium</Radio.Button>
-              <Radio.Button value={3}>High</Radio.Button>
-              <Radio.Button value={4}>Extreme</Radio.Button>
-            </Field>
-
-            <Field
-              component={Input}
-              name="pain.details"
-              placeholder="Details"
-            />
-
-            <Field
-              checked={values.pain.nsaid.isTaken}
-              component={Switch}
-              name="pain.nsaid.isTaken"
-              label="Did you take an NSAID?"
-              onChange={checked =>
-                checked
-                  ? setFieldValue('pain.nsaid.isTaken', checked)
-                  : setFieldValue('pain.nsaid', newEntry.pain.nsaid)
-              }
-              // checkedChildren={<Icon type="check" />}
-              // unCheckedChildren={<Icon type="close" />}
-            />
-
-            <Field
-              component={Select}
-              disabled={!values.pain.nsaid.isTaken}
-              // dropdownRender={menu => (
-              //   <div>
-              //     {menu}
-              //     <Divider style={{ margin: '4px 0' }} />
-              //     <div style={{ padding: '8px', cursor: 'pointer' }}>
-              //       <Icon type="plus" /> Add item
-              //     </div>
-              //   </div>
-              // )}
-              name="pain.nsaid.type"
-              onSelect={type => setFieldValue('pain.nsaid.type', type)}
-              placeholder="Choose one"
-            >
-              <option value="Advil">Advil</option>
-              <option value="Aleve">Aleve</option>
-            </Field>
-
-            <Field
-              component={InputNumber}
-              disabled={!values.pain.nsaid.isTaken}
-              label="Number of times taken"
-              min={0}
-              name="pain.nsaid.timesTaken"
-              onChange={value => setFieldValue('pain.nsaid.timesTaken', value)}
-            />
-
-            <Field
-              component={InputNumber}
-              disabled={!values.pain.nsaid.isTaken}
-              label="Total amount taken"
-              min={0}
-              name="pain.nsaid.amountTaken"
-              onChange={value => setFieldValue('pain.nsaid.amountTaken', value)}
-            />
-
-            <Field
-              component={RadioGroup}
-              name="travel.isTraveling"
-              label="Traveling"
-              onChange={event => {
-                const isTraveling = event.target.value;
-                const location = isTraveling ? '' : 'Home';
-                setFieldValue('travel', { isTraveling, location });
-              }}
-              options={[
-                { label: 'No', value: false },
-                { label: 'Yes', value: true }
-              ]}
-            />
-
-            <Field
-              autoComplete="off"
-              autoFocus
-              allowClear={values.travel.isTraveling}
-              component={Input}
-              disabled={!values.travel.isTraveling}
-              name="travel.location"
-              placeholder="Where ya at?"
-              // value={
-              //   values.travel.isTraveling ? values.travel.location : 'Home'
-              // }
-            />
-
-            <Field
-              component={TextArea}
-              name="notes"
-              label="Notes"
-              placeholder="Notes"
-              // type="text"
-            />
-
+            <Pain pain={values.pain} setFieldValue={setFieldValue} />
+            <Travel setFieldValue={setFieldValue} travel={values.travel} />
+            <Notes />
             <Button onClick={handleSubmit} type="primary">
               Submit
             </Button>
@@ -240,8 +107,4 @@ function EntryForm(props) {
   );
 }
 
-const mapStateToProps = state => ({
-  journal: state.user.journal
-});
-
-export default connect(mapStateToProps)(EntryForm);
+export default EntryForm;

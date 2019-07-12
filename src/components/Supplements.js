@@ -27,7 +27,7 @@ function Supplements(props) {
   };
 
   return (
-    <div>
+    <div id="supplements">
       <Field
         component={CheckboxGroup}
         name="supplements"

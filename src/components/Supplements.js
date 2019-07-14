@@ -69,8 +69,11 @@ function Supplements(props) {
       </Field>
       <div style={{ marginBottom: 24 }}>
         <div onClick={() => setIsAddingSupplement(!isAddingSupplement)}>
-          <Icon type={isAddingSupplement ? 'down' : 'plus'} />
-          <span style={{ paddingLeft: 8, paddingRight: 8 }}>Add new</span>
+          <Icon
+            style={{ cursor: 'pointer' }}
+            type={isAddingSupplement ? 'down' : 'plus'}
+          />
+          <span style={{ cursor: 'pointer', padding: '0 8px' }}>Add new</span>
         </div>
         {isAddingSupplement ? (
           <div style={{ display: 'flex' }}>

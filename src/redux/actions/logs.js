@@ -1,4 +1,11 @@
-import { ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
+import { ADD_NSAID, ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
+
+export const addNsaid = nsaid => {
+  return {
+    type: ADD_NSAID,
+    payload: { nsaid }
+  };
+};
 
 export const addSupplement = supplement => {
   return {

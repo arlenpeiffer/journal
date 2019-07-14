@@ -1,6 +1,7 @@
-import { ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
+import { ADD_NSAID, ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
 
 const defaultState = {
+  nsaid: ['Advil', 'Aleve'],
   supplements: [
     'Cod Liver Oil',
     'Magnesium',
@@ -13,6 +14,9 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case ADD_NSAID:
+      const { nsaid } = action.payload;
+      return { ...state, nsaid: [...state.nsaid, nsaid] };
     case ADD_SUPPLEMENT:
       const { supplement } = action.payload;
       return { ...state, supplements: [...state.supplements, supplement] };

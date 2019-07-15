@@ -1,38 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { Input, InputNumber, RadioGroup, Select } from './AntFields';
-import {
-  Button,
-  Divider,
-  Form,
-  Icon,
-  Input as AntInput,
-  Radio,
-  Select as AntSelect
-} from 'antd';
+import { Divider, Icon, Radio, Select as AntSelect } from 'antd';
 import { addNsaid } from '../redux/actions/logs';
+import AddItem from './AddItem';
 
 const Option = AntSelect.Option;
 
 function Pain(props) {
-  const [input, setInput] = useState('');
-  const [isAddingNsaid, setIsAddingNsaid] = useState(false);
-  const [error, setError] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-
   const { addNsaid, logs, pain, setFieldValue } = props;
 
-  const handleAddNsaid = () => {
+  const handleAddNsaid = (input, setError, setInput, setIsAddingItem) => {
     if (input.trim() === '') {
       setError('Uh oh, needs a name..');
-    } else if (logs.supplements.find(supplement => input === supplement)) {
+    } else if (logs.nsaid.find(nsaid => input === nsaid)) {
       setError("There's already one of those..");
     } else {
       addNsaid(input);
       setInput('');
       setError('');
-      setIsAddingNsaid(false);
+      setIsAddingItem(false);
     }
   };
 
@@ -78,60 +66,12 @@ function Pain(props) {
           <div>
             {options}
             <Divider style={{ margin: 0 }} />
-            <div
-              onMouseDown={() => {
-                setIsAddingNsaid(!isAddingNsaid);
-              }}
-              style={{
-                paddingBottom: isAddingNsaid ? '0px' : '8px',
-                paddingLeft: '8px',
-                paddingRight: '8px',
-                paddingTop: '8px',
-                cursor: 'pointer'
-              }}
-            >
-              <Icon type={isAddingNsaid ? 'down' : 'plus'} /> Add item
-            </div>
-            {isAddingNsaid ? (
-              <div
-                style={{
-                  display: 'flex',
-                  paddingLeft: '8px',
-                  paddingRight: '8px'
-                }}
-              >
-                <Form.Item
-                  help={error}
-                  style={{ marginBottom: '8px' }}
-                  validateStatus={error ? 'warning' : ''}
-                >
-                  <AntInput
-                    allowClear
-                    autoFocus
-                    onChange={event => setInput(event.target.value)}
-                    onPressEnter={handleAddNsaid}
-                    value={input}
-                  />
-                </Form.Item>
-                <Form.Item style={{ marginBottom: '8px' }}>
-                  <Button
-                    onClick={handleAddNsaid}
-                    style={{ marginLeft: 8, marginRight: 8 }}
-                    type="primary"
-                  >
-                    Add
-                  </Button>
-                </Form.Item>
-              </div>
-            ) : null}
+            <AddItem padding={8} onSubmit={handleAddNsaid} />
           </div>
         )}
         name="pain.nsaid.type"
-        onDropdownVisibleChange={open =>
-          isAddingNsaid ? setIsOpen(true) : setIsOpen(open)
-        }
         onSelect={type => setFieldValue('pain.nsaid.type', type)}
-        open={isOpen}
+        open={true}
         placeholder="Choose one"
         suffixIcon={<Icon type="smile" />}
       >

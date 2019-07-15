@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { CheckboxGroup } from './AntFields';
-import { Button, Checkbox, Form, Icon, Input, Popconfirm } from 'antd';
+import { Checkbox, Icon, Popconfirm } from 'antd';
 import { addSupplement, removeSupplement } from '../redux/actions/logs';
+import AddItem from './AddItem';
 
 function Supplements(props) {
-  const [input, setInput] = useState('');
-  const [isAddingSupplement, setIsAddingSupplement] = useState(false);
-  const [error, setError] = useState('');
-
   const {
     addSupplement,
     logs,
@@ -18,7 +15,7 @@ function Supplements(props) {
     supplements
   } = props;
 
-  const handleAddSupplement = () => {
+  const handleAddSupplement = (input, setError, setInput, setIsAddingItem) => {
     if (input.trim() === '') {
       setError('Uh oh, needs a name..');
     } else if (logs.supplements.find(supplement => input === supplement)) {
@@ -27,7 +24,7 @@ function Supplements(props) {
       addSupplement(input);
       setInput('');
       setError('');
-      setIsAddingSupplement(false);
+      setIsAddingItem(false);
     }
   };
 
@@ -68,35 +65,7 @@ function Supplements(props) {
         ))}
       </Field>
       <div style={{ marginBottom: 24 }}>
-        <div onClick={() => setIsAddingSupplement(!isAddingSupplement)}>
-          <Icon
-            style={{ cursor: 'pointer' }}
-            type={isAddingSupplement ? 'down' : 'plus'}
-          />
-          <span style={{ cursor: 'pointer', padding: '0 8px' }}>Add new</span>
-        </div>
-        {isAddingSupplement ? (
-          <div style={{ display: 'flex' }}>
-            <Form.Item help={error} validateStatus={error ? 'warning' : ''}>
-              <Input
-                allowClear
-                autoFocus
-                onChange={event => setInput(event.target.value)}
-                onPressEnter={handleAddSupplement}
-                value={input}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                onClick={handleAddSupplement}
-                style={{ marginLeft: 8, marginRight: 8 }}
-                type="primary"
-              >
-                Add
-              </Button>
-            </Form.Item>
-          </div>
-        ) : null}
+        <AddItem onSubmit={handleAddSupplement} />
       </div>
     </div>
   );

@@ -71,7 +71,6 @@ function Pain(props) {
         )}
         name="pain.nsaid.type"
         onSelect={type => setFieldValue('pain.nsaid.type', type)}
-        open={true}
         placeholder="Choose one"
         suffixIcon={<Icon type="smile" />}
       >

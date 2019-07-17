@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import moment from 'moment';
 
 import Date from './Date';
+import Movement from './Movement';
 import Notes from './Notes';
 import Pain from './Pain';
 import Supplements from './Supplements';
@@ -14,6 +15,7 @@ const newEntry = {
   date: moment()
     .startOf('day')
     .valueOf(),
+  movement: [],
   notes: '',
   pain: {
     rating: null,
@@ -38,6 +40,12 @@ const validationSchema = Yup.object().shape({
   pain: Yup.object().shape({
     rating: Yup.number().typeError('Pain Rating is required.'),
     details: Yup.string(),
+    movement: Yup.array().of(
+      Yup.object().shape({
+        type: Yup.string().required('Activity type is required.'),
+        notes: Yup.string()
+      })
+    ),
     nsaid: Yup.object().shape({
       amountTaken: Yup.number().when('isTaken', {
         is: true,
@@ -96,6 +104,10 @@ function EntryForm(props) {
             <Supplements
               setFieldValue={setFieldValue}
               supplements={values.supplements}
+            />
+            <Movement
+              movement={values.movement}
+              setFieldValue={setFieldValue}
             />
             <Pain pain={values.pain} setFieldValue={setFieldValue} />
             <Travel setFieldValue={setFieldValue} travel={values.travel} />

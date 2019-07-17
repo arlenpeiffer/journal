@@ -36,16 +36,16 @@ const newEntry = {
 
 const validationSchema = Yup.object().shape({
   date: Yup.number().required(),
+  movement: Yup.array().of(
+    Yup.object().shape({
+      type: Yup.string().required('Activity type is required.'),
+      notes: Yup.string()
+    })
+  ),
   notes: Yup.string(),
   pain: Yup.object().shape({
     rating: Yup.number().typeError('Pain Rating is required.'),
     details: Yup.string(),
-    movement: Yup.array().of(
-      Yup.object().shape({
-        type: Yup.string().required('Activity type is required.'),
-        notes: Yup.string()
-      })
-    ),
     nsaid: Yup.object().shape({
       amountTaken: Yup.number().when('isTaken', {
         is: true,

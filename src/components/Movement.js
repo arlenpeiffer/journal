@@ -9,32 +9,28 @@ function Movement(props) {
       <Form.Item label="Movement">
         <FieldArray
           name="movement"
-          render={arrayHelpers => (
+          render={({ push, remove }) => (
             <div>
               {props.movement.map((activity, index) => (
                 <Form.Item key={index}>
                   <Field
-                    autocomplete="off"
+                    autoComplete="off"
                     component={Input}
                     name={`movement[${index}].type`}
                     placeholder="Type of activity"
                     style={{ marginBottom: 0 }}
                   />
                   <Field
-                    autocomplete="off"
+                    autoComplete="off"
                     component={Input}
                     name={`movement[${index}].details`}
                     placeholder="Details such as number of laps, length of workout, or how you felt before/during/after moving.."
                     style={{ marginBottom: 0 }}
                   />
-                  <Button onClick={() => arrayHelpers.remove(index)}>
-                    Remove
-                  </Button>
+                  <Button onClick={() => remove(index)}>Remove</Button>
                 </Form.Item>
               ))}
-              <Button
-                onClick={() => arrayHelpers.push({ type: '', details: '' })}
-              >
+              <Button onClick={() => push({ type: '', details: '' })}>
                 Add Activity
               </Button>
             </div>

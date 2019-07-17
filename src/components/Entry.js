@@ -24,7 +24,7 @@ function Entry(props) {
         <br />
         movement:{' '}
         {movement.length > 0
-          ? movement.map(activity => `${activity.type} ${activity.notes}, `)
+          ? movement.map(activity => `${activity.type} ${activity.details}, `)
           : 'none'}
       </p>
       <Link to={`/edit/${id}`}>

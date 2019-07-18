@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  AutoComplete as AntAutoComplete,
   Checkbox as AntCheckbox,
   DatePicker as AntDatePicker,
   Form,
@@ -22,7 +23,7 @@ const CreateAntField = Component => ({
   ...props
 }) => {
   const error = getIn(form.errors, field.name);
-  const onBlur = () => form.setFieldTouched(field.name, true);
+  // const onBlur = () => form.setFieldTouched(field.name, true);
   // const onChange = value => form.setFieldValue(field.name, value);
   // const onInputChange = event => {
   //   const value = event.target.value;
@@ -43,13 +44,14 @@ const CreateAntField = Component => ({
       <Component
         {...field}
         {...props}
-        onBlur={onBlur}
+        // onBlur={onBlur}
         // onChange={type ? onInputChange : onChange}
       />
     </Form.Item>
   );
 };
 
+export const AutoComplete = CreateAntField(AntAutoComplete);
 export const CheckboxGroup = CreateAntField(AntCheckbox.Group);
 export const DatePicker = CreateAntField(AntDatePicker);
 export const Input = CreateAntField(AntInput);

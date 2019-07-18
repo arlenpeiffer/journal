@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Field, FieldArray } from 'formik';
-import { Input } from './AntFields';
-import { Button, Form } from 'antd';
+import { AutoComplete, Input } from './AntFields';
+import { Button, Form, Icon } from 'antd';
 
 function Movement(props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedInput, setSelectedInput] = useState(undefined);
+  const { logs } = props;
+
   return (
     <div id="movement">
       <Form.Item label="Movement">
@@ -15,8 +20,27 @@ function Movement(props) {
                 <Form.Item key={index}>
                   <Field
                     autoComplete="off"
-                    component={Input}
+                    component={AutoComplete}
+                    dataSource={logs.movement}
+                    filterOption={true}
                     name={`movement[${index}].type`}
+                    onChange={value => {
+                      !value ? setIsOpen(false) : setIsOpen(true);
+                      props.setFieldValue(`movement[${index}].type`, value);
+                    }}
+                    onBlur={() => {
+                      setIsOpen(false);
+                      setSelectedInput(undefined);
+                    }}
+                    onFocus={() => {
+                      setIsOpen(false);
+                      setSelectedInput(index);
+                    }}
+                    onSelect={() => {
+                      setIsOpen(false);
+                      setSelectedInput(undefined);
+                    }}
+                    open={selectedInput === index && isOpen}
                     placeholder="Type of activity"
                     style={{ marginBottom: 0 }}
                   />
@@ -31,6 +55,7 @@ function Movement(props) {
                 </Form.Item>
               ))}
               <Button onClick={() => push({ type: '', details: '' })}>
+                <Icon type="plus" />
                 Add Activity
               </Button>
             </div>
@@ -41,4 +66,8 @@ function Movement(props) {
   );
 }
 
-export default Movement;
+const mapStateToProps = state => ({
+  logs: state.user.logs
+});
+
+export default connect(mapStateToProps)(Movement);

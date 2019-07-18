@@ -1,6 +1,12 @@
-import { ADD_NSAID, ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
+import {
+  ADD_MOVEMENT,
+  ADD_NSAID,
+  ADD_SUPPLEMENT,
+  REMOVE_SUPPLEMENT
+} from '../actions';
 
 const defaultState = {
+  movement: [],
   nsaid: ['Advil', 'Aleve'],
   supplements: [
     'Cod Liver Oil',
@@ -14,12 +20,24 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case ADD_MOVEMENT:
+      if (
+        state.movement.find(movement => movement === action.payload.movement)
+      ) {
+        return { ...state };
+      } else {
+        return {
+          ...state,
+          movement: [...state.movement, action.payload.movement].sort()
+        };
+      }
     case ADD_NSAID:
-      const { nsaid } = action.payload;
-      return { ...state, nsaid: [...state.nsaid, nsaid] };
+      return { ...state, nsaid: [...state.nsaid, action.payload.nsaid] };
     case ADD_SUPPLEMENT:
-      const { supplement } = action.payload;
-      return { ...state, supplements: [...state.supplements, supplement] };
+      return {
+        ...state,
+        supplements: [...state.supplements, action.payload.supplement]
+      };
     case REMOVE_SUPPLEMENT:
       return {
         ...state,

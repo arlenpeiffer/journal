@@ -1,4 +1,16 @@
-import { ADD_NSAID, ADD_SUPPLEMENT, REMOVE_SUPPLEMENT } from '../actions';
+import {
+  ADD_MOVEMENT,
+  ADD_NSAID,
+  ADD_SUPPLEMENT,
+  REMOVE_SUPPLEMENT
+} from '../actions';
+
+export const addMovement = movement => {
+  return {
+    type: ADD_MOVEMENT,
+    payload: { movement }
+  };
+};
 
 export const addNsaid = nsaid => {
   return {

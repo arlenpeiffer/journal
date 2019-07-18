@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import EntryForm from './EntryForm';
 import { editEntry } from '../redux/actions/journal';
+import { addMovement } from '../redux/actions/logs';
 
 class EditEntry extends React.Component {
   onSubmit = editedEntry => {
     const { id } = this.props.entry;
     this.props.editEntry(id, editedEntry);
     this.props.history.push('/');
+    editedEntry.movement.map(activity => this.props.addMovement(activity.type));
   };
   render() {
     const { entry } = this.props;
@@ -25,6 +28,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  addMovement: movement => dispatch(addMovement(movement)),
   editEntry: (id, editedEntry) => dispatch(editEntry(id, editedEntry))
 });
 

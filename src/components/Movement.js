@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Field, FieldArray } from 'formik';
 import { AutoComplete, Input } from './AntFields';
-import { Button, Form, Icon } from 'antd';
+import { Button, Form, Icon, Popconfirm } from 'antd';
 
 function Movement(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,7 +51,14 @@ function Movement(props) {
                     placeholder="Details such as number of laps, length of workout, or how you felt before/during/after moving.."
                     style={{ marginBottom: 0 }}
                   />
-                  <Button onClick={() => remove(index)}>Remove</Button>
+                  <Popconfirm
+                    cancelText="No"
+                    okText="Yes"
+                    onConfirm={() => remove(index)}
+                    title={'Are you sure you want to delete this activity?'}
+                  >
+                    <Button type="primary">Remove</Button>
+                  </Popconfirm>
                 </Form.Item>
               ))}
               <Button onClick={() => push({ type: '', details: '' })}>

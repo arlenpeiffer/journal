@@ -1,9 +1,17 @@
 import {
+  ADD_FOOD,
   ADD_MOVEMENT,
   ADD_NSAID,
   ADD_SUPPLEMENT,
   REMOVE_SUPPLEMENT
 } from '../actions';
+
+export const addFood = food => {
+  return {
+    type: ADD_FOOD,
+    payload: { food }
+  };
+};
 
 export const addMovement = movement => {
   return {

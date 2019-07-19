@@ -1,4 +1,5 @@
 import {
+  ADD_FOOD,
   ADD_MOVEMENT,
   ADD_NSAID,
   ADD_SUPPLEMENT,
@@ -6,6 +7,7 @@ import {
 } from '../actions';
 
 const defaultState = {
+  food: [],
   movement: [],
   nsaid: ['Advil', 'Aleve'],
   supplements: [
@@ -20,6 +22,15 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case ADD_FOOD:
+      if (state.food.find(food => food === action.payload.food)) {
+        return { ...state };
+      } else {
+        return {
+          ...state,
+          food: [...state.food, action.payload.food].sort()
+        };
+      }
     case ADD_MOVEMENT:
       if (
         state.movement.find(movement => movement === action.payload.movement)

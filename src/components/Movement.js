@@ -7,7 +7,7 @@ import { Button, Form, Icon, Popconfirm } from 'antd';
 function Movement(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedInput, setSelectedInput] = useState(undefined);
-  const { logs } = props;
+  const { logs, movement } = props;
 
   return (
     <div id="movement">
@@ -16,7 +16,7 @@ function Movement(props) {
           name="movement"
           render={({ push, remove }) => (
             <div>
-              {props.movement.map((activity, index) => (
+              {movement.map((activity, index) => (
                 <Form.Item key={index}>
                   <Field
                     autoComplete="off"

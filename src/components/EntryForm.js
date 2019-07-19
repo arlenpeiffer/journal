@@ -123,7 +123,7 @@ function EntryForm(props) {
               entry={entry}
               setFieldValue={setFieldValue}
             />
-            <Food food={values.food} setFieldValue={setFieldValue} />
+            <Food setFieldValue={setFieldValue} />
             <Supplements
               setFieldValue={setFieldValue}
               supplements={values.supplements}

@@ -24,13 +24,13 @@ function Movement(props) {
                     dataSource={logs.movement}
                     filterOption={true}
                     name={`movement[${index}].type`}
-                    onChange={value => {
-                      !value ? setIsOpen(false) : setIsOpen(true);
-                      props.setFieldValue(`movement[${index}].type`, value);
-                    }}
                     onBlur={() => {
                       setIsOpen(false);
                       setSelectedInput(undefined);
+                    }}
+                    onChange={value => {
+                      !value ? setIsOpen(false) : setIsOpen(true);
+                      props.setFieldValue(`movement[${index}].type`, value);
                     }}
                     onFocus={() => {
                       setIsOpen(false);

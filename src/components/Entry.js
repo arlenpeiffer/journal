@@ -3,7 +3,16 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 function Entry(props) {
-  const { date, id, movement, notes, pain, travel, supplements } = props.entry;
+  const {
+    date,
+    food,
+    id,
+    movement,
+    notes,
+    pain,
+    travel,
+    supplements
+  } = props.entry;
   return (
     <div>
       <p>
@@ -25,6 +34,11 @@ function Entry(props) {
         movement:{' '}
         {movement.length > 0
           ? movement.map(activity => `${activity.type} ${activity.details}, `)
+          : 'none'}
+        <br />
+        meals:{' '}
+        {food.meals.length > 0
+          ? food.meals.map(meal => `${meal.type} ${meal.time} ${meal.notes}, `)
           : 'none'}
       </p>
       <Link to={`/edit/${id}`}>

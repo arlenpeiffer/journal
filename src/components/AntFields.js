@@ -8,7 +8,8 @@ import {
   InputNumber as AntInputNumber,
   Radio as AntRadio,
   Select as AntSelect,
-  Switch as AntSwitch
+  Switch as AntSwitch,
+  TimePicker as AntTimePicker
 } from 'antd';
 import { getIn } from 'formik';
 
@@ -60,3 +61,4 @@ export const RadioGroup = CreateAntField(AntRadio.Group);
 export const Select = CreateAntField(AntSelect);
 export const Switch = CreateAntField(AntSwitch);
 export const TextArea = CreateAntField(AntInput.TextArea);
+export const TimePIcker = CreateAntField(AntTimePicker);

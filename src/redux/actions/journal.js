@@ -3,6 +3,7 @@ import uuid from 'uuid';
 
 export const addEntry = ({
   date,
+  food,
   movement,
   notes,
   pain,
@@ -15,6 +16,7 @@ export const addEntry = ({
       entry: {
         id: uuid(),
         date,
+        food,
         movement,
         notes,
         pain,

@@ -7,7 +7,7 @@ function ViewEntries(props) {
     <div>
       ViewEntries.js
       {props.journal.map(entry => (
-        <Entry entry={entry} />
+        <Entry key={entry.id} entry={entry} />
       ))}
     </div>
   );

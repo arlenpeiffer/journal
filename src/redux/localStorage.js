@@ -1,16 +1,8 @@
 export const loadState = () => {
-  const serializedState = localStorage.getItem('state');
-  if (serializedState === null) {
-    return undefined;
-  }
-  return JSON.parse(serializedState);
+  const reduxState = localStorage.getItem('reduxState');
+  return reduxState ? JSON.parse(reduxState) : undefined;
 };
 
 export const saveState = state => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
-  } catch {
-    // ignore write errors
-  }
+  localStorage.setItem('reduxState', JSON.stringify(state));
 };

@@ -5,9 +5,10 @@ import EntryForm from './EntryForm';
 import { addEntry } from '../redux/actions/journal';
 import { addFood, addMovement } from '../redux/actions/logs';
 
-class AddEntry extends React.Component {
-  handleLogFood = entry => {
-    const { addFood, logs } = this.props;
+function AddEntry(props) {
+  const { addEntry, addFood, addMovement, history, logs } = props;
+
+  const handleLogFood = entry => {
     entry.food.meals.map(meal =>
       meal.items.map(food =>
         logs.food.find(logItem => food.name === logItem)
@@ -17,8 +18,7 @@ class AddEntry extends React.Component {
     );
   };
 
-  handleLogMovement = entry => {
-    const { addMovement, logs } = this.props;
+  const handleLogMovement = entry => {
     entry.movement.map(movement =>
       logs.movement.find(logItem => movement.type === logItem)
         ? null
@@ -26,21 +26,19 @@ class AddEntry extends React.Component {
     );
   };
 
-  handleSubmit = entry => {
-    this.props.addEntry(entry);
-    this.handleLogFood(entry);
-    this.handleLogMovement(entry);
-    this.props.history.push('/');
+  const handleSubmitEntry = entry => {
+    addEntry(entry);
+    handleLogFood(entry);
+    handleLogMovement(entry);
+    history.push('/');
   };
 
-  render() {
-    return (
-      <div>
-        AddEntry.js
-        <EntryForm handleSubmitEntry={this.handleSubmit} />
-      </div>
-    );
-  }
+  return (
+    <div>
+      AddEntry.js
+      <EntryForm handleSubmitEntry={handleSubmitEntry} />
+    </div>
+  );
 }
 
 const mapStateToProps = state => ({

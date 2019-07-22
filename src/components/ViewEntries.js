@@ -6,6 +6,9 @@ function ViewEntries(props) {
   return (
     <div>
       ViewEntries.js
+      <div>
+        <button onClick={() => localStorage.clear()}>Clear</button>
+      </div>
       {props.journal.map(entry => (
         <Entry key={entry.id} entry={entry} />
       ))}

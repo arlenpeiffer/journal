@@ -60,7 +60,7 @@ const validationSchema = Yup.object().shape({
   }),
   movement: Yup.array().of(
     Yup.object().shape({
-      type: Yup.string().required('Activity type is required.'),
+      type: Yup.string().required('Movement type is required.'),
       notes: Yup.string()
     })
   ),
@@ -99,11 +99,11 @@ const validationSchema = Yup.object().shape({
 });
 
 function EntryForm(props) {
-  const { entry } = props;
+  const { entry, handleSubmitEntry } = props;
   return (
     <Formik
       initialValues={entry ? entry : newEntry}
-      onSubmit={values => props.onSubmit(values)}
+      onSubmit={values => handleSubmitEntry(values)}
       validationSchema={validationSchema}
       render={({
         handleSubmit,

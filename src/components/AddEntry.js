@@ -6,23 +6,46 @@ import { addEntry } from '../redux/actions/journal';
 import { addFood, addMovement } from '../redux/actions/logs';
 
 class AddEntry extends React.Component {
-  onSubmit = entry => {
-    this.props.addEntry(entry);
-    this.props.history.push('/');
+  handleLogFood = entry => {
+    const { addFood, logs } = this.props;
     entry.food.meals.map(meal =>
-      meal.items.map(item => this.props.addFood(item.name))
+      meal.items.map(food =>
+        logs.food.find(logItem => food.name === logItem)
+          ? null
+          : addFood(food.name)
+      )
     );
-    entry.movement.map(activity => this.props.addMovement(activity.type));
   };
+
+  handleLogMovement = entry => {
+    const { addMovement, logs } = this.props;
+    entry.movement.map(movement =>
+      logs.movement.find(logItem => movement.type === logItem)
+        ? null
+        : addMovement(movement.type)
+    );
+  };
+
+  handleSubmit = entry => {
+    this.props.addEntry(entry);
+    this.handleLogFood(entry);
+    this.handleLogMovement(entry);
+    this.props.history.push('/');
+  };
+
   render() {
     return (
       <div>
         AddEntry.js
-        <EntryForm onSubmit={this.onSubmit} />
+        <EntryForm handleSubmitEntry={this.handleSubmit} />
       </div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  logs: state.user.logs
+});
 
 const mapDispatchToProps = dispatch => ({
   addEntry: entry => dispatch(addEntry(entry)),
@@ -31,6 +54,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AddEntry);

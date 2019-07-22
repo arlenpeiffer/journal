@@ -16,7 +16,7 @@ function Movement(props) {
           name="movement"
           render={({ push, remove }) => (
             <div>
-              {movement.map((activity, index) => (
+              {movement.map((movement, index) => (
                 <Form.Item key={index}>
                   <Field
                     autoComplete="off"
@@ -41,7 +41,7 @@ function Movement(props) {
                       setSelectedInput(undefined);
                     }}
                     open={selectedInput === index && isOpen}
-                    placeholder="Type of activity"
+                    placeholder="Type of movement"
                     style={{ marginBottom: 0 }}
                   />
                   <Field
@@ -55,7 +55,7 @@ function Movement(props) {
                     cancelText="No"
                     okText="Yes"
                     onConfirm={() => remove(index)}
-                    title={'Are you sure you want to delete this activity?'}
+                    title={'Are you sure you want to delete this movement?'}
                   >
                     <Button type="primary">Remove</Button>
                   </Popconfirm>
@@ -63,7 +63,7 @@ function Movement(props) {
               ))}
               <Button onClick={() => push({ type: '', details: '' })}>
                 <Icon type="plus" />
-                Add Activity
+                Add Movement
               </Button>
             </div>
           )}

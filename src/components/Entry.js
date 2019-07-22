@@ -33,7 +33,7 @@ function Entry(props) {
         <br />
         movement:{' '}
         {movement.length > 0
-          ? movement.map(activity => `${activity.type} ${activity.details}, `)
+          ? movement.map(movement => `${movement.type} ${movement.details}, `)
           : 'none'}
         <br />
         meals:{' '}

@@ -23,25 +23,15 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case ADD_FOOD:
-      if (state.food.find(food => food === action.payload.food)) {
-        return { ...state };
-      } else {
-        return {
-          ...state,
-          food: [...state.food, action.payload.food].sort()
-        };
-      }
+      return {
+        ...state,
+        food: [...state.food, action.payload.food].sort()
+      };
     case ADD_MOVEMENT:
-      if (
-        state.movement.find(movement => movement === action.payload.movement)
-      ) {
-        return { ...state };
-      } else {
-        return {
-          ...state,
-          movement: [...state.movement, action.payload.movement].sort()
-        };
-      }
+      return {
+        ...state,
+        movement: [...state.movement, action.payload.movement].sort()
+      };
     case ADD_NSAID:
       return { ...state, nsaid: [...state.nsaid, action.payload.nsaid] };
     case ADD_SUPPLEMENT:

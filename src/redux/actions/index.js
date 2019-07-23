@@ -11,3 +11,7 @@ export const ADD_MOVEMENT = 'ADD_MOVEMENT';
 export const ADD_NSAID = 'ADD_NSAID';
 export const ADD_SUPPLEMENT = 'ADD_SUPPLEMENT';
 export const REMOVE_SUPPLEMENT = 'REMOVE_SUPPLEMENT';
+
+// filters
+export const SORT_BY_NEWEST_FIRST = 'SORT_BY_NEWEST_FIRST';
+export const SORT_BY_OLDEST_FIRST = 'SORT_BY_OLDEST_FIRST';

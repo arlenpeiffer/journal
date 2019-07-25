@@ -15,7 +15,12 @@ function Entries(props) {
 
 const mapStateToProps = state => ({
   journal: state.user.journal
-    .filter(entry => entry)
+    .filter(entry => {
+      const { startDate, endDate } = state.user.filters;
+      const startDateMatch = startDate ? entry.date >= startDate : true;
+      const endDateMatch = endDate ? entry.date <= endDate : true;
+      return startDateMatch && endDateMatch;
+    })
     .sort((a, b) => {
       if (state.user.filters.sortBy === 'newestFirst')
         return a.date > b.date ? -1 : 1;

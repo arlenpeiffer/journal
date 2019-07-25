@@ -1,28 +1,107 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { sortByNewestFirst, sortByOldestFirst } from '../redux/actions/filters';
-import { Select } from 'antd';
+import {
+  setEndDateFilter,
+  setStartDateFilter,
+  sortByNewestFirst,
+  sortByOldestFirst
+} from '../redux/actions/filters';
+import { Button, DatePicker, Form, Select } from 'antd';
+import moment from 'moment';
 
 function Filters(props) {
-  const { sortByNewestFirst, sortByOldestFirst } = props;
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [endOpen, setEndOpen] = useState(false);
+
+  const handleEndDisabled = endDate => {
+    if (!endDate || !startDate) {
+      return false;
+    }
+    return endDate < startDate;
+  };
+
+  const handleEndOpenChange = open => {
+    setEndOpen(open);
+  };
+
+  const handleStartDisabled = startDate => {
+    if (!startDate || !endDate) {
+      return false;
+    }
+    return startDate < endDate;
+  };
+
+  const handleStartOpenChange = open => {
+    if (!open) {
+      setEndOpen(true);
+    }
+  };
+
+  const {
+    setEndDateFilter,
+    setStartDateFilter,
+    sortByNewestFirst,
+    sortByOldestFirst
+  } = props;
 
   return (
     <div>
-      <Select
-        defaultValue={0}
-        onChange={value => {
-          value === 0 && sortByNewestFirst();
-          value === 1 && sortByOldestFirst();
-        }}
-      >
-        <Select.Option value={0}>Newest First</Select.Option>
-        <Select.Option value={1}>Oldest First</Select.Option>
-      </Select>
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Select
+          defaultValue={0}
+          onChange={value => {
+            value === 0 && sortByNewestFirst();
+            value === 1 && sortByOldestFirst();
+          }}
+        >
+          <Select.Option value={0}>Newest First</Select.Option>
+          <Select.Option value={1}>Oldest First</Select.Option>
+        </Select>
+      </Form.Item>
+      <Form.Item style={{ marginBottom: 0 }}>
+        <DatePicker
+          disabledDate={handleStartDisabled}
+          format="MMM D, YYYY"
+          onChange={date => {
+            setStartDate(date && date.startOf('day').valueOf());
+          }}
+          onOpenChange={handleStartOpenChange}
+          placeholder="Start"
+          value={startDate && moment(startDate)}
+        />
+      </Form.Item>
+      <Form.Item style={{ marginBottom: 0 }}>
+        <DatePicker
+          disabledDate={handleEndDisabled}
+          format="MMM D, YYYY"
+          onChange={date => {
+            setEndDate(date && date.startOf('day').valueOf());
+          }}
+          onOpenChange={handleEndOpenChange}
+          open={endOpen}
+          placeholder="End"
+          value={endDate && moment(endDate)}
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button
+          onClick={() => {
+            setStartDateFilter(startDate);
+            setEndDateFilter(endDate);
+          }}
+          type="primary"
+        >
+          Apply Filters
+        </Button>
+      </Form.Item>
     </div>
   );
 }
 
 const mapDispatchToProps = dispatch => ({
+  setEndDateFilter: endDate => dispatch(setEndDateFilter(endDate)),
+  setStartDateFilter: startDate => dispatch(setStartDateFilter(startDate)),
   sortByNewestFirst: () => dispatch(sortByNewestFirst()),
   sortByOldestFirst: () => dispatch(sortByOldestFirst())
 });

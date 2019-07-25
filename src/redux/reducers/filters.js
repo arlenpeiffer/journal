@@ -1,6 +1,5 @@
 import {
-  SET_END_DATE_FILTER,
-  SET_START_DATE_FILTER,
+  SET_DATE_FILTER,
   SORT_BY_NEWEST_FIRST,
   SORT_BY_OLDEST_FIRST
 } from '../actions';
@@ -14,17 +13,12 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case SET_END_DATE_FILTER:
-      const { endDate } = action.payload;
+    case SET_DATE_FILTER:
+      const { startDate, endDate } = action.payload;
       return {
         ...state,
+        startDate,
         endDate
-      };
-    case SET_START_DATE_FILTER:
-      const { startDate } = action.payload;
-      return {
-        ...state,
-        startDate
       };
     case SORT_BY_NEWEST_FIRST:
       return {

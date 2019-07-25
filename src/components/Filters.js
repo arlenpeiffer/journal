@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  setEndDateFilter,
-  setStartDateFilter,
+  setDateFilter,
   sortByNewestFirst,
   sortByOldestFirst
 } from '../redux/actions/filters';
@@ -38,12 +37,7 @@ function Filters(props) {
     }
   };
 
-  const {
-    setEndDateFilter,
-    setStartDateFilter,
-    sortByNewestFirst,
-    sortByOldestFirst
-  } = props;
+  const { setDateFilter, sortByNewestFirst, sortByOldestFirst } = props;
 
   return (
     <div>
@@ -87,8 +81,7 @@ function Filters(props) {
       <Form.Item>
         <Button
           onClick={() => {
-            setStartDateFilter(startDate);
-            setEndDateFilter(endDate);
+            setDateFilter(startDate, endDate);
           }}
           type="primary"
         >
@@ -100,8 +93,8 @@ function Filters(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setEndDateFilter: endDate => dispatch(setEndDateFilter(endDate)),
-  setStartDateFilter: startDate => dispatch(setStartDateFilter(startDate)),
+  setDateFilter: (startDate, endDate) =>
+    dispatch(setDateFilter(startDate, endDate)),
   sortByNewestFirst: () => dispatch(sortByNewestFirst()),
   sortByOldestFirst: () => dispatch(sortByOldestFirst())
 });

@@ -1,21 +1,13 @@
 import {
-  SET_END_DATE_FILTER,
-  SET_START_DATE_FILTER,
+  SET_DATE_FILTER,
   SORT_BY_NEWEST_FIRST,
   SORT_BY_OLDEST_FIRST
 } from '../actions';
 
-export const setEndDateFilter = endDate => {
+export const setDateFilter = (startDate, endDate) => {
   return {
-    type: SET_END_DATE_FILTER,
-    payload: { endDate }
-  };
-};
-
-export const setStartDateFilter = startDate => {
-  return {
-    type: SET_START_DATE_FILTER,
-    payload: { startDate }
+    type: SET_DATE_FILTER,
+    payload: { startDate, endDate }
   };
 };
 

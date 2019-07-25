@@ -14,12 +14,14 @@ function Entries(props) {
 }
 
 const mapStateToProps = state => ({
-  journal: state.user.journal.sort((a, b) => {
-    if (state.user.filters.sortBy === 'newestFirst')
-      return a.date > b.date ? -1 : 1;
-    if (state.user.filters.sortBy === 'oldestFirst')
-      return a.date < b.date ? -1 : 1;
-  })
+  journal: state.user.journal
+    .filter(entry => entry)
+    .sort((a, b) => {
+      if (state.user.filters.sortBy === 'newestFirst')
+        return a.date > b.date ? -1 : 1;
+      if (state.user.filters.sortBy === 'oldestFirst')
+        return a.date < b.date ? -1 : 1;
+    })
 });
 
 export default connect(mapStateToProps)(Entries);

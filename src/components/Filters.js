@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Option } from './AntFields';
 import { Button, DatePicker, Form, Input, Select } from 'antd';
@@ -8,96 +8,137 @@ import {
   setSortOrder,
   setTextFilter
 } from '../redux/actions/filters';
+import { defaultState } from '../redux/reducers/filters';
 
-function Filters(props) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [endOpen, setEndOpen] = useState(false);
-  const [text, setText] = useState('');
+class Filters extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...defaultState,
+      isOpen: false
+    };
+  }
 
-  const handleEndDisabled = endDate => {
+  applyFilters = (startDate, endDate, sortOrder, text) => {
+    const { setDateFilter, setSortOrder, setTextFilter } = this.props;
+    setDateFilter(startDate, endDate);
+    setSortOrder(sortOrder);
+    setTextFilter(text);
+  };
+
+  handleDisabledEndDate = endDate => {
+    const { startDate } = this.state.date;
     if (!endDate || !startDate) {
       return false;
     }
     return endDate < startDate;
   };
 
-  const handleEndOpenChange = open => {
-    setEndOpen(open);
-  };
-
-  const handleStartDisabled = startDate => {
+  handleDisabledStartDate = startDate => {
+    const { endDate } = this.state.date;
     if (!startDate || !endDate) {
       return false;
     }
     return startDate < endDate;
   };
 
-  const handleStartOpenChange = open => {
-    if (!open) {
-      setEndOpen(true);
+  handleOpenChangeEndDate = isOpen => {
+    this.setState({ isOpen });
+  };
+
+  handleOpenChangeStartDate = isOpen => {
+    if (!isOpen) {
+      this.setState({ isOpen: true });
     }
   };
 
-  const { setDateFilter, setSortOrder, setTextFilter } = props;
+  resetFilters = () => {
+    const { setDateFilter, setSortOrder, setTextFilter } = this.props;
+    setDateFilter(null, null);
+    setSortOrder('newestFirst');
+    setTextFilter('');
+  };
 
-  return (
-    <div>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Input
-          onChange={event => setText(event.target.value)}
-          placeholder="Search.."
-        />
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Select
-          defaultValue={'newestFirst'}
-          onChange={value => {
-            setSortOrder(value);
-          }}
-        >
-          <Option value={'newestFirst'}>Newest First</Option>
-          <Option value={'oldestFirst'}>Oldest First</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <DatePicker
-          disabledDate={handleStartDisabled}
-          format="MMM D, YYYY"
-          onChange={date => {
-            setStartDate(date && date.startOf('day').valueOf());
-          }}
-          onOpenChange={handleStartOpenChange}
-          placeholder="Start"
-          value={startDate && moment(startDate)}
-        />
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <DatePicker
-          disabledDate={handleEndDisabled}
-          format="MMM D, YYYY"
-          onChange={date => {
-            setEndDate(date && date.startOf('day').valueOf());
-          }}
-          onOpenChange={handleEndOpenChange}
-          open={endOpen}
-          placeholder="End"
-          value={endDate && moment(endDate)}
-        />
-      </Form.Item>
-      <Form.Item>
-        <Button
-          onClick={() => {
-            setDateFilter(startDate, endDate);
-            setTextFilter(text);
-          }}
-          type="primary"
-        >
-          Apply Filters
-        </Button>
-      </Form.Item>
-    </div>
-  );
+  render() {
+    const { date, isOpen, sortOrder, text } = this.state;
+    const { startDate, endDate } = date;
+
+    return (
+      <div>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Input
+            onChange={event => this.setState({ text: event.target.value })}
+            placeholder="Search.."
+            value={text}
+          />
+        </Form.Item>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Select
+            onChange={value => this.setState({ sortOrder: value })}
+            value={sortOrder}
+          >
+            <Option value={'newestFirst'}>Newest First</Option>
+            <Option value={'oldestFirst'}>Oldest First</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <DatePicker
+            disabledDate={this.handleDisabledStartDate}
+            format="MMM D, YYYY"
+            onChange={date =>
+              this.setState({
+                date: {
+                  startDate: date && date.startOf('day').valueOf(),
+                  endDate
+                }
+              })
+            }
+            onOpenChange={this.handleOpenChangeStartDate}
+            placeholder="Start"
+            value={startDate && moment(startDate)}
+          />
+        </Form.Item>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <DatePicker
+            disabledDate={this.handleDisabledEndDate}
+            format="MMM D, YYYY"
+            onChange={date =>
+              this.setState({
+                date: {
+                  startDate,
+                  endDate: date && date.startOf('day').valueOf()
+                }
+              })
+            }
+            onOpenChange={this.handleOpenChangeEndDate}
+            open={isOpen}
+            placeholder="End"
+            value={endDate && moment(endDate)}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            onClick={() => {
+              this.applyFilters(startDate, endDate, sortOrder, text);
+            }}
+            type="primary"
+          >
+            Apply Filters
+          </Button>
+          <Button
+            onClick={() => {
+              this.resetFilters();
+              this.setState(defaultState);
+            }}
+            style={{ marginLeft: 8 }}
+            type="primary"
+          >
+            Clear Filters
+          </Button>
+        </Form.Item>
+      </div>
+    );
+  }
 }
 
 const mapDispatchToProps = dispatch => ({

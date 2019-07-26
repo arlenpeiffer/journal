@@ -1,6 +1,6 @@
 import { SET_DATE_FILTER, SET_SORT_ORDER, SET_TEXT_FILTER } from '../actions';
 
-const defaultState = {
+export const defaultState = {
   date: {
     startDate: null,
     endDate: null

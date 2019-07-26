@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Option } from './AntFields';
 import { Button, DatePicker, Form, Select } from 'antd';
 import moment from 'moment';
 import {
@@ -48,8 +49,8 @@ function Filters(props) {
             setSortOrder(value);
           }}
         >
-          <Select.Option value={'newestFirst'}>Newest First</Select.Option>
-          <Select.Option value={'oldestFirst'}>Oldest First</Select.Option>
+          <Option value={'newestFirst'}>Newest First</Option>
+          <Option value={'oldestFirst'}>Oldest First</Option>
         </Select>
       </Form.Item>
       <Form.Item style={{ marginBottom: 0 }}>

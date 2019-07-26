@@ -1,11 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { Field, FieldArray, getIn } from 'formik';
-import { Select, TextArea, TimePIcker } from './AntFields';
-import { Button, Form, Icon, Popconfirm, Select as AntSelect } from 'antd';
+import { Option, Select, TextArea, TimePIcker } from './AntFields';
+import { Button, Form, Icon, Popconfirm } from 'antd';
 import MealItem from './MealItem';
-
-const Option = AntSelect.Option;
 
 function Meal(props) {
   const { index, meals, remove, setFieldValue } = props;

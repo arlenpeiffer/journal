@@ -57,6 +57,7 @@ export const CheckboxGroup = CreateAntField(AntCheckbox.Group);
 export const DatePicker = CreateAntField(AntDatePicker);
 export const Input = CreateAntField(AntInput);
 export const InputNumber = CreateAntField(AntInputNumber);
+export const Option = AntSelect.Option;
 export const RadioGroup = CreateAntField(AntRadio.Group);
 export const Select = CreateAntField(AntSelect);
 export const Switch = CreateAntField(AntSwitch);

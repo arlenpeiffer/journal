@@ -13,3 +13,10 @@ export const setSortOrder = sortOrder => {
     payload: { sortOrder }
   };
 };
+
+export const setTextFilter = text => {
+  return {
+    type: SET_TEXT_FILTER,
+    payload: { text }
+  };
+};

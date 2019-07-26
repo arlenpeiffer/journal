@@ -19,7 +19,37 @@ const mapStateToProps = state => ({
       const { startDate, endDate } = state.user.filters.date;
       const startDateMatch = startDate ? entry.date >= startDate : true;
       const endDateMatch = endDate ? entry.date <= endDate : true;
-      return startDateMatch && endDateMatch;
+      const { text } = state.user.filters;
+      const textMatch = text
+        ? entry.food.meals.some(meal =>
+            meal.items.some(item =>
+              item.name.toLowerCase().includes(text.toLowerCase())
+            )
+          ) ||
+          entry.food.meals.some(meal =>
+            meal.items.some(item =>
+              item.portion.toLowerCase().includes(text.toLowerCase())
+            )
+          ) ||
+          entry.food.meals.some(meal =>
+            meal.items.some(item =>
+              item.notes.toLowerCase().includes(text.toLowerCase())
+            )
+          ) ||
+          entry.food.meals.some(meal =>
+            meal.notes.toLowerCase().includes(text.toLowerCase())
+          ) ||
+          entry.movement.some(movement =>
+            movement.toLowerCase().includes(text.toLowerCase())
+          ) ||
+          entry.notes.toLowerCase().includes(text.toLowerCase()) ||
+          entry.pain.details.toLowerCase().includes(text.toLowerCase()) ||
+          entry.supplements.some(supplement =>
+            supplement.toLowerCase().includes(text.toLowerCase())
+          ) ||
+          entry.travel.location.toLowerCase().includes(text.toLowerCase())
+        : true;
+      return startDateMatch && endDateMatch && textMatch;
     })
     .sort((a, b) => {
       const { sortOrder } = state.user.filters;

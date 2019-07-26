@@ -23,6 +23,12 @@ export default (state = defaultState, action) => {
         ...state,
         sortOrder
       };
+    case SET_TEXT_FILTER:
+      const { text } = action.payload;
+      return {
+        ...state,
+        text
+      };
     default:
       return state;
   }

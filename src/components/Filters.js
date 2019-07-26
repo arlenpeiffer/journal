@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Option } from './AntFields';
-import { Button, DatePicker, Form, Select } from 'antd';
+import { Button, DatePicker, Form, Input, Select } from 'antd';
 import moment from 'moment';
 import {
   setDateFilter,
@@ -13,6 +13,7 @@ function Filters(props) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [endOpen, setEndOpen] = useState(false);
+  const [text, setText] = useState('');
 
   const handleEndDisabled = endDate => {
     if (!endDate || !startDate) {
@@ -42,6 +43,12 @@ function Filters(props) {
 
   return (
     <div>
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Input
+          onChange={event => setText(event.target.value)}
+          placeholder="Search.."
+        />
+      </Form.Item>
       <Form.Item style={{ marginBottom: 0 }}>
         <Select
           defaultValue={'newestFirst'}
@@ -82,6 +89,7 @@ function Filters(props) {
         <Button
           onClick={() => {
             setDateFilter(startDate, endDate);
+            setTextFilter(text);
           }}
           type="primary"
         >
@@ -95,7 +103,8 @@ function Filters(props) {
 const mapDispatchToProps = dispatch => ({
   setDateFilter: (startDate, endDate) =>
     dispatch(setDateFilter(startDate, endDate)),
-  setSortOrder: sortOrder => dispatch(setSortOrder(sortOrder))
+  setSortOrder: sortOrder => dispatch(setSortOrder(sortOrder)),
+  setTextFilter: text => dispatch(setTextFilter(text))
 });
 
 export default connect(

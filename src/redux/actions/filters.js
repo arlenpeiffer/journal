@@ -1,22 +1,23 @@
-import { SET_DATE_FILTER, SET_SORT_ORDER, SET_TEXT_FILTER } from '../actions';
+import { RESET_FILTERS, SET_FILTERS } from '../actions';
 
-export const setDateFilter = (startDate, endDate) => {
+export const resetFilters = () => {
   return {
-    type: SET_DATE_FILTER,
-    payload: { startDate, endDate }
+    type: RESET_FILTERS
   };
 };
 
-export const setSortOrder = sortOrder => {
+export const setFilters = ({ endDate, sortOrder, startDate, text }) => {
   return {
-    type: SET_SORT_ORDER,
-    payload: { sortOrder }
-  };
-};
-
-export const setTextFilter = text => {
-  return {
-    type: SET_TEXT_FILTER,
-    payload: { text }
+    type: SET_FILTERS,
+    payload: {
+      filters: {
+        date: {
+          startDate,
+          endDate
+        },
+        sortOrder,
+        text
+      }
+    }
   };
 };

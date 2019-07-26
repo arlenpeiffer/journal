@@ -3,11 +3,7 @@ import { connect } from 'react-redux';
 import { Option } from './AntFields';
 import { Button, DatePicker, Form, Input, Select } from 'antd';
 import moment from 'moment';
-import {
-  setDateFilter,
-  setSortOrder,
-  setTextFilter
-} from '../redux/actions/filters';
+import { resetFilters, setFilters } from '../redux/actions/filters';
 import { defaultState } from '../redux/reducers/filters';
 
 class Filters extends React.Component {
@@ -18,13 +14,6 @@ class Filters extends React.Component {
       isOpen: false
     };
   }
-
-  applyFilters = (startDate, endDate, sortOrder, text) => {
-    const { setDateFilter, setSortOrder, setTextFilter } = this.props;
-    setDateFilter(startDate, endDate);
-    setSortOrder(sortOrder);
-    setTextFilter(text);
-  };
 
   handleDisabledEndDate = endDate => {
     const { startDate } = this.state.date;
@@ -52,16 +41,10 @@ class Filters extends React.Component {
     }
   };
 
-  resetFilters = () => {
-    const { setDateFilter, setSortOrder, setTextFilter } = this.props;
-    setDateFilter(null, null);
-    setSortOrder('newestFirst');
-    setTextFilter('');
-  };
-
   render() {
     const { date, isOpen, sortOrder, text } = this.state;
     const { startDate, endDate } = date;
+    const { resetFilters, setFilters } = this.props;
 
     return (
       <div>
@@ -119,7 +102,7 @@ class Filters extends React.Component {
         <Form.Item>
           <Button
             onClick={() => {
-              this.applyFilters(startDate, endDate, sortOrder, text);
+              setFilters({ endDate, sortOrder, startDate, text });
             }}
             type="primary"
           >
@@ -127,7 +110,7 @@ class Filters extends React.Component {
           </Button>
           <Button
             onClick={() => {
-              this.resetFilters();
+              resetFilters();
               this.setState(defaultState);
             }}
             style={{ marginLeft: 8 }}
@@ -142,10 +125,8 @@ class Filters extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setDateFilter: (startDate, endDate) =>
-    dispatch(setDateFilter(startDate, endDate)),
-  setSortOrder: sortOrder => dispatch(setSortOrder(sortOrder)),
-  setTextFilter: text => dispatch(setTextFilter(text))
+  resetFilters: () => dispatch(resetFilters()),
+  setFilters: filters => dispatch(setFilters(filters))
 });
 
 export default connect(

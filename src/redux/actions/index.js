@@ -13,6 +13,5 @@ export const ADD_SUPPLEMENT = 'ADD_SUPPLEMENT';
 export const REMOVE_SUPPLEMENT = 'REMOVE_SUPPLEMENT';
 
 // filters
-export const SET_DATE_FILTER = 'SET_DATE_FILTER';
-export const SET_SORT_ORDER = 'SET_SORT_ORDER';
-export const SET_TEXT_FILTER = 'SET_TEXT_FILTER';
+export const RESET_FILTERS = 'RESET_FILTERS';
+export const SET_FILTERS = 'SET_FILTERS';

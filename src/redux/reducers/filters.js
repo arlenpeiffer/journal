@@ -1,4 +1,4 @@
-import { SET_DATE_FILTER, SET_SORT_ORDER, SET_TEXT_FILTER } from '../actions';
+import { RESET_FILTERS, SET_FILTERS } from '../actions';
 
 export const defaultState = {
   date: {
@@ -11,24 +11,11 @@ export const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case SET_DATE_FILTER:
-      const { startDate, endDate } = action.payload;
-      return {
-        ...state,
-        date: { startDate, endDate }
-      };
-    case SET_SORT_ORDER:
-      const { sortOrder } = action.payload;
-      return {
-        ...state,
-        sortOrder
-      };
-    case SET_TEXT_FILTER:
-      const { text } = action.payload;
-      return {
-        ...state,
-        text
-      };
+    case RESET_FILTERS:
+      return { ...defaultState };
+    case SET_FILTERS:
+      const { filters } = action.payload;
+      return { ...filters };
     default:
       return state;
   }

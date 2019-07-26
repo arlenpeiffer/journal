@@ -1,14 +1,12 @@
-import {
-  SET_DATE_FILTER,
-  SORT_BY_NEWEST_FIRST,
-  SORT_BY_OLDEST_FIRST
-} from '../actions';
+import { SET_DATE_FILTER, SET_SORT_ORDER, SET_TEXT_FILTER } from '../actions';
 
 const defaultState = {
-  sortBy: 'newestFirst',
-  text: '',
-  startDate: null,
-  endDate: null
+  date: {
+    startDate: null,
+    endDate: null
+  },
+  sortOrder: 'newestFirst',
+  text: ''
 };
 
 export default (state = defaultState, action) => {
@@ -17,18 +15,13 @@ export default (state = defaultState, action) => {
       const { startDate, endDate } = action.payload;
       return {
         ...state,
-        startDate,
-        endDate
+        date: { startDate, endDate }
       };
-    case SORT_BY_NEWEST_FIRST:
+    case SET_SORT_ORDER:
+      const { sortOrder } = action.payload;
       return {
         ...state,
-        sortBy: 'newestFirst'
-      };
-    case SORT_BY_OLDEST_FIRST:
-      return {
-        ...state,
-        sortBy: 'oldestFirst'
+        sortOrder
       };
     default:
       return state;

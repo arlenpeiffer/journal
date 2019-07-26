@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import {
-  setDateFilter,
-  sortByNewestFirst,
-  sortByOldestFirst
-} from '../redux/actions/filters';
 import { Button, DatePicker, Form, Select } from 'antd';
 import moment from 'moment';
+import {
+  setDateFilter,
+  setSortOrder,
+  setTextFilter
+} from '../redux/actions/filters';
 
 function Filters(props) {
   const [startDate, setStartDate] = useState(null);
@@ -37,20 +37,19 @@ function Filters(props) {
     }
   };
 
-  const { setDateFilter, sortByNewestFirst, sortByOldestFirst } = props;
+  const { setDateFilter, setSortOrder, setTextFilter } = props;
 
   return (
     <div>
       <Form.Item style={{ marginBottom: 0 }}>
         <Select
-          defaultValue={0}
+          defaultValue={'newestFirst'}
           onChange={value => {
-            value === 0 && sortByNewestFirst();
-            value === 1 && sortByOldestFirst();
+            setSortOrder(value);
           }}
         >
-          <Select.Option value={0}>Newest First</Select.Option>
-          <Select.Option value={1}>Oldest First</Select.Option>
+          <Select.Option value={'newestFirst'}>Newest First</Select.Option>
+          <Select.Option value={'oldestFirst'}>Oldest First</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item style={{ marginBottom: 0 }}>
@@ -95,8 +94,7 @@ function Filters(props) {
 const mapDispatchToProps = dispatch => ({
   setDateFilter: (startDate, endDate) =>
     dispatch(setDateFilter(startDate, endDate)),
-  sortByNewestFirst: () => dispatch(sortByNewestFirst()),
-  sortByOldestFirst: () => dispatch(sortByOldestFirst())
+  setSortOrder: sortOrder => dispatch(setSortOrder(sortOrder))
 });
 
 export default connect(

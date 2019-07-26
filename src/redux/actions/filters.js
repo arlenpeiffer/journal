@@ -1,8 +1,4 @@
-import {
-  SET_DATE_FILTER,
-  SORT_BY_NEWEST_FIRST,
-  SORT_BY_OLDEST_FIRST
-} from '../actions';
+import { SET_DATE_FILTER, SET_SORT_ORDER, SET_TEXT_FILTER } from '../actions';
 
 export const setDateFilter = (startDate, endDate) => {
   return {
@@ -11,14 +7,9 @@ export const setDateFilter = (startDate, endDate) => {
   };
 };
 
-export const sortByNewestFirst = () => {
+export const setSortOrder = sortOrder => {
   return {
-    type: SORT_BY_NEWEST_FIRST
-  };
-};
-
-export const sortByOldestFirst = () => {
-  return {
-    type: SORT_BY_OLDEST_FIRST
+    type: SET_SORT_ORDER,
+    payload: { sortOrder }
   };
 };

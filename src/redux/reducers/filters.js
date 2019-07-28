@@ -1,6 +1,6 @@
 import { RESET_FILTERS, SET_FILTERS } from '../actions';
 
-export const defaultState = {
+const defaultState = {
   date: {
     startDate: null,
     endDate: null

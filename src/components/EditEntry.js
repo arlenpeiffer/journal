@@ -28,7 +28,7 @@ function EditEntry(props) {
 
   const handleSubmitEntry = editedEntry => {
     const { id } = entry;
-    editEntry(id, editedEntry);
+    editEntry(editedEntry, id);
     handleLogFood(editedEntry);
     handleLogMovement(editedEntry);
     history.push('/');
@@ -52,7 +52,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   addFood: food => dispatch(addFood(food)),
   addMovement: movement => dispatch(addMovement(movement)),
-  editEntry: (id, editedEntry) => dispatch(editEntry(id, editedEntry))
+  editEntry: (editedEntry, id) => dispatch(editEntry(editedEntry, id))
 });
 
 export default connect(

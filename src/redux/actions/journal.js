@@ -27,10 +27,10 @@ export const addEntry = ({
   };
 };
 
-export const editEntry = (id, editedEntry) => {
+export const editEntry = (editedEntry, id) => {
   return {
     type: EDIT_ENTRY,
-    payload: { id, editedEntry }
+    payload: { editedEntry, id }
   };
 };
 

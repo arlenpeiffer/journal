@@ -1,12 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
-import { Input, InputNumber, RadioGroup, Select } from './AntFields';
-import { Divider, Icon, Radio, Select as AntSelect } from 'antd';
+import { Input, InputNumber, Option, RadioGroup, Select } from './AntFields';
+import { Divider, Icon, Radio } from 'antd';
 import { addNsaid } from '../redux/actions/logs';
 import AddItem from './AddItem';
-
-const Option = AntSelect.Option;
 
 function Pain(props) {
   const { addNsaid, logs, pain, setFieldValue } = props;

@@ -1,23 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import Entry from './Entry';
+import Entries from './Entries';
+import Filters from './Filters';
 
-function ViewEntries(props) {
+function ViewEntries() {
   return (
     <div>
       ViewEntries.js
       <div>
         <button onClick={() => localStorage.clear()}>Clear</button>
       </div>
-      {props.journal.map(entry => (
-        <Entry key={entry.id} entry={entry} />
-      ))}
+      <Filters />
+      <Entries />
     </div>
   );
 }
 
-const mapStateToProps = state => ({
-  journal: state.user.journal
-});
-
-export default connect(mapStateToProps)(ViewEntries);
+export default ViewEntries;

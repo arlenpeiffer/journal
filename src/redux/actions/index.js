@@ -11,3 +11,7 @@ export const ADD_MOVEMENT = 'ADD_MOVEMENT';
 export const ADD_NSAID = 'ADD_NSAID';
 export const ADD_SUPPLEMENT = 'ADD_SUPPLEMENT';
 export const REMOVE_SUPPLEMENT = 'REMOVE_SUPPLEMENT';
+
+// filters
+export const RESET_FILTERS = 'RESET_FILTERS';
+export const SET_FILTERS = 'SET_FILTERS';

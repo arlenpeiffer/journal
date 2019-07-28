@@ -1,18 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button, Form, Popconfirm } from 'antd';
+import { removeEntry } from '../redux/actions/journal';
 import moment from 'moment';
 
 function Entry(props) {
-  const {
-    date,
-    food,
-    id,
-    movement,
-    notes,
-    pain,
-    travel,
-    supplements
-  } = props.entry;
+  const { entry, removeEntry } = props;
+  const { date, food, id, movement, notes, pain, travel, supplements } = entry;
+
   return (
     <div>
       <p>
@@ -41,11 +37,30 @@ function Entry(props) {
           ? food.meals.map(meal => `${meal.type} ${meal.time} ${meal.notes}, `)
           : 'none'}
       </p>
-      <Link to={`/edit/${id}`}>
-        <button>Edit</button>
-      </Link>
+      <Form.Item>
+        <Link to={`/edit/${id}`}>
+          <Button type="primary">Edit</Button>
+        </Link>
+        <Popconfirm
+          cancelText="No"
+          okText="Yes"
+          onConfirm={() => removeEntry(id)}
+          title={'Are you sure you want to delete this entry?'}
+        >
+          <Button style={{ marginLeft: 8 }} type="primary">
+            Remove
+          </Button>
+        </Popconfirm>
+      </Form.Item>
     </div>
   );
 }
 
-export default Entry;
+const mapDispatchToProps = dispatch => ({
+  removeEntry: id => dispatch(removeEntry(id))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Entry);

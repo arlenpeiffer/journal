@@ -17,7 +17,10 @@ const newEntry = {
     .startOf('day')
     .valueOf(),
   food: {
-    diet: {},
+    diet: {
+      type: 'Low-Starch',
+      notes: ''
+    },
     meals: []
   },
   movement: [],

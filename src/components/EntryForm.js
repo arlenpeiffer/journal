@@ -9,6 +9,7 @@ import Food from './Food';
 import Movement from './Movement';
 import Notes from './Notes';
 import Pain from './Pain';
+import Sleep from './Sleep';
 import Supplements from './Supplements';
 import Travel from './Travel';
 
@@ -31,6 +32,11 @@ const newEntry = {
       timesTaken: 0,
       type: undefined
     }
+  },
+  sleep: {
+    amount: null,
+    rating: 0,
+    notes: ''
   },
   supplements: [],
   travel: {
@@ -91,6 +97,11 @@ const validationSchema = Yup.object().shape({
       })
     })
   }),
+  sleep: Yup.object().shape({
+    amount: Yup.number().typeError('Sleep amount is required.'),
+    rating: Yup.number().min(1, 'Sleep rating is required.'),
+    notes: Yup.string()
+  }),
   supplements: Yup.array(),
   travel: Yup.object().shape({
     isTraveling: Yup.boolean(),
@@ -133,6 +144,11 @@ function EntryForm(props) {
               setFieldValue={setFieldValue}
             />
             <Pain pain={values.pain} setFieldValue={setFieldValue} />
+            <Sleep
+              date={values.date}
+              sleep={values.sleep}
+              setFieldValue={setFieldValue}
+            />
             <Travel setFieldValue={setFieldValue} travel={values.travel} />
             <Notes />
             <Button onClick={handleSubmit} type="primary">

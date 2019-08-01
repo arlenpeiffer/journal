@@ -7,6 +7,7 @@ import {
   Input as AntInput,
   InputNumber as AntInputNumber,
   Radio as AntRadio,
+  Rate as AntRate,
   Select as AntSelect,
   Switch as AntSwitch,
   TimePicker as AntTimePicker
@@ -59,7 +60,8 @@ export const Input = CreateAntField(AntInput);
 export const InputNumber = CreateAntField(AntInputNumber);
 export const Option = AntSelect.Option;
 export const RadioGroup = CreateAntField(AntRadio.Group);
+export const Rate = CreateAntField(AntRate);
 export const Select = CreateAntField(AntSelect);
 export const Switch = CreateAntField(AntSwitch);
 export const TextArea = CreateAntField(AntInput.TextArea);
-export const TimePIcker = CreateAntField(AntTimePicker);
+export const TimePicker = CreateAntField(AntTimePicker);

@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Field, FieldArray, getIn } from 'formik';
-import { Option, Select, TextArea, TimePIcker } from './AntFields';
+import { Option, Select, TextArea, TimePicker } from './AntFields';
 import { Button, Form, Icon, Popconfirm } from 'antd';
 import MealItem from './MealItem';
 
@@ -23,7 +23,7 @@ function Meal(props) {
       </Field>
       <Field
         allowClear={false}
-        component={TimePIcker}
+        component={TimePicker}
         format="h:mm A"
         hourStep={1}
         minuteStep={5}

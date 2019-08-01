@@ -8,6 +8,7 @@ export const addEntry = ({
   movement,
   notes,
   pain,
+  sleep,
   supplements,
   travel
 }) => {
@@ -22,6 +23,7 @@ export const addEntry = ({
         movement,
         notes,
         pain,
+        sleep,
         supplements,
         travel
       }

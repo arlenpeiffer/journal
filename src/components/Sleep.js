@@ -17,6 +17,7 @@ function Sleep(props) {
       <Field
         allowClear={false}
         component={TimePicker}
+        defaultOpenValue={moment(date)}
         disabledHours={() => [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}
         format={getTimeFormat(sleep.amount)}
         hideDisabledOptions={true}
@@ -27,7 +28,7 @@ function Sleep(props) {
         onChange={time => {
           setFieldValue('sleep.amount', getTimeSlept(time));
         }}
-        value={moment(date + sleep.amount)}
+        value={sleep.amount !== null && moment(date + sleep.amount)}
       />
       <Field
         allowClear={true}

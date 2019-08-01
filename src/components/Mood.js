@@ -2,6 +2,29 @@ import React from 'react';
 import { Field } from 'formik';
 import { CheckboxGroup } from './AntFields';
 import { Checkbox, Col, Row } from 'antd';
+import capitalize from 'lodash.capitalize';
+
+const moods = [
+  'achy',
+  'anxious',
+  'calm',
+  'confused',
+  'energetic',
+  'exhuasted',
+  'fatigued',
+  'frustrated',
+  'happy',
+  'heavy',
+  'hopeful',
+  'irritable',
+  'light',
+  'nauseous',
+  'relaxed',
+  'rested',
+  'sad',
+  'stuck',
+  'uncomfortable'
+];
 
 function Mood(props) {
   const { setFieldValue } = props;
@@ -17,24 +40,11 @@ function Mood(props) {
         }}
       >
         <Row>
-          <Col span={8}>
-            <Checkbox value="achy">Achy</Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="anxious">Anxious</Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="fatigued">Fatigued</Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="happy">Happy</Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="nauseous">Nauseous</Checkbox>
-          </Col>
-          <Col span={8}>
-            <Checkbox value="sad">Sad</Checkbox>
-          </Col>
+          {moods.map(mood => (
+            <Col span={8}>
+              <Checkbox value={mood}>{capitalize(mood)}</Checkbox>
+            </Col>
+          ))}
         </Row>
       </Field>
     </div>

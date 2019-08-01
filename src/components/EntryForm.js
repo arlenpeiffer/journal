@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import Date from './Date';
 import Food from './Food';
+import Mood from './Mood';
 import Movement from './Movement';
 import Notes from './Notes';
 import Pain from './Pain';
@@ -20,6 +21,7 @@ const newEntry = {
     diet: {},
     meals: []
   },
+  mood: [],
   movement: [],
   notes: '',
   pain: {
@@ -58,6 +60,7 @@ const validationSchema = Yup.object().shape({
       })
     )
   }),
+  mood: Yup.array(),
   movement: Yup.array().of(
     Yup.object().shape({
       type: Yup.string().required('Movement type is required.'),
@@ -128,6 +131,7 @@ function EntryForm(props) {
               setFieldValue={setFieldValue}
               supplements={values.supplements}
             />
+            <Mood setFieldValue={setFieldValue} />
             <Movement
               movement={values.movement}
               setFieldValue={setFieldValue}

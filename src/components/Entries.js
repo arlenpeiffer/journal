@@ -39,6 +39,9 @@ const mapStateToProps = state => ({
           entry.food.meals.some(meal =>
             meal.notes.toLowerCase().includes(text.toLowerCase())
           ) ||
+          entry.mood.some(mood =>
+            mood.toLowerCase().includes(text.toLowerCase())
+          ) ||
           entry.movement.some(movement =>
             movement.toLowerCase().includes(text.toLowerCase())
           ) ||

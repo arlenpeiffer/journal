@@ -45,16 +45,16 @@ function Food(props) {
                   />
                 ))}
                 <Button
+                  ghost={true}
                   onClick={() =>
                     push({
                       type: undefined,
-                      time: moment()
-                        .startOf('hour')
-                        .valueOf(),
+                      time: moment().valueOf(),
                       items: [],
                       notes: ''
                     })
                   }
+                  type="primary"
                 >
                   <Icon type="plus" />
                   Add Meal

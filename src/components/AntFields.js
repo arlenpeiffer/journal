@@ -64,4 +64,4 @@ export const Rate = CreateAntField(AntRate);
 export const Select = CreateAntField(AntSelect);
 export const Switch = CreateAntField(AntSwitch);
 export const TextArea = CreateAntField(AntInput.TextArea);
-export const TimePIcker = CreateAntField(AntTimePicker);
+export const TimePicker = CreateAntField(AntTimePicker);

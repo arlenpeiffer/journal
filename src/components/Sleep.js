@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
-import { Input, Rate, TimePIcker } from './AntFields';
+import { Input, Rate, TimePicker } from './AntFields';
 import moment from 'moment';
 
 function Sleep(props) {
@@ -16,7 +16,7 @@ function Sleep(props) {
     <div className="sleep">
       <Field
         allowClear={false}
-        component={TimePIcker}
+        component={TimePicker}
         disabledHours={() => [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}
         format={getTimeFormat(sleep.amount)}
         hideDisabledOptions={true}

@@ -94,6 +94,7 @@ function Meal(props) {
                       push({
                         name: '',
                         portion: '',
+                        ingredients: '',
                         notes: ''
                       })
                     }

@@ -54,6 +54,7 @@ const validationSchema = Yup.object().shape({
           Yup.object().shape({
             name: Yup.string().required('Meal item name is required.'),
             portion: Yup.string().required('Meal item portion is required.'),
+            ingredients: Yup.string(),
             notes: Yup.string()
           })
         ),

@@ -65,6 +65,13 @@ function MealItem(props) {
         <Field
           autoComplete="off"
           component={Input}
+          name={`food.meals[${index}].items[${itemIndex}].ingredients`}
+          placeholder="Ingredients"
+          style={{ marginBottom: 0 }}
+        />
+        <Field
+          autoComplete="off"
+          component={Input}
           name={`food.meals[${index}].items[${itemIndex}].notes`}
           placeholder="Notes"
           style={{ marginBottom: 0 }}

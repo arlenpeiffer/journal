@@ -45,7 +45,10 @@ const newEntry = {
 const validationSchema = Yup.object().shape({
   date: Yup.number().required(),
   food: Yup.object().shape({
-    diet: Yup.object(),
+    diet: Yup.object().shape({
+      type: Yup.string(),
+      notes: Yup.string()
+    }),
     meals: Yup.array().of(
       Yup.object().shape({
         type: Yup.number().required('Meal type is required.'),

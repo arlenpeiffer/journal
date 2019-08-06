@@ -9,8 +9,9 @@ function Sleep(props) {
   const getTimeFormat = timeSlept =>
     timeSlept < 3600000 ? '0 [hr] m [min]' : 'h [hr] m [min]';
 
-  const getTimeSlept = time =>
-    moment.duration(moment(time).diff(date)).valueOf();
+  const getTimeSlept = time => {
+    return moment(time).diff(moment(time).startOf('day'));
+  };
 
   return (
     <div className="sleep">
@@ -22,13 +23,14 @@ function Sleep(props) {
         format={getTimeFormat(sleep.amount)}
         hideDisabledOptions={true}
         hourStep={1}
+        inputReadOnly={true}
         label="Sleep"
         minuteStep={15}
         name="sleep.amount"
         onChange={time => {
           setFieldValue('sleep.amount', getTimeSlept(time));
         }}
-        value={sleep.amount !== null && moment(date + sleep.amount)}
+        value={sleep.amount === null ? null : moment(date + sleep.amount)}
       />
       <Field
         allowClear={true}

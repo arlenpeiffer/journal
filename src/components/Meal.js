@@ -70,14 +70,21 @@ function Meal(props) {
           use12Hours={true}
           value={moment(meals[index].time)}
         />
-        <Form.Item label="Items" style={{ marginBottom: 0 }}>
-          <FieldArray
-            name={`food.meals[${index}].items`}
-            render={arrayHelpers => {
-              const { push, remove } = arrayHelpers;
-              const items = getIn(arrayHelpers.form.values, arrayHelpers.name);
-              return (
-                <div style={{ marginBottom: 24 }}>
+        <FieldArray
+          name={`food.meals[${index}].items`}
+          render={arrayHelpers => {
+            const { push, remove } = arrayHelpers;
+            const error = getIn(arrayHelpers.form.errors, arrayHelpers.name);
+            const items = getIn(arrayHelpers.form.values, arrayHelpers.name);
+            const touched = getIn(arrayHelpers.form.touched, arrayHelpers.name);
+            const typeError = typeof error !== 'string';
+            return (
+              <Form.Item
+                help={error && touched && !typeError ? error : undefined}
+                label="Items"
+                validateStatus={error && touched && !typeError ? 'warning' : ''}
+              >
+                <div>
                   {items.map((item, itemIndex) => (
                     <MealItem
                       index={index}
@@ -104,10 +111,10 @@ function Meal(props) {
                     Add Item
                   </Button>
                 </div>
-              );
-            }}
-          />
-        </Form.Item>
+              </Form.Item>
+            );
+          }}
+        />
         <Field
           component={TextArea}
           label="Notes"

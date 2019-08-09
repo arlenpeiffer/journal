@@ -22,7 +22,11 @@ function Movement(props) {
                     autoComplete="off"
                     component={AutoComplete}
                     dataSource={logs.movement}
-                    filterOption={true}
+                    filterOption={(inputValue, option) => {
+                      const movement = option.key.toLowerCase();
+                      const value = inputValue.toLowerCase();
+                      return movement.startsWith(value);
+                    }}
                     name={`movement[${index}].type`}
                     onBlur={() => {
                       setIsOpen(false);

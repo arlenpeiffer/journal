@@ -30,7 +30,11 @@ function MealItem(props) {
           autoComplete="off"
           component={AutoComplete}
           dataSource={logs.food}
-          filterOption={true}
+          filterOption={(inputValue, option) => {
+            const food = option.key.toLowerCase();
+            const value = inputValue.toLowerCase();
+            return food.startsWith(value);
+          }}
           name={`food.meals[${index}].items[${itemIndex}].name`}
           onBlur={() => {
             setIsOpen(false);

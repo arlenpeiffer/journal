@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { FieldArray, getIn } from 'formik';
+import { Field, FieldArray, getIn } from 'formik';
+import { Input, Option, Select } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import Meal from './Meal';
 
@@ -8,7 +9,25 @@ function Food(props) {
   const { setFieldValue } = props;
   return (
     <div id="food">
-      <Form.Item label="Food">
+      <Form.Item label="Diet">
+        <Field
+          component={Select}
+          onSelect={type => setFieldValue(`food.diet.type`, type)}
+          name="food.diet.type"
+          style={{ marginBottom: 0 }}
+        >
+          <Option value="Low-Starch">Low-Starch</Option>
+          <Option value="Elimination">Elimination</Option>
+          <Option value="None">None</Option>
+        </Field>
+        <Field
+          component={Input}
+          name="food.diet.notes"
+          placeholder="Notes"
+          style={{ marginBottom: 0 }}
+        />
+      </Form.Item>
+      <Form.Item label="Meals">
         <FieldArray
           name="food.meals"
           render={arrayHelpers => {
@@ -26,16 +45,16 @@ function Food(props) {
                   />
                 ))}
                 <Button
+                  ghost={true}
                   onClick={() =>
                     push({
                       type: undefined,
-                      time: moment()
-                        .startOf('hour')
-                        .valueOf(),
+                      time: moment().valueOf(),
                       items: [],
                       notes: ''
                     })
                   }
+                  type="primary"
                 >
                   <Icon type="plus" />
                   Add Meal

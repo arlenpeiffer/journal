@@ -3,6 +3,8 @@ import { Formik } from 'formik';
 import { Button, Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
+import reduce from 'lodash.reduce';
+import trim from 'lodash.trim';
 
 import Date from './Date';
 import Food from './Food';
@@ -123,10 +125,29 @@ const validationSchema = Yup.object().shape({
 
 function EntryForm(props) {
   const { entry, handleSubmitEntry } = props;
+
+  const trimValues = (object, container) =>
+    reduce(
+      object,
+      function(acc, value, key) {
+        typeof value === 'object'
+          ? Array.isArray(value)
+            ? value.some(item => typeof item === 'object')
+              ? (acc[key] = trimValues(value, []))
+              : (acc[key] = value)
+            : (acc[key] = trimValues(value, {}))
+          : typeof value === 'string'
+          ? (acc[key] = trim(value))
+          : (acc[key] = value);
+        return acc;
+      },
+      container
+    );
+
   return (
     <Formik
       initialValues={entry ? entry : newEntry}
-      onSubmit={values => handleSubmitEntry(values)}
+      onSubmit={values => handleSubmitEntry(trimValues(values, {}))}
       validationSchema={validationSchema}
       render={({
         handleSubmit,

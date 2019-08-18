@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button, Form, Popconfirm } from 'antd';
-import { removeEntry } from '../redux/actions/journal';
+import { startRemoveEntry } from '../redux/actions/journal';
 import moment from 'moment';
 
 function Entry(props) {
-  const { entry, removeEntry } = props;
+  const { entry, startRemoveEntry } = props;
   const { date, food, id, movement, notes, pain, travel, supplements } = entry;
 
   return (
@@ -44,7 +44,7 @@ function Entry(props) {
         <Popconfirm
           cancelText="No"
           okText="Yes"
-          onConfirm={() => removeEntry(id)}
+          onConfirm={() => startRemoveEntry(id)}
           title={'Are you sure you want to delete this entry?'}
         >
           <Button style={{ marginLeft: 8 }} type="primary">
@@ -57,7 +57,7 @@ function Entry(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  removeEntry: id => dispatch(removeEntry(id))
+  startRemoveEntry: id => dispatch(startRemoveEntry(id))
 });
 
 export default connect(

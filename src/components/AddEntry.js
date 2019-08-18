@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import EntryForm from './EntryForm';
-import { addEntry } from '../redux/actions/journal';
+import { startAddEntry } from '../redux/actions/journal';
 import { addFood, addMovement } from '../redux/actions/logs';
 
 function AddEntry(props) {
-  const { addEntry, addFood, addMovement, history, logs } = props;
+  const { addFood, addMovement, history, logs, startAddEntry } = props;
 
   const handleLogFood = entry => {
     entry.food.meals.map(meal =>
@@ -27,7 +27,7 @@ function AddEntry(props) {
   };
 
   const handleSubmitEntry = entry => {
-    addEntry(entry);
+    startAddEntry(entry);
     handleLogFood(entry);
     handleLogMovement(entry);
     history.push('/');
@@ -46,7 +46,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addEntry: entry => dispatch(addEntry(entry)),
+  startAddEntry: entry => dispatch(startAddEntry(entry)),
   addFood: food => dispatch(addFood(food)),
   addMovement: movement => dispatch(addMovement(movement))
 });

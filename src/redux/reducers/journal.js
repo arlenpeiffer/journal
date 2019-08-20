@@ -1,4 +1,4 @@
-import { ADD_ENTRY, EDIT_ENTRY, REMOVE_ENTRY } from '../actions';
+import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
 
 const defaultState = [];
 
@@ -16,6 +16,9 @@ export default (state = defaultState, action) => {
           return entry;
         }
       });
+    case GET_JOURNAL:
+      const { journal } = action.payload;
+      return journal;
     case REMOVE_ENTRY:
       return state.filter(entry => entry.id !== action.payload.id);
     default:

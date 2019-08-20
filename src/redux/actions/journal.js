@@ -1,4 +1,4 @@
-import { ADD_ENTRY, EDIT_ENTRY, REMOVE_ENTRY } from '../actions';
+import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
 import { database } from '../../firebase/firebase';
 
 export const addEntry = entry => {
@@ -16,8 +16,8 @@ export const startAddEntry = entry => {
       .then(ref => {
         dispatch(
           addEntry({
-            id: ref.key,
-            ...entry
+            ...entry,
+            id: ref.key
           })
         );
       });
@@ -41,6 +41,42 @@ export const startEditEntry = (editedEntry, id) => {
       })
       .then(() => {
         dispatch(editEntry(editedEntry, id));
+      });
+  };
+};
+
+export const getJournal = journal => {
+  return {
+    type: GET_JOURNAL,
+    payload: { journal }
+  };
+};
+
+export const startGetJournal = () => {
+  return dispatch => {
+    database
+      .ref('user/callie/journal/')
+      .once('value')
+      .then(snapshot => {
+        const journal = [];
+        snapshot.forEach(childSnapshot => {
+          journal.push({
+            date: childSnapshot.val().date,
+            food: {
+              diet: childSnapshot.val().food.diet,
+              meals: childSnapshot.val().food.meals || []
+            },
+            id: childSnapshot.key,
+            mood: childSnapshot.val().mood || [],
+            movement: childSnapshot.val().movement || [],
+            notes: childSnapshot.val().notes,
+            pain: childSnapshot.val().pain,
+            sleep: childSnapshot.val().sleep,
+            supplements: childSnapshot.val().supplements || [],
+            travel: childSnapshot.val().travel
+          });
+        });
+        dispatch(getJournal(journal));
       });
   };
 };

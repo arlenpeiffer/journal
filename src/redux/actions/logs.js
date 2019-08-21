@@ -54,6 +54,15 @@ export const addSupplement = supplement => {
   };
 };
 
+export const startAddSupplement = supplement => {
+  return dispatch => {
+    database
+      .ref('user/callie/logs/supplements')
+      .push(supplement)
+      .then(dispatch(addSupplement(supplement)));
+  };
+};
+
 export const getLogs = logs => {
   return {
     type: GET_LOGS,
@@ -99,5 +108,23 @@ export const removeSupplement = supplement => {
   return {
     type: REMOVE_SUPPLEMENT,
     payload: { supplement }
+  };
+};
+
+export const startRemoveSupplement = supplement => {
+  return dispatch => {
+    database
+      .ref('user/callie/logs/supplements')
+      .once('value')
+      .then(snapshot => {
+        snapshot.forEach(childSnapshot => {
+          if (childSnapshot.val() === supplement) {
+            return database
+              .ref(`user/callie/logs/supplements/${childSnapshot.key}`)
+              .remove()
+              .then(dispatch(removeSupplement(supplement)));
+          }
+        });
+      });
   };
 };

@@ -7,7 +7,12 @@ import {
   REMOVE_SUPPLEMENT
 } from '../actions';
 
-const defaultState = {};
+const defaultState = {
+  food: [],
+  movement: [],
+  nsaid: [],
+  supplements: []
+};
 
 export default (state = defaultState, action) => {
   switch (action.type) {

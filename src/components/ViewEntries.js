@@ -6,9 +6,6 @@ function ViewEntries() {
   return (
     <div>
       ViewEntries.js
-      <div>
-        <button onClick={() => localStorage.clear()}>Clear</button>
-      </div>
       <Filters />
       <Entries />
     </div>

@@ -21,6 +21,7 @@ function Food(props) {
           <Option value="None">None</Option>
         </Field>
         <Field
+          autoComplete="off"
           component={Input}
           name="food.diet.notes"
           placeholder="Notes"

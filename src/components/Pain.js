@@ -37,7 +37,12 @@ function Pain(props) {
         <Radio.Button value={4}>Extreme</Radio.Button>
       </Field>
 
-      <Field component={Input} name="pain.details" placeholder="Details" />
+      <Field
+        autoComplete="off"
+        component={Input}
+        name="pain.details"
+        placeholder="Details"
+      />
 
       <Field
         component={RadioGroup}

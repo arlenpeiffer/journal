@@ -21,7 +21,9 @@ const mapStateToProps = state => ({
       const endDateMatch = endDate ? entry.date <= endDate : true;
       const { text } = state.user.filters;
       const textMatch = text
-        ? entry.food.meals.some(meal =>
+        ? entry.food.diet.notes.toLowerCase().includes(text.toLowerCase()) ||
+          entry.food.diet.type.toLowerCase().includes(text.toLowerCase()) ||
+          entry.food.meals.some(meal =>
             meal.items.some(item =>
               item.ingredients.toLowerCase().includes(text.toLowerCase())
             )

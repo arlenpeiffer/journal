@@ -40,7 +40,12 @@ function Sleep(props) {
           setFieldValue('sleep.rating', value === sleep.rating ? 0 : value)
         }
       />
-      <Field component={Input} name="sleep.notes" placeholder="Notes" />
+      <Field
+        autoComplete="off"
+        component={Input}
+        name="sleep.notes"
+        placeholder="Notes"
+      />
     </div>
   );
 }

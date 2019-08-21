@@ -3,15 +3,18 @@ import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { CheckboxGroup } from './AntFields';
 import { Checkbox, Icon, Popconfirm } from 'antd';
-import { addSupplement, removeSupplement } from '../redux/actions/logs';
+import {
+  startAddSupplement,
+  startRemoveSupplement
+} from '../redux/actions/logs';
 import AddItem from './AddItem';
 
 function Supplements(props) {
   const {
-    addSupplement,
     logs,
-    removeSupplement,
     setFieldValue,
+    startAddSupplement,
+    startRemoveSupplement,
     supplements
   } = props;
 
@@ -21,7 +24,7 @@ function Supplements(props) {
     } else if (logs.supplements.find(supplement => input === supplement)) {
       setError("There's already one of those..");
     } else {
-      addSupplement(input);
+      startAddSupplement(input);
       setInput('');
       setError('');
       setIsAddingItem(false);
@@ -29,7 +32,7 @@ function Supplements(props) {
   };
 
   const handleRemoveSupplement = removedSupplement => {
-    removeSupplement(removedSupplement);
+    startRemoveSupplement(removedSupplement);
     setFieldValue(
       'supplements',
       supplements.filter(supplement => supplement !== removedSupplement)
@@ -76,8 +79,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchtoProps = dispatch => ({
-  addSupplement: supplement => dispatch(addSupplement(supplement)),
-  removeSupplement: supplement => dispatch(removeSupplement(supplement))
+  startAddSupplement: supplement => dispatch(startAddSupplement(supplement)),
+  startRemoveSupplement: supplement =>
+    dispatch(startRemoveSupplement(supplement))
 });
 
 export default connect(

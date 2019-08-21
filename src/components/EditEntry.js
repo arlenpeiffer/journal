@@ -2,18 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import EntryForm from './EntryForm';
-import { editEntry } from '../redux/actions/journal';
-import { addFood, addMovement } from '../redux/actions/logs';
+import { startEditEntry } from '../redux/actions/journal';
+import { startAddFood, startAddMovement } from '../redux/actions/logs';
 
 function EditEntry(props) {
-  const { addFood, addMovement, editEntry, entry, history, logs } = props;
+  const {
+    entry,
+    history,
+    logs,
+    startAddFood,
+    startAddMovement,
+    startEditEntry
+  } = props;
 
   const handleLogFood = entry => {
     entry.food.meals.map(meal =>
       meal.items.map(food =>
         logs.food.find(logItem => food.name === logItem)
           ? null
-          : addFood(food.name)
+          : startAddFood(food.name)
       )
     );
   };
@@ -22,13 +29,13 @@ function EditEntry(props) {
     entry.movement.map(movement =>
       logs.movement.find(logItem => movement.type === logItem)
         ? null
-        : addMovement(movement.type)
+        : startAddMovement(movement.type)
     );
   };
 
   const handleSubmitEntry = editedEntry => {
     const { id } = entry;
-    editEntry(editedEntry, id);
+    startEditEntry(editedEntry, id);
     handleLogFood(editedEntry);
     handleLogMovement(editedEntry);
     history.push('/');
@@ -50,9 +57,9 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addFood: food => dispatch(addFood(food)),
-  addMovement: movement => dispatch(addMovement(movement)),
-  editEntry: (editedEntry, id) => dispatch(editEntry(editedEntry, id))
+  startAddFood: food => dispatch(startAddFood(food)),
+  startAddMovement: movement => dispatch(startAddMovement(movement)),
+  startEditEntry: (editedEntry, id) => dispatch(startEditEntry(editedEntry, id))
 });
 
 export default connect(

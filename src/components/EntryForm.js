@@ -37,7 +37,7 @@ const newEntry = {
       amountTaken: 0,
       isTaken: false,
       timesTaken: 0,
-      type: undefined
+      type: ''
     }
   },
   sleep: {

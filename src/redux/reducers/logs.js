@@ -3,21 +3,15 @@ import {
   ADD_MOVEMENT,
   ADD_NSAID,
   ADD_SUPPLEMENT,
+  GET_LOGS,
   REMOVE_SUPPLEMENT
 } from '../actions';
 
 const defaultState = {
   food: [],
   movement: [],
-  nsaid: ['Advil', 'Aleve'],
-  supplements: [
-    'Cod Liver Oil',
-    'Magnesium',
-    'MSM',
-    'Vitamin D3',
-    "Lion's Mane",
-    'Cordyceps'
-  ]
+  nsaid: [],
+  supplements: []
 };
 
 export default (state = defaultState, action) => {
@@ -39,6 +33,9 @@ export default (state = defaultState, action) => {
         ...state,
         supplements: [...state.supplements, action.payload.supplement]
       };
+    case GET_LOGS:
+      const { logs } = action.payload;
+      return logs;
     case REMOVE_SUPPLEMENT:
       return {
         ...state,

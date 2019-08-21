@@ -12,6 +12,7 @@ export const ADD_FOOD = 'ADD_FOOD';
 export const ADD_MOVEMENT = 'ADD_MOVEMENT';
 export const ADD_NSAID = 'ADD_NSAID';
 export const ADD_SUPPLEMENT = 'ADD_SUPPLEMENT';
+export const GET_LOGS = 'GET_LOGS';
 export const REMOVE_SUPPLEMENT = 'REMOVE_SUPPLEMENT';
 
 // filters

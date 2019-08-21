@@ -3,17 +3,23 @@ import { connect } from 'react-redux';
 
 import EntryForm from './EntryForm';
 import { startAddEntry } from '../redux/actions/journal';
-import { addFood, addMovement } from '../redux/actions/logs';
+import { startAddFood, startAddMovement } from '../redux/actions/logs';
 
 function AddEntry(props) {
-  const { addFood, addMovement, history, logs, startAddEntry } = props;
+  const {
+    history,
+    logs,
+    startAddEntry,
+    startAddFood,
+    startAddMovement
+  } = props;
 
   const handleLogFood = entry => {
     entry.food.meals.map(meal =>
       meal.items.map(food =>
         logs.food.find(logItem => food.name === logItem)
           ? null
-          : addFood(food.name)
+          : startAddFood(food.name)
       )
     );
   };
@@ -22,7 +28,7 @@ function AddEntry(props) {
     entry.movement.map(movement =>
       logs.movement.find(logItem => movement.type === logItem)
         ? null
-        : addMovement(movement.type)
+        : startAddMovement(movement.type)
     );
   };
 
@@ -47,8 +53,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   startAddEntry: entry => dispatch(startAddEntry(entry)),
-  addFood: food => dispatch(addFood(food)),
-  addMovement: movement => dispatch(addMovement(movement))
+  startAddFood: food => dispatch(startAddFood(food)),
+  startAddMovement: movement => dispatch(startAddMovement(movement))
 });
 
 export default connect(

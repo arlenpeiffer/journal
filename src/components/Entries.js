@@ -23,17 +23,22 @@ const mapStateToProps = state => ({
       const textMatch = text
         ? entry.food.meals.some(meal =>
             meal.items.some(item =>
+              item.ingredients.toLowerCase().includes(text.toLowerCase())
+            )
+          ) ||
+          entry.food.meals.some(meal =>
+            meal.items.some(item =>
               item.name.toLowerCase().includes(text.toLowerCase())
             )
           ) ||
           entry.food.meals.some(meal =>
             meal.items.some(item =>
-              item.portion.toLowerCase().includes(text.toLowerCase())
+              item.notes.toLowerCase().includes(text.toLowerCase())
             )
           ) ||
           entry.food.meals.some(meal =>
             meal.items.some(item =>
-              item.notes.toLowerCase().includes(text.toLowerCase())
+              item.portion.toLowerCase().includes(text.toLowerCase())
             )
           ) ||
           entry.food.meals.some(meal =>
@@ -43,7 +48,7 @@ const mapStateToProps = state => ({
             mood.toLowerCase().includes(text.toLowerCase())
           ) ||
           entry.movement.some(movement =>
-            movement.toLowerCase().includes(text.toLowerCase())
+            movement.type.toLowerCase().includes(text.toLowerCase())
           ) ||
           entry.notes.toLowerCase().includes(text.toLowerCase()) ||
           entry.pain.details.toLowerCase().includes(text.toLowerCase()) ||

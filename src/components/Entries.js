@@ -55,6 +55,7 @@ const mapStateToProps = state => ({
           entry.notes.toLowerCase().includes(text.toLowerCase()) ||
           entry.pain.details.toLowerCase().includes(text.toLowerCase()) ||
           entry.sleep.notes.toLowerCase().includes(text.toLowerCase()) ||
+          entry.stomach.notes.toLowerCase().includes(text.toLowerCase()) ||
           entry.supplements.some(supplement =>
             supplement.toLowerCase().includes(text.toLowerCase())
           ) ||

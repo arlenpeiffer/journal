@@ -18,6 +18,7 @@ function Entry(props) {
     notes,
     pain,
     sleep,
+    stomach,
     supplements,
     travel
   } = entry;
@@ -169,6 +170,11 @@ function Entry(props) {
             <DataPoint label="Amount" data={formatDuration(sleep.amount)} />
             <DataPoint label="Rating" data={sleep.rating} />
             <DataPoint label="Notes" data={sleep.notes} />
+          </Tab>
+
+          <Tab tab="Stomach" key="stomach">
+            <DataPoint label="Rating" data={stomach.rating} />
+            <DataPoint label="Notes" data={stomach.notes} />
           </Tab>
 
           <Tab tab="Supplements" key="supplements">

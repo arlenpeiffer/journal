@@ -72,6 +72,7 @@ export const startGetJournal = () => {
             notes: childSnapshot.val().notes,
             pain: childSnapshot.val().pain,
             sleep: childSnapshot.val().sleep,
+            stomach: childSnapshot.val().stomach,
             supplements: childSnapshot.val().supplements || [],
             travel: childSnapshot.val().travel
           });

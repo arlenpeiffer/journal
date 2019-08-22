@@ -161,7 +161,7 @@ function Entry(props) {
           </Tab>
 
           <Tab tab="Pain" key="pain">
-            <DataPoint label="Level" data={formatPainLevel(pain.rating)} />
+            <DataPoint label="Level" data={formatPainLevel(pain.level)} />
             <DataPoint label="Details" data={pain.details} />
           </Tab>
 

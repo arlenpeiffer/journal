@@ -27,7 +27,7 @@ function Pain(props) {
       <Field
         buttonStyle="solid"
         component={RadioGroup}
-        name="pain.rating"
+        name="pain.level"
         label="Pain"
       >
         <Radio.Button value={0}>None</Radio.Button>

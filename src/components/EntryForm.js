@@ -31,7 +31,7 @@ const newEntry = {
   movement: [],
   notes: '',
   pain: {
-    rating: null,
+    level: null,
     details: '',
     nsaid: {
       amountTaken: 0,
@@ -86,7 +86,7 @@ const validationSchema = Yup.object().shape({
   ),
   notes: Yup.string(),
   pain: Yup.object().shape({
-    rating: Yup.number().typeError('Pain Rating is required.'),
+    level: Yup.number().typeError('Pain level is required.'),
     details: Yup.string(),
     nsaid: Yup.object().shape({
       amountTaken: Yup.number().when('isTaken', {

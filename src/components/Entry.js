@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Card, Form, Icon, Popconfirm, Tabs } from 'antd';
+import { Button, Card, Icon, Popconfirm, Tabs } from 'antd';
 import { startRemoveEntry } from '../redux/actions/journal';
 import DataPoint from './DataPoint';
 import moment from 'moment';
+import capitalize from 'lodash.capitalize';
 
 function Entry(props) {
   const { entry, startRemoveEntry } = props;
@@ -12,6 +13,7 @@ function Entry(props) {
     date,
     food,
     id,
+    mood,
     movement,
     notes,
     pain,
@@ -19,9 +21,45 @@ function Entry(props) {
     supplements,
     travel
   } = entry;
-  const { TabPane } = Tabs;
+  const Tab = Tabs.TabPane;
 
   const formattedDate = moment(date).format('MMM D, YYYY');
+
+  const formatDuration = duration => {
+    const hours = Math.floor(duration / 3600000);
+    const minutes = (duration % 3600000) / 60000;
+    return `${hours} hours ${minutes} minutes`;
+  };
+
+  const formatMealType = type => {
+    switch (type) {
+      case 0:
+        return 'Breakfast';
+      case 1:
+        return 'Lunch';
+      case 2:
+        return 'Snack';
+      case 3:
+        return 'Dinner';
+      case 4:
+        return 'Dessert';
+    }
+  };
+
+  const formatPainLevel = level => {
+    switch (level) {
+      case 0:
+        return 'None';
+      case 1:
+        return 'Low';
+      case 2:
+        return 'Medium';
+      case 3:
+        return 'High';
+      case 4:
+        return 'Extreme';
+    }
+  };
 
   const editButton = (
     <Link to={`/edit/${id}`}>
@@ -42,89 +80,102 @@ function Entry(props) {
     </Popconfirm>
   );
 
-  // const buttons = (
-  //   <div>
-  //     {editButton}
-  //     {removeButton}
-  //   </div>
-  // );
+  const buttonGroup = (
+    <div>
+      {editButton}
+      {removeButton}
+    </div>
+  );
 
   return (
     <div>
       <Card
         actions={[
-          <Icon type="edit" />,
-          <Icon type="bar-chart" />,
-          <Icon type="delete" />
+          <div>
+            <Icon type="edit" /> Edit
+          </div>,
+          <div>
+            <Icon type="bar-chart" /> Details
+          </div>,
+          <div>
+            <Icon type="delete" /> Remove
+          </div>
         ]}
-        // extra={buttons}
+        extra={buttonGroup}
         size="small"
         title={formattedDate}
       >
         <Tabs>
-          <TabPane tab="Diet" key="diet">
-            <DataPoint title="Type" data={food.diet.type} />
-            <DataPoint title="Notes" data={food.diet.notes} />
-          </TabPane>
-          <TabPane tab="Movement" key="movement">
-            {movement.map(movement => (
+          <Tab tab="Diet" key="diet">
+            <DataPoint label="Diet" data={food.diet.type} />
+            <DataPoint label="Notes" data={food.diet.notes} />
+          </Tab>
+
+          <Tab tab="Meals" key="meals">
+            {food.meals.map(meal => (
               <div>
-                <DataPoint title="Type" data={movement.type} />
-                <DataPoint title="Details" data={movement.details} />
+                <DataPoint label="Meal" data={formatMealType(meal.type)} />
+                <DataPoint
+                  label="Time"
+                  data={moment(meal.time).format('h:mm A')}
+                />
+                <DataPoint label="Notes" data={meal.notes} />
+                <DataPoint
+                  label="Items"
+                  data={meal.items.map(item => (
+                    <ul>
+                      <li>
+                        <DataPoint label="Name" data={item.name} />
+                        <DataPoint label="Portion" data={item.portion} />
+                        <DataPoint
+                          label="Ingredients"
+                          data={item.ingredients}
+                        />
+                        <DataPoint label="Notes" data={item.notes} />
+                      </li>
+                    </ul>
+                  ))}
+                />
               </div>
             ))}
-          </TabPane>
-          <TabPane tab="Notes" key="notes">
-            <DataPoint title="Notes" data={notes} />
-          </TabPane>
-          <TabPane tab="Sleep" key="sleep">
-            <DataPoint title="Amount" data={sleep.amount} />
-            <DataPoint title="Rating" data={sleep.rating} />
-            <DataPoint title="Notes" data={sleep.notes} />
-          </TabPane>
+          </Tab>
+
+          <Tab tab="Mood" key="mood">
+            <DataPoint
+              label="Moods"
+              data={mood.map(mood => capitalize(mood)).join(', ')}
+            />
+          </Tab>
+
+          <Tab tab="Movement" key="movement">
+            {movement.map(movement => (
+              <div>
+                <DataPoint label="Movement" data={movement.type} />
+                <DataPoint label="Details" data={movement.details} />
+              </div>
+            ))}
+          </Tab>
+
+          <Tab tab="Notes" key="notes">
+            <DataPoint label="Notes" data={notes} />
+          </Tab>
+
+          <Tab tab="Pain" key="pain">
+            <DataPoint label="Level" data={formatPainLevel(pain.rating)} />
+            <DataPoint label="Details" data={pain.details} />
+          </Tab>
+
+          <Tab tab="Sleep" key="sleep">
+            <DataPoint label="Amount" data={formatDuration(sleep.amount)} />
+            <DataPoint label="Rating" data={sleep.rating} />
+            <DataPoint label="Notes" data={sleep.notes} />
+          </Tab>
+
+          <Tab tab="Supplements" key="supplements">
+            <DataPoint label="Supplements" data={supplements.join(', ')} />
+          </Tab>
         </Tabs>
       </Card>
-      {/* <p>
-        date: {moment(date).format('MMM D, YYYY')}
-        <br />
-        id: {id}
-        <br />
-        notes: {notes}
-        <br />
-        location: {travel.location}
-        <br />
-        pain: {pain.rating} - {pain.details}
-        <br />
-        supplements:{' '}
-        {supplements.length > 0
-          ? supplements.map(supplement => `${supplement}, `)
-          : 'none'}
-        <br />
-        movement:{' '}
-        {movement.length > 0
-          ? movement.map(movement => `${movement.type} ${movement.details}, `)
-          : 'none'}
-        <br />
-        meals:{' '}
-        {food.meals.length > 0
-          ? food.meals.map(meal => `${meal.type} ${meal.time} ${meal.notes}, `)
-          : 'none'}
-      </p> */}
-      <Form.Item>
-        {/* <Link to={`/edit/${id}`}>
-          <Button type="primary">Edit</Button>
-        </Link> */}
-        {/* <Popconfirm
-          cancelText="No"
-          okText="Yes"
-          onConfirm={() => startRemoveEntry(id)}
-          title={'Are you sure you want to delete this entry?'}
-        >
-          <Button style={{ marginLeft: 8 }} type="primary">
-            Remove
-          </Button>
-        </Popconfirm> */}
-      </Form.Item>
     </div>
   );
 }

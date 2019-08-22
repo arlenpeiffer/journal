@@ -1,17 +1,16 @@
 import React from 'react';
-import { Empty, Typography } from 'antd';
+import { Typography } from 'antd';
 
 const { Text } = Typography;
 
 function DataPoint(props) {
-  const { data, title } = props;
-  const validData = (
+  const { data, label } = props;
+  return (
     <div>
-      <Text strong>{title}: </Text>
-      <Text>{data}</Text>
+      <Text strong>{label}: </Text>
+      <Text disabled={!data}>{data ? data : '---'}</Text>
     </div>
   );
-  return <div>{data ? validData : <Empty />}</div>;
 }
 
 export default DataPoint;

@@ -6,7 +6,7 @@ import {
   GET_LOGS,
   REMOVE_SUPPLEMENT
 } from '../actions';
-import { database } from '../../firebase/firebase';
+import { database } from '../../firebase';
 
 export const addFood = food => {
   return {

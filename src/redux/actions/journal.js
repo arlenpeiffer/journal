@@ -1,5 +1,5 @@
 import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
-import { database } from '../../firebase/firebase';
+import { database } from '../../firebase';
 
 export const addEntry = entry => {
   return {

@@ -9,9 +9,10 @@ export const addEntry = entry => {
 };
 
 export const startAddEntry = entry => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/journal')
+      .ref(`users/${userId}/journal`)
       .push(entry)
       .then(ref => {
         dispatch(
@@ -32,9 +33,10 @@ export const editEntry = (editedEntry, id) => {
 };
 
 export const startEditEntry = (editedEntry, id) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/journal/' + id)
+      .ref(`users/${userId}/journal/` + id)
       .update({
         ...editedEntry,
         id: null
@@ -53,9 +55,10 @@ export const getJournal = journal => {
 };
 
 export const startGetJournal = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/journal/')
+      .ref(`users/${userId}/journal`)
       .once('value')
       .then(snapshot => {
         const journal = [];
@@ -90,9 +93,10 @@ export const removeEntry = id => {
 };
 
 export const startRemoveEntry = id => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/journal/' + id)
+      .ref(`users/${userId}/journal/` + id)
       .remove()
       .then(() => {
         dispatch(removeEntry(id));

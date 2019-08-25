@@ -16,9 +16,10 @@ export const addFood = food => {
 };
 
 export const startAddFood = food => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/logs/food')
+      .ref(`users/${userId}/logs/food`)
       .push(food)
       .then(dispatch(addFood(food)));
   };
@@ -32,9 +33,10 @@ export const addMovement = movement => {
 };
 
 export const startAddMovement = movement => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/logs/movement')
+      .ref(`users/${userId}/logs/movement`)
       .push(movement)
       .then(dispatch(addMovement(movement)));
   };
@@ -55,9 +57,10 @@ export const addSupplement = supplement => {
 };
 
 export const startAddSupplement = supplement => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/logs/supplements')
+      .ref(`users/${userId}/logs/supplements`)
       .push(supplement)
       .then(dispatch(addSupplement(supplement)));
   };
@@ -71,9 +74,10 @@ export const getLogs = logs => {
 };
 
 export const startGetLogs = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/logs')
+      .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
         let food = [];
@@ -112,15 +116,16 @@ export const removeSupplement = supplement => {
 };
 
 export const startRemoveSupplement = supplement => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
     database
-      .ref('user/callie/logs/supplements')
+      .ref(`users/${userId}/logs/supplements`)
       .once('value')
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
           if (childSnapshot.val() === supplement) {
             return database
-              .ref(`user/callie/logs/supplements/${childSnapshot.key}`)
+              .ref(`users/${userId}/logs/supplements/${childSnapshot.key}`)
               .remove()
               .then(dispatch(removeSupplement(supplement)));
           }

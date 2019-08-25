@@ -1,9 +1,10 @@
 import { SET_IS_LOGGED_IN, SET_IS_LOGGED_OUT } from '../actions';
 import { firebase, googleAuthProvider } from '../../firebase';
 
-export const setIsLoggedIn = () => {
+export const setIsLoggedIn = id => {
   return {
-    type: SET_IS_LOGGED_IN
+    type: SET_IS_LOGGED_IN,
+    payload: { id }
   };
 };
 

@@ -8,6 +8,7 @@
     "customize-cra": "^0.2.14",
     "firebase": "^6.4.0",
     "formik": "^1.5.7",
+    "history": "^4.9.0",
     "lodash.capitalize": "^4.2.1",
     "lodash.reduce": "^4.6.0",
     "lodash.trim": "^4.5.1",

@@ -1,4 +1,4 @@
-import { SET_IS_LOGGED_IN } from '../actions';
+import { SET_IS_LOGGED_IN, SET_IS_LOGGED_OUT } from '../actions';
 
 const defaultState = {
   isLoggedIn: false,
@@ -15,14 +15,15 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case SET_IS_LOGGED_IN:
-      if (action.payload.password === state.password) {
-        return {
-          ...state,
-          isLoggedIn: true
-        };
-      } else {
-        return state;
-      }
+      return {
+        ...state,
+        isLoggedIn: true
+      };
+    case SET_IS_LOGGED_OUT:
+      return {
+        ...state,
+        isLoggedIn: false
+      };
     default:
       return state;
   }

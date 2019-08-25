@@ -1,63 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Form, Icon, Input } from 'antd';
+import { Button } from 'antd';
+import { startLogin } from '../redux/actions/userInfo';
 
-class Login extends React.Component {
-  state = {
-    error: false,
-    message: 'Please enter the password',
-    value: ''
-  };
-  onChange = event => {
-    const value = event.target.value;
-    this.setState({ value });
-  };
-  onSubmit = event => {
-    event.preventDefault();
-    const { value } = this.state;
-    const { password } = this.props;
-    if (value === password) {
-      this.props.onSubmit(value);
-    } else {
-      this.setState({
-        error: true,
-        message: 'uh oh try again :)',
-        value: ''
-      });
-    }
-  };
-  render() {
-    const { message, value } = this.state;
-    const { username } = this.props;
-    return (
-      <div>
-        <Form>
-          <Form.Item label="Username">
-            <Input
-              defaultValue={username}
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            />
-          </Form.Item>
-          <Form.Item label="Password">
-            <Input.Password
-              autoFocus
-              onChange={this.onChange}
-              onPressEnter={this.onSubmit}
-              placeholder={message}
-              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              value={value}
-            />
-          </Form.Item>
-          <Button onClick={this.onSubmit}>Enter</Button>
-        </Form>
-      </div>
-    );
-  }
+function Login(props) {
+  const { startLogin } = props;
+  return (
+    <div>
+      <Button onClick={startLogin} type="primary">
+        Sign in with Google
+      </Button>
+    </div>
+  );
 }
 
-const mapStateToProps = state => ({
-  password: state.user.userInfo.password,
-  username: state.user.userInfo.name.username
+const mapDispatchToProps = dispatch => ({
+  startLogin: () => dispatch(startLogin())
 });
 
-export default connect(mapStateToProps)(Login);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Login);

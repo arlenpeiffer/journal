@@ -38,7 +38,7 @@ function EditEntry(props) {
     startEditEntry(editedEntry, id);
     handleLogFood(editedEntry);
     handleLogMovement(editedEntry);
-    history.push('/');
+    history.push('/view');
   };
 
   return (

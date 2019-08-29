@@ -36,7 +36,7 @@ function AddEntry(props) {
     startAddEntry(entry);
     handleLogFood(entry);
     handleLogMovement(entry);
-    history.push('/');
+    history.push('/view');
   };
 
   return (

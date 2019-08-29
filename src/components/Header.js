@@ -1,24 +1,29 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { startLogout } from '../redux/actions/userInfo';
 
 function Header(props) {
-  const { isLoggedIn } = props;
+  const { isLoggedIn, startLogout } = props;
   return (
     <div>
       <h1>Callie's Journal</h1>
       {isLoggedIn && (
         <div>
-          <Link to="/">View Entries</Link>
+          <Link to="/view">View Entries</Link>
           <Link to="/add">Add Entry</Link>
+          <p onClick={startLogout}>Sign out</p>
         </div>
       )}
     </div>
   );
 }
 
-const mapStateToProps = state => ({
-  isLoggedIn: state.user.userInfo.isLoggedIn
+const mapDispatchToProps = dispatch => ({
+  startLogout: () => dispatch(startLogout())
 });
 
-export default connect(mapStateToProps)(Header);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Header);

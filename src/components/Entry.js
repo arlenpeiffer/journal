@@ -113,8 +113,8 @@ function Entry(props) {
           </Tab>
 
           <Tab tab="Meals" key="meals">
-            {food.meals.map(meal => (
-              <div>
+            {food.meals.map((meal, index) => (
+              <div key={index}>
                 <DataPoint label="Meal" data={formatMealType(meal.type)} />
                 <DataPoint
                   label="Time"
@@ -149,8 +149,8 @@ function Entry(props) {
           </Tab>
 
           <Tab tab="Movement" key="movement">
-            {movement.map(movement => (
-              <div>
+            {movement.map((movement, index) => (
+              <div key={index}>
                 <DataPoint label="Movement" data={movement.type} />
                 <DataPoint label="Details" data={movement.details} />
               </div>

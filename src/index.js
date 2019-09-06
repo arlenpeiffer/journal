@@ -21,13 +21,11 @@ ReactDOM.render(app, document.getElementById('root'));
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    console.log('login', user.uid);
     history.push('/view');
     store.dispatch(setIsLoggedIn(user.uid));
     store.dispatch(startGetJournal());
     store.dispatch(startGetLogs());
   } else {
-    console.log('logout');
     history.push('/');
     store.dispatch(setIsLoggedOut());
   }

@@ -122,7 +122,7 @@ const validationSchema = Yup.object().shape({
     notes: Yup.string()
   }),
   stomach: Yup.object().shape({
-    rating: Yup.number,
+    rating: Yup.number(),
     notes: Yup.string()
   }),
   supplements: Yup.array(),

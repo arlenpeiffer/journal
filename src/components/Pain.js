@@ -56,7 +56,7 @@ function Pain(props) {
                 amountTaken: 0,
                 isTaken: false,
                 timesTaken: 0,
-                type: undefined
+                type: ''
               });
         }}
         options={[{ label: 'No', value: false }, { label: 'Yes', value: true }]}

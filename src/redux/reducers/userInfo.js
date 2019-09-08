@@ -2,15 +2,7 @@ import { SET_IS_LOGGED_IN, SET_IS_LOGGED_OUT } from '../actions';
 
 const defaultState = {
   id: null,
-  isLoggedIn: false,
-  name: {
-    first: 'Callie',
-    middle: 'Elissa',
-    last: 'Ryan',
-    nicknames: ['Bibpu', 'Squinchy', 'Little Buddy'],
-    username: 'sexy_spondy'
-  },
-  password: 'callie11'
+  isLoggedIn: false
 };
 
 export default (state = defaultState, action) => {

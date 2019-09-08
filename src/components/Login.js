@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from 'antd';
 import { startLogin } from '../redux/actions/userInfo';
 
-function Login(props) {
+export function Login(props) {
   const { startLogin } = props;
   return (
     <div>

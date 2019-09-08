@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { startLogout } from '../redux/actions/userInfo';
 
-function Header(props) {
+export function Header(props) {
   const { isLoggedIn, startLogout } = props;
   return (
     <div>

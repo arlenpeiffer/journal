@@ -14,13 +14,13 @@ export const setIsLoggedOut = () => {
   };
 };
 
-export const startLogin = () => {
+export const signInWithGoogle = () => {
   return () => {
     firebase.auth().signInWithPopup(googleAuthProvider);
   };
 };
 
-export const startLogout = () => {
+export const signOut = () => {
   return () => {
     firebase.auth().signOut();
   };

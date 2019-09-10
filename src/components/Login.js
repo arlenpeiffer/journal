@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
-import { startLogin } from '../redux/actions/userInfo';
+import { signInWithGoogle } from '../redux/actions/userInfo';
 
 export function Login(props) {
-  const { startLogin } = props;
+  const { signInWithGoogle } = props;
   return (
     <div>
-      <Button onClick={startLogin} type="primary">
+      <Button onClick={signInWithGoogle} type="primary">
         Sign in with Google
       </Button>
     </div>
@@ -15,7 +15,7 @@ export function Login(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: () => dispatch(startLogin())
+  signInWithGoogle: () => dispatch(signInWithGoogle())
 });
 
 export default connect(

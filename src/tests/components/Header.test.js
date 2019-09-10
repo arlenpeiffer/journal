@@ -12,11 +12,9 @@ test('should render Header with naviagtion if logged in', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-test('should call startLogout when "Sign out" is clicked', () => {
-  const startLogout = jest.fn();
-  const wrapper = shallow(
-    <Header isLoggedIn={true} startLogout={startLogout} />
-  );
+test('should call signOut when "Sign out" is clicked', () => {
+  const signOut = jest.fn();
+  const wrapper = shallow(<Header isLoggedIn={true} signOut={signOut} />);
   wrapper.find('p').simulate('click');
-  expect(startLogout).toHaveBeenCalled();
+  expect(signOut).toHaveBeenCalled();
 });

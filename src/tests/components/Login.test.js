@@ -7,9 +7,9 @@ test('should render Login correctly', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-test('should call startLogin when button is clicked', () => {
-  const startLogin = jest.fn();
-  const wrapper = shallow(<Login startLogin={startLogin} />);
+test('should call signInWithGoogle when button is clicked', () => {
+  const signInWithGoogle = jest.fn();
+  const wrapper = shallow(<Login signInWithGoogle={signInWithGoogle} />);
   wrapper.find('Button').simulate('click');
-  expect(startLogin).toHaveBeenCalled();
+  expect(signInWithGoogle).toHaveBeenCalled();
 });

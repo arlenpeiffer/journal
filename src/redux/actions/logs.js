@@ -18,7 +18,7 @@ export const addFood = food => {
 export const startAddFood = food => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/logs/food`)
       .push(food)
       .then(dispatch(addFood(food)));
@@ -35,7 +35,7 @@ export const addMovement = movement => {
 export const startAddMovement = movement => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/logs/movement`)
       .push(movement)
       .then(dispatch(addMovement(movement)));
@@ -59,7 +59,7 @@ export const addSupplement = supplement => {
 export const startAddSupplement = supplement => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/logs/supplements`)
       .push(supplement)
       .then(dispatch(addSupplement(supplement)));
@@ -76,7 +76,7 @@ export const getLogs = logs => {
 export const startGetLogs = () => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
@@ -118,7 +118,7 @@ export const removeSupplement = supplement => {
 export const startRemoveSupplement = supplement => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/logs/supplements`)
       .once('value')
       .then(snapshot => {

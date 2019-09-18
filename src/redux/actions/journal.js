@@ -11,7 +11,7 @@ export const addEntry = entry => {
 export const startAddEntry = entry => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/journal`)
       .push(entry)
       .then(ref => {
@@ -35,7 +35,7 @@ export const editEntry = (editedEntry, id) => {
 export const startEditEntry = (editedEntry, id) => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/journal/` + id)
       .update({
         ...editedEntry,
@@ -57,7 +57,7 @@ export const getJournal = journal => {
 export const startGetJournal = () => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/journal`)
       .once('value')
       .then(snapshot => {
@@ -95,7 +95,7 @@ export const removeEntry = id => {
 export const startRemoveEntry = id => {
   return (dispatch, getState) => {
     const userId = getState().user.userInfo.id;
-    database
+    return database
       .ref(`users/${userId}/journal/` + id)
       .remove()
       .then(() => {

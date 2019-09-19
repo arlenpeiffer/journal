@@ -7,11 +7,11 @@ test('should generate RESET_FILTERS action object', () => {
 });
 
 test('should generate SET_FILTERS action object', () => {
-  const { date, sortOrder, text } = filters[1];
+  const { date, sortOrder, text } = filters;
   const { endDate, startDate } = date;
   const action = setFilters({ endDate, sortOrder, startDate, text });
   expect(action).toEqual({
     type: SET_FILTERS,
-    payload: { filters: filters[1] }
+    payload: { filters }
   });
 });

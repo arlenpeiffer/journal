@@ -1,6 +1,6 @@
 import { SET_IS_LOGGED_IN, SET_IS_LOGGED_OUT } from '../actions';
 
-const defaultState = {
+export const defaultState = {
   id: null,
   isLoggedIn: false
 };

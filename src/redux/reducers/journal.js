@@ -1,6 +1,6 @@
 import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
 
-const defaultState = [];
+export const defaultState = [];
 
 export default (state = defaultState, action) => {
   switch (action.type) {

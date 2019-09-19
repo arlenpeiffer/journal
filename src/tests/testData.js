@@ -1,21 +1,11 @@
-export const filters = [
-  {
-    date: {
-      startDate: null,
-      endDate: null
-    },
-    sortOrder: 'newestFirst',
-    text: ''
+export const filters = {
+  date: {
+    startDate: 1567296000000, // Sunday, September 1, 2019 12:00:00 AM
+    endDate: 1569801600000 // Monday, September 30, 2019 12:00:00 AM
   },
-  {
-    date: {
-      startDate: 1567296000000, // Sunday, September 1, 2019 12:00:00 AM
-      endDate: 1569801600000 // Monday, September 30, 2019 12:00:00 AM
-    },
-    sortOrder: 'oldestFirst',
-    text: 'avocado'
-  }
-];
+  sortOrder: 'oldestFirst',
+  text: 'avocado'
+};
 
 export const journal = [
   {
@@ -146,4 +136,9 @@ export const logs = {
     "Lion's Mane",
     'Cordyceps'
   ]
+};
+
+export const userInfo = {
+  id: 'userId',
+  isLoggedIn: true
 };

@@ -64,6 +64,7 @@ export const startGetJournal = () => {
         const journal = [];
         snapshot.forEach(childSnapshot => {
           journal.push({
+            appointments: childSnapshot.val().appointments || [],
             date: childSnapshot.val().date,
             food: {
               diet: childSnapshot.val().food.diet,

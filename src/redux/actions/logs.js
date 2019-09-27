@@ -1,12 +1,32 @@
 import {
+  ADD_APPOINTMENT,
   ADD_FOOD,
   ADD_MOVEMENT,
   ADD_NSAID,
+  ADD_PRACTITIONER,
   ADD_SUPPLEMENT,
   GET_LOGS,
   REMOVE_SUPPLEMENT
 } from '../actions';
 import { database } from '../../firebase';
+import Appointments from '../../components/Appointments';
+
+export const addAppointment = appointment => {
+  return {
+    type: ADD_APPOINTMENT,
+    payload: { appointment }
+  };
+};
+
+export const startAddAppointment = appointment => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
+    database
+      .ref(`users/${userId}/logs/appointments`)
+      .push(appointment)
+      .then(dispatch(addAppointment(appointment)));
+  };
+};
 
 export const addFood = food => {
   return {
@@ -49,6 +69,23 @@ export const addNsaid = nsaid => {
   };
 };
 
+export const addPractitioner = practitioner => {
+  return {
+    type: ADD_PRACTITIONER,
+    payload: { practitioner }
+  };
+};
+
+export const startAddPractitioner = practitioner => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
+    database
+      .ref(`users/${userId}/logs/practitioners`)
+      .push(practitioner)
+      .then(dispatch(addPractitioner(practitioner)));
+  };
+};
+
 export const addSupplement = supplement => {
   return {
     type: ADD_SUPPLEMENT,
@@ -80,6 +117,10 @@ export const startGetLogs = () => {
       .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
+        let appointments = [];
+        snapshot.child('appointments').forEach(childSnapshot => {
+          appointments.push(childSnapshot.val());
+        });
         let food = [];
         snapshot.child('food').forEach(childSnapshot => {
           food.push(childSnapshot.val());
@@ -92,15 +133,21 @@ export const startGetLogs = () => {
         snapshot.child('nsaid').forEach(childSnapshot => {
           nsaid.push(childSnapshot.val());
         });
+        let practitioners = [];
+        snapshot.child('practitioners').forEach(childSnapshot => {
+          practitioners.push(childSnapshot.val());
+        });
         let supplements = [];
         snapshot.child('supplements').forEach(childSnapshot => {
           supplements.push(childSnapshot.val());
         });
         dispatch(
           getLogs({
+            appointments,
             food,
             movement,
             nsaid,
+            practitioners,
             supplements
           })
         );

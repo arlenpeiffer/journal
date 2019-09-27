@@ -19,6 +19,7 @@ function Entry(props) {
     pain,
     sleep,
     stomach,
+    stress,
     supplements,
     travel
   } = entry;
@@ -47,14 +48,14 @@ function Entry(props) {
     }
   };
 
-  const formatPainLevel = level => {
+  const formatLevel = level => {
     switch (level) {
       case 0:
         return 'None';
       case 1:
         return 'Low';
       case 2:
-        return 'Medium';
+        return 'Moderate';
       case 3:
         return 'High';
       case 4:
@@ -162,7 +163,7 @@ function Entry(props) {
           </Tab>
 
           <Tab tab="Pain" key="pain">
-            <DataPoint label="Level" data={formatPainLevel(pain.level)} />
+            <DataPoint label="Level" data={formatLevel(pain.level)} />
             <DataPoint label="Details" data={pain.details} />
           </Tab>
 
@@ -175,6 +176,11 @@ function Entry(props) {
           <Tab tab="Stomach" key="stomach">
             <DataPoint label="Rating" data={stomach.rating} />
             <DataPoint label="Notes" data={stomach.notes} />
+          </Tab>
+
+          <Tab tab="Stress" key="stress">
+            <DataPoint label="Level" data={formatLevel(stress.level)} />
+            <DataPoint label="Notes" data={stress.notes} />
           </Tab>
 
           <Tab tab="Supplements" key="supplements">

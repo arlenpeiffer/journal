@@ -7,8 +7,44 @@ import { Button, Form, Icon, Popconfirm } from 'antd';
 function Appointments(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedField, setSelectedField] = useState(undefined);
-  const [selectedInput, setSelectedInput] = useState(undefined);
-  const { logs, appointments } = props;
+  const [selectedIndex, setSelectedIndex] = useState(undefined);
+  const { appointments, logs, setFieldValue } = props;
+
+  const handleBlur = () => {
+    resetState();
+  };
+
+  const handleChange = (value, index, field) => {
+    if (!value) {
+      resetState();
+    } else {
+      if (!isOpen) {
+        setIsOpen(true);
+        setSelectedField(field);
+        setSelectedIndex(index);
+      }
+    }
+    setFieldValue(`appointments[${index}].${field}`, value);
+  };
+
+  const handleFocus = (index, field) => {
+    setIsOpen(false);
+    setSelectedField(field);
+    setSelectedIndex(index);
+  };
+
+  const handleOpen = (index, field) =>
+    selectedField === field && selectedIndex === index && isOpen;
+
+  const handleSelect = () => {
+    resetState();
+  };
+
+  const resetState = () => {
+    setIsOpen(false);
+    setSelectedField(undefined);
+    setSelectedIndex(undefined);
+  };
 
   return (
     <div id="appointments">
@@ -29,38 +65,13 @@ function Appointments(props) {
                       return appointment.startsWith(value);
                     }}
                     name={`appointments[${index}].type`}
-                    onBlur={() => {
-                      setIsOpen(false);
-                      setSelectedField(undefined);
-                      setSelectedInput(undefined);
-                    }}
+                    onBlur={handleBlur}
                     onChange={value => {
-                      if (!value) {
-                        setIsOpen(false);
-                        setSelectedField(undefined);
-                        setSelectedInput(undefined);
-                      } else {
-                        if (!isOpen) {
-                          setIsOpen(true);
-                          setSelectedField(0);
-                          setSelectedInput(index);
-                        }
-                      }
-                      props.setFieldValue(`appointments[${index}].type`, value);
+                      handleChange(value, index, 'type');
                     }}
-                    onFocus={() => {
-                      setIsOpen(false);
-                      setSelectedField(0);
-                      setSelectedInput(index);
-                    }}
-                    onSelect={() => {
-                      setIsOpen(false);
-                      setSelectedField(undefined);
-                      setSelectedInput(undefined);
-                    }}
-                    open={
-                      selectedField === 0 && selectedInput === index && isOpen
-                    }
+                    onFocus={() => handleFocus(index, 'type')}
+                    onSelect={handleSelect}
+                    open={handleOpen(index, 'type')}
                     placeholder="Type of appointment (ex: Therapy, Accupunture, Rhuematology)"
                     style={{ marginBottom: 0 }}
                   />
@@ -74,41 +85,13 @@ function Appointments(props) {
                       return practitioner.startsWith(value);
                     }}
                     name={`appointments[${index}].practitioner`}
-                    onBlur={() => {
-                      setIsOpen(false);
-                      setSelectedField(undefined);
-                      setSelectedInput(undefined);
-                    }}
+                    onBlur={handleBlur}
                     onChange={value => {
-                      if (!value) {
-                        setIsOpen(false);
-                        setSelectedField(undefined);
-                        setSelectedInput(undefined);
-                      } else {
-                        if (!isOpen) {
-                          setIsOpen(true);
-                          setSelectedField(1);
-                          setSelectedInput(index);
-                        }
-                      }
-                      props.setFieldValue(
-                        `appointments[${index}].practitioner`,
-                        value
-                      );
+                      handleChange(value, index, 'practitioner');
                     }}
-                    onFocus={() => {
-                      setIsOpen(false);
-                      setSelectedField(1);
-                      setSelectedInput(index);
-                    }}
-                    onSelect={() => {
-                      setIsOpen(false);
-                      setSelectedField(undefined);
-                      setSelectedInput(undefined);
-                    }}
-                    open={
-                      selectedField === 1 && selectedInput === index && isOpen
-                    }
+                    onFocus={() => handleFocus(index, 'practitioner')}
+                    onSelect={handleSelect}
+                    open={handleOpen(index, 'practitioner')}
                     placeholder="Practitioner"
                     style={{ marginBottom: 0 }}
                   />

@@ -9,7 +9,7 @@ import {
   REMOVE_SUPPLEMENT
 } from '../actions';
 import { database } from '../../firebase';
-import Appointments from '../../components/Appointments';
+import sortby from 'lodash.sortby';
 
 export const addAppointment = appointment => {
   return {
@@ -117,38 +117,21 @@ export const startGetLogs = () => {
       .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
-        let appointments = [];
-        snapshot.child('appointments').forEach(childSnapshot => {
-          appointments.push(childSnapshot.val());
-        });
-        let food = [];
-        snapshot.child('food').forEach(childSnapshot => {
-          food.push(childSnapshot.val());
-        });
-        let movement = [];
-        snapshot.child('movement').forEach(childSnapshot => {
-          movement.push(childSnapshot.val());
-        });
-        let nsaid = [];
-        snapshot.child('nsaid').forEach(childSnapshot => {
-          nsaid.push(childSnapshot.val());
-        });
-        let practitioners = [];
-        snapshot.child('practitioners').forEach(childSnapshot => {
-          practitioners.push(childSnapshot.val());
-        });
-        let supplements = [];
-        snapshot.child('supplements').forEach(childSnapshot => {
-          supplements.push(childSnapshot.val());
-        });
+        function generateLog(logName) {
+          let log = [];
+          snapshot.child(`${logName}`).forEach(childSnapshot => {
+            log.push(childSnapshot.val());
+          });
+          return sortby(log, [logItem => logItem.toLowerCase()]);
+        }
         dispatch(
           getLogs({
-            appointments,
-            food,
-            movement,
-            nsaid,
-            practitioners,
-            supplements
+            appointments: generateLog('appointments'),
+            food: generateLog('food'),
+            movement: generateLog('movement'),
+            nsaid: generateLog('nsaid'),
+            practitioners: generateLog('practitioners'),
+            supplements: generateLog('supplements')
           })
         );
       });

@@ -11,6 +11,7 @@
     "history": "^4.9.0",
     "lodash.capitalize": "^4.2.1",
     "lodash.reduce": "^4.6.0",
+    "lodash.sortby": "^4.7.0",
     "lodash.trim": "^4.5.1",
     "react": "^16.8.6",
     "react-app-rewired": "^2.1.3",

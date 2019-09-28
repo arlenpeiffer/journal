@@ -6,6 +6,7 @@ import moment from 'moment';
 import reduce from 'lodash.reduce';
 import trim from 'lodash.trim';
 
+import Appointments from './Appointments';
 import Date from './Date';
 import Food from './Food';
 import Mood from './Mood';
@@ -19,6 +20,7 @@ import Supplements from './Supplements';
 import Travel from './Travel';
 
 const newEntry = {
+  appointments: [],
   date: moment()
     .startOf('day')
     .valueOf(),
@@ -63,6 +65,13 @@ const newEntry = {
 };
 
 const validationSchema = Yup.object().shape({
+  appointments: Yup.array().of(
+    Yup.object().shape({
+      type: Yup.string().required('Appointment type is required.'),
+      practitioner: Yup.string().required('Practitioner name is required.'),
+      notes: Yup.string()
+    })
+  ),
   date: Yup.number().required(),
   food: Yup.object().shape({
     diet: Yup.object().shape({
@@ -189,6 +198,10 @@ function EntryForm(props) {
             <Supplements
               setFieldValue={setFieldValue}
               supplements={values.supplements}
+            />
+            <Appointments
+              appointments={values.appointments}
+              setFieldValue={setFieldValue}
             />
             <Mood setFieldValue={setFieldValue} />
             <Movement

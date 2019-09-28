@@ -65,7 +65,11 @@ function Movement(props) {
                   </Popconfirm>
                 </Form.Item>
               ))}
-              <Button onClick={() => push({ type: '', details: '' })}>
+              <Button
+                ghost={true}
+                onClick={() => push({ type: '', details: '' })}
+                type="primary"
+              >
                 <Icon type="plus" />
                 Add Movement
               </Button>

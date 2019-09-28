@@ -1,12 +1,32 @@
 import {
+  ADD_APPOINTMENT,
   ADD_FOOD,
   ADD_MOVEMENT,
   ADD_NSAID,
+  ADD_PRACTITIONER,
   ADD_SUPPLEMENT,
   GET_LOGS,
   REMOVE_SUPPLEMENT
 } from '../actions';
 import { database } from '../../firebase';
+import sortby from 'lodash.sortby';
+
+export const addAppointment = appointment => {
+  return {
+    type: ADD_APPOINTMENT,
+    payload: { appointment }
+  };
+};
+
+export const startAddAppointment = appointment => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
+    database
+      .ref(`users/${userId}/logs/appointments`)
+      .push(appointment)
+      .then(dispatch(addAppointment(appointment)));
+  };
+};
 
 export const addFood = food => {
   return {
@@ -49,6 +69,23 @@ export const addNsaid = nsaid => {
   };
 };
 
+export const addPractitioner = practitioner => {
+  return {
+    type: ADD_PRACTITIONER,
+    payload: { practitioner }
+  };
+};
+
+export const startAddPractitioner = practitioner => {
+  return (dispatch, getState) => {
+    const userId = getState().user.userInfo.id;
+    database
+      .ref(`users/${userId}/logs/practitioners`)
+      .push(practitioner)
+      .then(dispatch(addPractitioner(practitioner)));
+  };
+};
+
 export const addSupplement = supplement => {
   return {
     type: ADD_SUPPLEMENT,
@@ -80,28 +117,21 @@ export const startGetLogs = () => {
       .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
-        let food = [];
-        snapshot.child('food').forEach(childSnapshot => {
-          food.push(childSnapshot.val());
-        });
-        let movement = [];
-        snapshot.child('movement').forEach(childSnapshot => {
-          movement.push(childSnapshot.val());
-        });
-        let nsaid = [];
-        snapshot.child('nsaid').forEach(childSnapshot => {
-          nsaid.push(childSnapshot.val());
-        });
-        let supplements = [];
-        snapshot.child('supplements').forEach(childSnapshot => {
-          supplements.push(childSnapshot.val());
-        });
+        function generateLog(logName) {
+          let log = [];
+          snapshot.child(`${logName}`).forEach(childSnapshot => {
+            log.push(childSnapshot.val());
+          });
+          return sortby(log, [logItem => logItem.toLowerCase()]);
+        }
         dispatch(
           getLogs({
-            food,
-            movement,
-            nsaid,
-            supplements
+            appointments: generateLog('appointments'),
+            food: generateLog('food'),
+            movement: generateLog('movement'),
+            nsaid: generateLog('nsaid'),
+            practitioners: generateLog('practitioners'),
+            supplements: generateLog('supplements')
           })
         );
       });

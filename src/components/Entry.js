@@ -10,6 +10,7 @@ import capitalize from 'lodash.capitalize';
 function Entry(props) {
   const { entry, startRemoveEntry } = props;
   const {
+    appointments,
     date,
     food,
     id,
@@ -108,6 +109,19 @@ function Entry(props) {
         title={formattedDate}
       >
         <Tabs>
+          <Tab tab="Appointments" key="appointments">
+            {appointments.map((appointment, index) => (
+              <div key={index}>
+                <DataPoint label="Type" data={appointment.type} />
+                <DataPoint
+                  label="Practitioner"
+                  data={appointment.practitioner}
+                />
+                <DataPoint label="Notes" data={appointment.notes} />
+              </div>
+            ))}
+          </Tab>
+
           <Tab tab="Diet" key="diet">
             <DataPoint label="Diet" data={food.diet.type} />
             <DataPoint label="Notes" data={food.diet.notes} />

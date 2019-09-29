@@ -59,6 +59,7 @@ export const DatePicker = CreateAntField(AntDatePicker);
 export const Input = CreateAntField(AntInput);
 export const InputNumber = CreateAntField(AntInputNumber);
 export const Option = AntSelect.Option;
+export const Password = CreateAntField(AntInput.Password);
 export const RadioGroup = CreateAntField(AntRadio.Group);
 export const Rate = CreateAntField(AntRate);
 export const Select = CreateAntField(AntSelect);

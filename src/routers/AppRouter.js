@@ -32,7 +32,7 @@ function AppRouter(props) {
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.user.userInfo.isLoggedIn
+  isLoggedIn: state.user.profile.id
 });
 
 export default connect(mapStateToProps)(AppRouter);

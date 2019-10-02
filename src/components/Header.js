@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { startLogout } from '../redux/actions/userInfo';
+import { startLogout } from '../redux/actions/profile';
 
 function Header(props) {
   const { isLoggedIn, startLogout } = props;
+
   return (
     <div>
       <h1>Callie's Journal</h1>
@@ -24,6 +25,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  undefined,
+  null,
   mapDispatchToProps
 )(Header);

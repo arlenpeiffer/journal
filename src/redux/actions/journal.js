@@ -10,7 +10,7 @@ export const addEntry = entry => {
 
 export const startAddEntry = entry => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/journal`)
       .push(entry)
@@ -34,7 +34,7 @@ export const editEntry = (editedEntry, id) => {
 
 export const startEditEntry = (editedEntry, id) => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/journal/` + id)
       .update({
@@ -56,7 +56,7 @@ export const getJournal = journal => {
 
 export const startGetJournal = () => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/journal`)
       .once('value')
@@ -96,7 +96,7 @@ export const removeEntry = id => {
 
 export const startRemoveEntry = id => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/journal/` + id)
       .remove()

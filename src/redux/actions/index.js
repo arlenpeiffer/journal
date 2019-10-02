@@ -15,6 +15,8 @@ export const ADD_PRACTITIONER = 'ADD_PRACTITIONER';
 export const ADD_SUPPLEMENT = 'ADD_SUPPLEMENT';
 export const GET_LOGS = 'GET_LOGS';
 export const REMOVE_SUPPLEMENT = 'REMOVE_SUPPLEMENT';
-// userInfo
-export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN';
-export const SET_IS_LOGGED_OUT = 'SET_IS_LOGGED_OUT';
+// profile
+export const ADD_PROFILE = 'ADD_PROFILE';
+export const GET_PROFILE = 'GET_PROFILE';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';

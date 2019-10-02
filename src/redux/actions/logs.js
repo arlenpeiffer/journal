@@ -20,7 +20,7 @@ export const addAppointment = appointment => {
 
 export const startAddAppointment = appointment => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/appointments`)
       .push(appointment)
@@ -37,7 +37,7 @@ export const addFood = food => {
 
 export const startAddFood = food => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/food`)
       .push(food)
@@ -54,7 +54,7 @@ export const addMovement = movement => {
 
 export const startAddMovement = movement => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/movement`)
       .push(movement)
@@ -78,7 +78,7 @@ export const addPractitioner = practitioner => {
 
 export const startAddPractitioner = practitioner => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/practitioners`)
       .push(practitioner)
@@ -95,7 +95,7 @@ export const addSupplement = supplement => {
 
 export const startAddSupplement = supplement => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/supplements`)
       .push(supplement)
@@ -112,7 +112,7 @@ export const getLogs = logs => {
 
 export const startGetLogs = () => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs`)
       .once('value')
@@ -147,7 +147,7 @@ export const removeSupplement = supplement => {
 
 export const startRemoveSupplement = supplement => {
   return (dispatch, getState) => {
-    const userId = getState().user.userInfo.id;
+    const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/supplements`)
       .once('value')

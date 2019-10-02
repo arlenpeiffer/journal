@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { Input, Password } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
+
+import { startAddProfile } from '../redux/actions/profile';
 
 const initialValues = {
   name: {
@@ -32,12 +35,14 @@ const validationSchema = Yup.object().shape({
   )
 });
 
-function SignUp() {
+function SignUp(props) {
+  const { startAddProfile } = props;
+
   return (
     <div>
       <Formik
         initialValues={initialValues}
-        onSubmit={values => console.log(values)}
+        onSubmit={values => startAddProfile(values)}
         validationSchema={validationSchema}
         render={({ handleSubmit }) => (
           <div>
@@ -95,4 +100,12 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+const mapDispatchToProps = dispatch => ({
+  startAddProfile: (email, password) =>
+    dispatch(startAddProfile(email, password))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignUp);

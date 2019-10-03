@@ -10,6 +10,7 @@ import {
 } from '../actions';
 import { database } from '../../firebase';
 import sortby from 'lodash.sortby';
+import { decrementRequests, incrementRequests } from './requests';
 
 export const addAppointment = appointment => {
   return {
@@ -113,6 +114,7 @@ export const getLogs = logs => {
 export const startGetLogs = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
+    dispatch(incrementRequests());
     database
       .ref(`users/${userId}/logs`)
       .once('value')
@@ -134,6 +136,7 @@ export const startGetLogs = () => {
             supplements: generateLog('supplements')
           })
         );
+        dispatch(decrementRequests());
       });
   };
 };

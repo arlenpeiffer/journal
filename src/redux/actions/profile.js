@@ -1,5 +1,6 @@
 import { ADD_PROFILE, GET_PROFILE, LOGIN, LOGOUT } from '../actions';
 import { firebase } from '../../firebase';
+import { decrementRequests, incrementRequests } from './requests';
 
 export const addProfile = profile => {
   return {
@@ -36,6 +37,7 @@ export const getProfile = profile => {
 export const startGetProfile = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
+    dispatch(incrementRequests());
     firebase
       .database()
       .ref(`users/${userId}/profile`)
@@ -46,6 +48,7 @@ export const startGetProfile = () => {
         const name = snapshot.child('name').val();
         const profile = { email, id, name };
         dispatch(getProfile(profile));
+        dispatch(decrementRequests());
       });
   };
 };

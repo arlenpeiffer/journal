@@ -1,5 +1,6 @@
 import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
 import { database } from '../../firebase';
+import { decrementRequests, incrementRequests } from './requests';
 
 export const addEntry = entry => {
   return {
@@ -57,6 +58,7 @@ export const getJournal = journal => {
 export const startGetJournal = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
+    dispatch(incrementRequests());
     database
       .ref(`users/${userId}/journal`)
       .once('value')
@@ -83,6 +85,7 @@ export const startGetJournal = () => {
           });
         });
         dispatch(getJournal(journal));
+        dispatch(decrementRequests());
       });
   };
 };

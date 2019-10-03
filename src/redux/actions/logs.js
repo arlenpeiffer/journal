@@ -5,6 +5,7 @@ import {
   ADD_NSAID,
   ADD_PRACTITIONER,
   ADD_SUPPLEMENT,
+  CLEAR_LOGS,
   GET_LOGS,
   REMOVE_SUPPLEMENT
 } from '../actions';
@@ -101,6 +102,12 @@ export const startAddSupplement = supplement => {
       .ref(`users/${userId}/logs/supplements`)
       .push(supplement)
       .then(dispatch(addSupplement(supplement)));
+  };
+};
+
+export const clearLogs = () => {
+  return {
+    type: CLEAR_LOGS
   };
 };
 

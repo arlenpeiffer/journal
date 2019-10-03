@@ -1,4 +1,10 @@
-import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
+import {
+  ADD_ENTRY,
+  CLEAR_JOURNAL,
+  EDIT_ENTRY,
+  GET_JOURNAL,
+  REMOVE_ENTRY
+} from '../actions';
 import { database } from '../../firebase';
 import { decrementRequests, incrementRequests } from './requests';
 
@@ -23,6 +29,12 @@ export const startAddEntry = entry => {
           })
         );
       });
+  };
+};
+
+export const clearJournal = () => {
+  return {
+    type: CLEAR_JOURNAL
   };
 };
 

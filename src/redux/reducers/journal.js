@@ -1,4 +1,10 @@
-import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
+import {
+  ADD_ENTRY,
+  CLEAR_JOURNAL,
+  EDIT_ENTRY,
+  GET_JOURNAL,
+  REMOVE_ENTRY
+} from '../actions';
 
 const defaultState = [];
 
@@ -7,6 +13,8 @@ export default (state = defaultState, action) => {
     case ADD_ENTRY:
       const { entry } = action.payload;
       return [...state, entry];
+    case CLEAR_JOURNAL:
+      return defaultState;
     case EDIT_ENTRY:
       const { editedEntry } = action.payload;
       return state.map(entry => {

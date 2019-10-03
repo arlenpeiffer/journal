@@ -1,6 +1,14 @@
-import { ADD_PROFILE, GET_PROFILE, LOGIN, LOGOUT } from '../actions';
+import {
+  ADD_PROFILE,
+  CLEAR_PROFILE,
+  GET_PROFILE,
+  LOGIN,
+  LOGOUT
+} from '../actions';
 import { firebase } from '../../firebase';
 import { decrementRequests, incrementRequests } from './requests';
+import { clearJournal } from './journal';
+import { clearLogs } from './logs';
 
 export const addProfile = profile => {
   return {
@@ -24,6 +32,12 @@ export const startAddProfile = values => {
           .set(profile)
           .then(dispatch(addProfile(profile)));
       });
+  };
+};
+
+export const clearProfile = () => {
+  return {
+    type: CLEAR_PROFILE
   };
 };
 
@@ -82,7 +96,11 @@ export const startLogout = () => {
       firebase
         .auth()
         .signOut()
-        .then(() => dispatch(logout()));
+        .then(() => {
+          dispatch(clearJournal());
+          dispatch(clearLogs());
+          dispatch(clearProfile());
+        });
     }
   };
 };

@@ -5,6 +5,7 @@ import {
   ADD_NSAID,
   ADD_PRACTITIONER,
   ADD_SUPPLEMENT,
+  CLEAR_LOGS,
   GET_LOGS,
   REMOVE_SUPPLEMENT
 } from '../actions';
@@ -53,6 +54,8 @@ export default (state = defaultState, action) => {
         ...state,
         supplements: [...state.supplements, action.payload.supplement]
       };
+    case CLEAR_LOGS:
+      return defaultState;
     case GET_LOGS:
       const { logs } = action.payload;
       return logs;

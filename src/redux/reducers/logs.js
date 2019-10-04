@@ -5,9 +5,9 @@ import {
   ADD_NSAID,
   ADD_PRACTITIONER,
   ADD_SUPPLEMENT,
-  CLEAR_LOGS,
-  GET_LOGS,
-  REMOVE_SUPPLEMENT
+  LOGOUT,
+  REMOVE_SUPPLEMENT,
+  REQUEST_LOGS_SUCCESS
 } from '../actions';
 
 const defaultState = {
@@ -54,11 +54,8 @@ export default (state = defaultState, action) => {
         ...state,
         supplements: [...state.supplements, action.payload.supplement]
       };
-    case CLEAR_LOGS:
+    case LOGOUT:
       return defaultState;
-    case GET_LOGS:
-      const { logs } = action.payload;
-      return logs;
     case REMOVE_SUPPLEMENT:
       return {
         ...state,
@@ -66,6 +63,9 @@ export default (state = defaultState, action) => {
           supplement => supplement !== action.payload.supplement
         )
       };
+    case REQUEST_LOGS_SUCCESS:
+      const { logs } = action.payload;
+      return logs;
     default:
       return state;
   }

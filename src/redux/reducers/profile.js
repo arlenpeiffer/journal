@@ -1,9 +1,8 @@
 import {
   ADD_PROFILE,
-  CLEAR_PROFILE,
-  GET_PROFILE,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  REQUEST_PROFILE_SUCCESS
 } from '../actions';
 
 const defaultState = {};
@@ -11,13 +10,12 @@ const defaultState = {};
 export default (state = defaultState, action) => {
   switch (action.type) {
     case ADD_PROFILE:
-      return { ...action.payload.profile };
-    case CLEAR_PROFILE:
-      return defaultState;
-    case GET_PROFILE:
-      return { ...action.payload.profile };
+    case REQUEST_PROFILE_SUCCESS:
+      const { profile } = action.payload;
+      return { ...profile };
     case LOGIN:
-      return { id: action.payload.id };
+      const { id } = action.payload;
+      return { id };
     case LOGOUT:
       return defaultState;
     default:

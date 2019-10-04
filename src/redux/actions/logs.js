@@ -5,13 +5,13 @@ import {
   ADD_NSAID,
   ADD_PRACTITIONER,
   ADD_SUPPLEMENT,
-  CLEAR_LOGS,
-  GET_LOGS,
-  REMOVE_SUPPLEMENT
+  REMOVE_SUPPLEMENT,
+  REQUEST_LOGS,
+  REQUEST_LOGS_FAILURE,
+  REQUEST_LOGS_SUCCESS
 } from '../actions';
 import { database } from '../../firebase';
 import sortby from 'lodash.sortby';
-import { decrementRequests, incrementRequests } from './requests';
 
 export const addAppointment = appointment => {
   return {
@@ -105,15 +105,22 @@ export const startAddSupplement = supplement => {
   };
 };
 
-export const clearLogs = () => {
+export const requestLogs = () => {
   return {
-    type: CLEAR_LOGS
+    type: REQUEST_LOGS
   };
 };
 
-export const getLogs = logs => {
+export const requestLogsFailure = error => {
   return {
-    type: GET_LOGS,
+    type: REQUEST_LOGS_FAILURE,
+    payload: { error }
+  };
+};
+
+export const requestLogsSuccess = logs => {
+  return {
+    type: REQUEST_LOGS_SUCCESS,
     payload: { logs }
   };
 };
@@ -121,7 +128,7 @@ export const getLogs = logs => {
 export const startGetLogs = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    dispatch(incrementRequests());
+    dispatch(requestLogs());
     database
       .ref(`users/${userId}/logs`)
       .once('value')
@@ -134,7 +141,7 @@ export const startGetLogs = () => {
           return sortby(log, [logItem => logItem.toLowerCase()]);
         }
         dispatch(
-          getLogs({
+          requestLogsSuccess({
             appointments: generateLog('appointments'),
             food: generateLog('food'),
             movement: generateLog('movement'),
@@ -143,7 +150,6 @@ export const startGetLogs = () => {
             supplements: generateLog('supplements')
           })
         );
-        dispatch(decrementRequests());
       });
   };
 };

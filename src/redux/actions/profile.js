@@ -1,14 +1,12 @@
 import {
   ADD_PROFILE,
-  CLEAR_PROFILE,
-  GET_PROFILE,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  REQUEST_PROFILE,
+  REQUEST_PROFILE_FAILURE,
+  REQUEST_PROFILE_SUCCESS
 } from '../actions';
 import { firebase } from '../../firebase';
-import { decrementRequests, incrementRequests } from './requests';
-import { clearJournal } from './journal';
-import { clearLogs } from './logs';
 
 export const addProfile = profile => {
   return {
@@ -23,27 +21,36 @@ export const startAddProfile = values => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        const id = user.uid;
-        const profile = { email, id, name };
-        firebase
-          .database()
-          .ref(`users/${id}/profile`)
-          .set(profile)
-          .then(dispatch(addProfile(profile)));
+      .then(() => {
+        firebase.auth().onAuthStateChanged(user => {
+          const id = user.uid;
+          const profile = { email, id, name };
+          firebase
+            .database()
+            .ref(`users/${id}/profile`)
+            .set(profile)
+            .then(dispatch(addProfile(profile)));
+        });
       });
   };
 };
 
-export const clearProfile = () => {
+export const requestProfile = () => {
   return {
-    type: CLEAR_PROFILE
+    type: REQUEST_PROFILE
   };
 };
 
-export const getProfile = profile => {
+export const requestProfileFailure = error => {
   return {
-    type: GET_PROFILE,
+    type: REQUEST_PROFILE_FAILURE,
+    payload: { error }
+  };
+};
+
+export const requestProfileSuccess = profile => {
+  return {
+    type: REQUEST_PROFILE_SUCCESS,
     payload: { profile }
   };
 };
@@ -51,7 +58,7 @@ export const getProfile = profile => {
 export const startGetProfile = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    dispatch(incrementRequests());
+    dispatch(requestProfile());
     firebase
       .database()
       .ref(`users/${userId}/profile`)
@@ -61,8 +68,7 @@ export const startGetProfile = () => {
         const id = snapshot.child('id').val();
         const name = snapshot.child('name').val();
         const profile = { email, id, name };
-        dispatch(getProfile(profile));
-        dispatch(decrementRequests());
+        dispatch(requestProfileSuccess(profile));
       });
   };
 };
@@ -97,9 +103,7 @@ export const startLogout = () => {
         .auth()
         .signOut()
         .then(() => {
-          dispatch(clearJournal());
-          dispatch(clearLogs());
-          dispatch(clearProfile());
+          dispatch(logout());
         });
     }
   };

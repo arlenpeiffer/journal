@@ -11,27 +11,27 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case types.ADD_APPOINTMENT:
+    case types.ADD_APPOINTMENT_SUCCESS:
       return {
         ...state,
         appointments: [...state.appointments, action.payload.appointment].sort()
       };
-    case types.ADD_FOOD:
+    case types.ADD_FOOD_SUCCESS:
       return {
         ...state,
         food: [...state.food, action.payload.food].sort()
       };
-    case types.ADD_MOVEMENT:
+    case types.ADD_MOVEMENT_SUCCESS:
       return {
         ...state,
         movement: [...state.movement, action.payload.movement].sort()
       };
-    case types.ADD_NSAID:
+    case types.ADD_NSAID_SUCCESS:
       return {
         ...state,
         nsaid: [...state.nsaid, action.payload.nsaid]
       };
-    case types.ADD_PRACTITIONER:
+    case types.ADD_PRACTITIONER_SUCCESS:
       return {
         ...state,
         practitioners: [
@@ -39,23 +39,23 @@ export default (state = defaultState, action) => {
           action.payload.practitioner
         ].sort()
       };
-    case types.ADD_SUPPLEMENT:
+    case types.ADD_SUPPLEMENT_SUCCESS:
       return {
         ...state,
         supplements: [...state.supplements, action.payload.supplement]
       };
-    case types.LOGOUT:
+    case types.GET_LOGS_SUCCESS:
+      const { logs } = action.payload;
+      return logs;
+    case types.LOGOUT_SUCCESS:
       return defaultState;
-    case types.REMOVE_SUPPLEMENT:
+    case types.REMOVE_SUPPLEMENT_SUCCESS:
       return {
         ...state,
         supplements: state.supplements.filter(
           supplement => supplement !== action.payload.supplement
         )
       };
-    case types.REQUEST_LOGS_SUCCESS:
-      const { logs } = action.payload;
-      return logs;
     default:
       return state;
   }

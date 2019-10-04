@@ -2,122 +2,207 @@ import * as types from '../actions';
 import { database } from '../../firebase';
 import sortby from 'lodash.sortby';
 
-export const addAppointment = appointment => {
+// ADD_APPOINTMENT //
+export const addAppointmentRequest = () => {
   return {
-    type: types.ADD_APPOINTMENT,
+    type: types.ADD_APPOINTMENT_REQUEST
+  };
+};
+
+export const addAppointmentSuccess = appointment => {
+  return {
+    type: types.ADD_APPOINTMENT_SUCCESS,
     payload: { appointment }
   };
 };
 
-export const startAddAppointment = appointment => {
+export const addAppointmentFailure = error => {
+  return {
+    type: types.ADD_APPOINTMENT_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addAppointment = appointment => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/appointments`)
       .push(appointment)
-      .then(dispatch(addAppointment(appointment)));
+      .then(dispatch(addAppointmentSuccess(appointment)));
   };
 };
 
-export const addFood = food => {
+// ADD_FOOD //
+export const addFoodRequest = () => {
   return {
-    type: types.ADD_FOOD,
+    type: types.ADD_FOOD_REQUEST
+  };
+};
+
+export const addFoodSuccess = food => {
+  return {
+    type: types.ADD_FOOD_SUCCESS,
     payload: { food }
   };
 };
 
-export const startAddFood = food => {
+export const addFoodFailure = error => {
+  return {
+    type: types.ADD_FOOD_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addFood = food => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/food`)
       .push(food)
-      .then(dispatch(addFood(food)));
+      .then(dispatch(addFoodSuccess(food)));
   };
 };
 
-export const addMovement = movement => {
+// ADD_MOVEMENT //
+export const addMovementRequest = () => {
   return {
-    type: types.ADD_MOVEMENT,
+    type: types.ADD_MOVEMENT_REQUEST
+  };
+};
+
+export const addMovementSuccess = movement => {
+  return {
+    type: types.ADD_MOVEMENT_SUCCESS,
     payload: { movement }
   };
 };
 
-export const startAddMovement = movement => {
+export const addMovementFailure = error => {
+  return {
+    type: types.ADD_MOVEMENT_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addMovement = movement => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/movement`)
       .push(movement)
-      .then(dispatch(addMovement(movement)));
+      .then(dispatch(addMovementSuccess(movement)));
   };
 };
 
-export const addNsaid = nsaid => {
+// ADD_NSAID //
+export const addNsaidRequest = () => {
   return {
-    type: types.ADD_NSAID,
+    type: types.ADD_NSAID_REQUEST
+  };
+};
+
+export const addNsaidSuccess = nsaid => {
+  return {
+    type: types.ADD_NSAID_SUCCESS,
     payload: { nsaid }
   };
 };
 
-export const addPractitioner = practitioner => {
+export const addNsaidFailure = error => {
   return {
-    type: types.ADD_PRACTITIONER,
+    type: types.ADD_NSAID_FAILURE,
+    payload: { error }
+  };
+};
+
+// ADD_PRACTITIONER //
+export const addPractitionerRequest = () => {
+  return {
+    type: types.ADD_PRACTITIONER_REQUEST
+  };
+};
+
+export const addPractitionerSuccess = practitioner => {
+  return {
+    type: types.ADD_PRACTITIONER_SUCCESS,
     payload: { practitioner }
   };
 };
 
-export const startAddPractitioner = practitioner => {
+export const addPractitionerFailure = error => {
+  return {
+    type: types.ADD_PRACTITIONER_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addPractitioner = practitioner => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/practitioners`)
       .push(practitioner)
-      .then(dispatch(addPractitioner(practitioner)));
+      .then(dispatch(addPractitionerSuccess(practitioner)));
   };
 };
 
-export const addSupplement = supplement => {
+// ADD_SUPPLEMENT //
+export const addSupplementRequest = () => {
   return {
-    type: types.ADD_SUPPLEMENT,
+    type: types.ADD_SUPPLEMENT_REQUEST
+  };
+};
+
+export const addSupplementSuccess = supplement => {
+  return {
+    type: types.ADD_SUPPLEMENT_SUCCESS,
     payload: { supplement }
   };
 };
 
-export const startAddSupplement = supplement => {
+export const addSupplementFailure = error => {
+  return {
+    type: types.ADD_SUPPLEMENT_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addSupplement = supplement => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
       .ref(`users/${userId}/logs/supplements`)
       .push(supplement)
-      .then(dispatch(addSupplement(supplement)));
+      .then(dispatch(addSupplementSuccess(supplement)));
   };
 };
 
-export const requestLogs = () => {
+// GET_LOGS //
+export const getLogsRequest = () => {
   return {
-    type: types.REQUEST_LOGS
+    type: types.GET_LOGS_REQUEST
   };
 };
 
-export const requestLogsFailure = error => {
+export const getLogsSuccess = logs => {
   return {
-    type: types.REQUEST_LOGS_FAILURE,
-    payload: { error }
-  };
-};
-
-export const requestLogsSuccess = logs => {
-  return {
-    type: types.REQUEST_LOGS_SUCCESS,
+    type: types.GET_LOGS_SUCCESS,
     payload: { logs }
   };
 };
 
-export const startGetLogs = () => {
+export const getLogsFailure = error => {
+  return {
+    type: types.GET_LOGS_FAILURE,
+    payload: { error }
+  };
+};
+
+export const getLogs = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    dispatch(requestLogs());
+    dispatch(getLogsRequest());
     database
       .ref(`users/${userId}/logs`)
       .once('value')
@@ -130,7 +215,7 @@ export const startGetLogs = () => {
           return sortby(log, [logItem => logItem.toLowerCase()]);
         }
         dispatch(
-          requestLogsSuccess({
+          getLogsSuccess({
             appointments: generateLog('appointments'),
             food: generateLog('food'),
             movement: generateLog('movement'),
@@ -143,14 +228,28 @@ export const startGetLogs = () => {
   };
 };
 
-export const removeSupplement = supplement => {
+// REMOVE_SUPPLEMENT //
+export const removeSupplementRequest = () => {
   return {
-    type: types.REMOVE_SUPPLEMENT,
+    type: types.REMOVE_SUPPLEMENT_REQUEST
+  };
+};
+
+export const removeSupplementSuccess = supplement => {
+  return {
+    type: types.REMOVE_SUPPLEMENT_SUCCESS,
     payload: { supplement }
   };
 };
 
-export const startRemoveSupplement = supplement => {
+export const removeSupplementFailure = error => {
+  return {
+    type: types.REMOVE_SUPPLEMENT_FAILURE,
+    payload: { error }
+  };
+};
+
+export const removeSupplement = supplement => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
@@ -162,7 +261,7 @@ export const startRemoveSupplement = supplement => {
             return database
               .ref(`users/${userId}/logs/supplements/${childSnapshot.key}`)
               .remove()
-              .then(dispatch(removeSupplement(supplement)));
+              .then(dispatch(removeSupplementSuccess(supplement)));
           }
         });
       });

@@ -1,14 +1,28 @@
 import * as types from '../actions';
 import { database } from '../../firebase';
 
-export const addEntry = entry => {
+// ADD_ENTRY //
+export const addEntryRequest = () => {
   return {
-    type: types.ADD_ENTRY,
+    type: types.ADD_ENTRY_REQUEST
+  };
+};
+
+export const addEntrySuccess = entry => {
+  return {
+    type: types.ADD_ENTRY_SUCCESS,
     payload: { entry }
   };
 };
 
-export const startAddEntry = entry => {
+export const addEntryFailure = error => {
+  return {
+    type: types.ADD_ENTRY_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addEntry = entry => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
@@ -16,7 +30,7 @@ export const startAddEntry = entry => {
       .push(entry)
       .then(ref => {
         dispatch(
-          addEntry({
+          addEntrySuccess({
             ...entry,
             id: ref.key
           })
@@ -25,52 +39,67 @@ export const startAddEntry = entry => {
   };
 };
 
-export const editEntry = (editedEntry, id) => {
+// EDIT_ENTRY //
+export const editEntryRequest = () => {
   return {
-    type: types.EDIT_ENTRY,
+    type: types.ADD_ENTRY_REQUEST
+  };
+};
+
+export const editEntrySuccess = (editedEntry, id) => {
+  return {
+    type: types.EDIT_ENTRY_SUCCESS,
     payload: { editedEntry, id }
   };
 };
 
-export const startEditEntry = (editedEntry, id) => {
+export const editEntryFailure = error => {
+  return {
+    type: types.EDIT_ENTRY_FAILURE,
+    payload: { error }
+  };
+};
+
+export const editEntry = (editedEntry, id) => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
-      .ref(`users/${userId}/journal/` + id)
+      .ref(`users/${userId}/journal/${id}`)
       .update({
         ...editedEntry,
         id: null
       })
       .then(() => {
-        dispatch(editEntry(editedEntry, id));
+        dispatch(editEntrySuccess(editedEntry, id));
       });
   };
 };
 
-export const requestJournal = () => {
+// GET_JOURNAL //
+export const getJournalRequest = () => {
   return {
-    type: types.REQUEST_JOURNAL
+    type: types.GET_JOURNAL_REQUEST
   };
 };
 
-export const requestJournalFailure = error => {
+export const getJournalSuccess = journal => {
   return {
-    type: types.REQUEST_JOURNAL_FAILURE,
-    payload: { error }
-  };
-};
-
-export const requestJournalSuccess = journal => {
-  return {
-    type: types.REQUEST_JOURNAL_SUCCESS,
+    type: types.GET_JOURNAL_SUCCESS,
     payload: { journal }
   };
 };
 
-export const startGetJournal = () => {
+export const getJournalFailure = error => {
+  return {
+    type: types.GET_JOURNAL_FAILURE,
+    payload: { error }
+  };
+};
+
+export const getJournal = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    dispatch(requestJournal());
+    dispatch(getJournalRequest());
     database
       .ref(`users/${userId}/journal`)
       .once('value')
@@ -96,26 +125,40 @@ export const startGetJournal = () => {
             travel: childSnapshot.val().travel
           });
         });
-        dispatch(requestJournalSuccess(journal));
+        dispatch(getJournalSuccess(journal));
       });
   };
 };
 
-export const removeEntry = id => {
+// REMOVE_ENTRY //
+export const removeEntryRequest = () => {
   return {
-    type: types.REMOVE_ENTRY,
+    type: types.REMOVE_ENTRY_REQUEST
+  };
+};
+
+export const removeEntrySuccess = id => {
+  return {
+    type: types.REMOVE_ENTRY_SUCCESS,
     payload: { id }
   };
 };
 
-export const startRemoveEntry = id => {
+export const removeEntryFailure = error => {
+  return {
+    type: types.REMOVE_ENTRY_FAILURE,
+    payload: { error }
+  };
+};
+
+export const removeEntry = id => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     database
-      .ref(`users/${userId}/journal/` + id)
+      .ref(`users/${userId}/journal/${id}`)
       .remove()
       .then(() => {
-        dispatch(removeEntry(id));
+        dispatch(removeEntrySuccess(id));
       });
   };
 };

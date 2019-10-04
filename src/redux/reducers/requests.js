@@ -4,16 +4,16 @@ const defaultState = 0;
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case types.REQUEST_JOURNAL:
-    case types.REQUEST_LOGS:
-    case types.REQUEST_PROFILE:
+    case types.GET_JOURNAL_REQUEST:
+    case types.GET_LOGS_REQUEST:
+    case types.GET_PROFILE_REQUEST:
       return state + 1;
-    case types.REQUEST_JOURNAL_FAILURE:
-    case types.REQUEST_JOURNAL_SUCCESS:
-    case types.REQUEST_LOGS_FAILURE:
-    case types.REQUEST_LOGS_SUCCESS:
-    case types.REQUEST_PROFILE_FAILURE:
-    case types.REQUEST_PROFILE_SUCCESS:
+    case types.GET_JOURNAL_SUCCESS:
+    case types.GET_JOURNAL_FAILURE:
+    case types.GET_LOGS_SUCCESS:
+    case types.GET_LOGS_FAILURE:
+    case types.GET_PROFILE_SUCCESS:
+    case types.GET_PROFILE_FAILURE:
       return state - 1;
     default:
       return state;

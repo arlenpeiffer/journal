@@ -5,9 +5,9 @@ import configureStore from './redux/store';
 import { firebase } from './firebase';
 
 import AppRouter, { history } from './routers/AppRouter';
-import { startGetJournal } from './redux/actions/journal';
-import { startGetLogs } from './redux/actions/logs';
-import { startGetProfile, login, startLogout } from './redux/actions/profile';
+import { getJournal } from './redux/actions/journal';
+import { getLogs } from './redux/actions/logs';
+import { getProfile, login, startLogout } from './redux/actions/profile';
 
 const store = configureStore();
 
@@ -28,9 +28,9 @@ firebase
       if (user) {
         history.push('/view');
         store.dispatch(login(user.uid));
-        store.dispatch(startGetJournal());
-        store.dispatch(startGetLogs());
-        store.dispatch(startGetProfile());
+        store.dispatch(getJournal());
+        store.dispatch(getLogs());
+        store.dispatch(getProfile());
       } else {
         history.push('/');
         store.dispatch(startLogout());

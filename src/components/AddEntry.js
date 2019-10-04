@@ -2,30 +2,30 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import EntryForm from './EntryForm';
-import { startAddEntry } from '../redux/actions/journal';
+import { addEntry } from '../redux/actions/journal';
 import {
-  startAddAppointment,
-  startAddFood,
-  startAddMovement,
-  startAddPractitioner
+  addAppointment,
+  addFood,
+  addMovement,
+  addPractitioner
 } from '../redux/actions/logs';
 
 function AddEntry(props) {
   const {
+    addAppointment,
+    addEntry,
+    addFood,
+    addMovement,
+    addPractitioner,
     history,
-    logs,
-    startAddAppointment,
-    startAddEntry,
-    startAddFood,
-    startAddMovement,
-    startAddPractitioner
+    logs
   } = props;
 
   const handleLogAppointment = entry => {
     entry.appointments.map(appointment =>
       logs.appointments.find(logItem => appointment.type === logItem)
         ? null
-        : startAddAppointment(appointment.type)
+        : addAppointment(appointment.type)
     );
   };
 
@@ -34,7 +34,7 @@ function AddEntry(props) {
       meal.items.map(food =>
         logs.food.find(logItem => food.name === logItem)
           ? null
-          : startAddFood(food.name)
+          : addFood(food.name)
       )
     );
   };
@@ -43,7 +43,7 @@ function AddEntry(props) {
     entry.movement.map(movement =>
       logs.movement.find(logItem => movement.type === logItem)
         ? null
-        : startAddMovement(movement.type)
+        : addMovement(movement.type)
     );
   };
 
@@ -51,12 +51,12 @@ function AddEntry(props) {
     entry.appointments.map(appointment =>
       logs.practitioners.find(logItem => appointment.practitioner === logItem)
         ? null
-        : startAddPractitioner(appointment.practitioner)
+        : addPractitioner(appointment.practitioner)
     );
   };
 
   const handleSubmitEntry = entry => {
-    startAddEntry(entry);
+    addEntry(entry);
     handleLogAppointment(entry);
     handleLogFood(entry);
     handleLogMovement(entry);
@@ -77,13 +77,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  startAddAppointment: appointment =>
-    dispatch(startAddAppointment(appointment)),
-  startAddEntry: entry => dispatch(startAddEntry(entry)),
-  startAddFood: food => dispatch(startAddFood(food)),
-  startAddMovement: movement => dispatch(startAddMovement(movement)),
-  startAddPractitioner: practitioner =>
-    dispatch(startAddPractitioner(practitioner))
+  addAppointment: appointment => dispatch(addAppointment(appointment)),
+  addEntry: entry => dispatch(addEntry(entry)),
+  addFood: food => dispatch(addFood(food)),
+  addMovement: movement => dispatch(addMovement(movement)),
+  addPractitioner: practitioner => dispatch(addPractitioner(practitioner))
 });
 
 export default connect(

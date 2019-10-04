@@ -1,16 +1,9 @@
-import {
-  ADD_PROFILE,
-  LOGIN,
-  LOGOUT,
-  REQUEST_PROFILE,
-  REQUEST_PROFILE_FAILURE,
-  REQUEST_PROFILE_SUCCESS
-} from '../actions';
+import * as types from '../actions';
 import { firebase } from '../../firebase';
 
 export const addProfile = profile => {
   return {
-    type: ADD_PROFILE,
+    type: types.ADD_PROFILE,
     payload: { profile }
   };
 };
@@ -37,20 +30,20 @@ export const startAddProfile = values => {
 
 export const requestProfile = () => {
   return {
-    type: REQUEST_PROFILE
+    type: types.REQUEST_PROFILE
   };
 };
 
 export const requestProfileFailure = error => {
   return {
-    type: REQUEST_PROFILE_FAILURE,
+    type: types.REQUEST_PROFILE_FAILURE,
     payload: { error }
   };
 };
 
 export const requestProfileSuccess = profile => {
   return {
-    type: REQUEST_PROFILE_SUCCESS,
+    type: types.REQUEST_PROFILE_SUCCESS,
     payload: { profile }
   };
 };
@@ -75,7 +68,7 @@ export const startGetProfile = () => {
 
 export const login = id => {
   return {
-    type: LOGIN,
+    type: types.LOGIN,
     payload: { id }
   };
 };
@@ -91,7 +84,7 @@ export const startLogin = values => {
 
 export const logout = () => {
   return {
-    type: LOGOUT
+    type: types.LOGOUT
   };
 };
 

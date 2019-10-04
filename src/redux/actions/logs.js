@@ -1,21 +1,10 @@
-import {
-  ADD_APPOINTMENT,
-  ADD_FOOD,
-  ADD_MOVEMENT,
-  ADD_NSAID,
-  ADD_PRACTITIONER,
-  ADD_SUPPLEMENT,
-  REMOVE_SUPPLEMENT,
-  REQUEST_LOGS,
-  REQUEST_LOGS_FAILURE,
-  REQUEST_LOGS_SUCCESS
-} from '../actions';
+import * as types from '../actions';
 import { database } from '../../firebase';
 import sortby from 'lodash.sortby';
 
 export const addAppointment = appointment => {
   return {
-    type: ADD_APPOINTMENT,
+    type: types.ADD_APPOINTMENT,
     payload: { appointment }
   };
 };
@@ -32,7 +21,7 @@ export const startAddAppointment = appointment => {
 
 export const addFood = food => {
   return {
-    type: ADD_FOOD,
+    type: types.ADD_FOOD,
     payload: { food }
   };
 };
@@ -49,7 +38,7 @@ export const startAddFood = food => {
 
 export const addMovement = movement => {
   return {
-    type: ADD_MOVEMENT,
+    type: types.ADD_MOVEMENT,
     payload: { movement }
   };
 };
@@ -66,14 +55,14 @@ export const startAddMovement = movement => {
 
 export const addNsaid = nsaid => {
   return {
-    type: ADD_NSAID,
+    type: types.ADD_NSAID,
     payload: { nsaid }
   };
 };
 
 export const addPractitioner = practitioner => {
   return {
-    type: ADD_PRACTITIONER,
+    type: types.ADD_PRACTITIONER,
     payload: { practitioner }
   };
 };
@@ -90,7 +79,7 @@ export const startAddPractitioner = practitioner => {
 
 export const addSupplement = supplement => {
   return {
-    type: ADD_SUPPLEMENT,
+    type: types.ADD_SUPPLEMENT,
     payload: { supplement }
   };
 };
@@ -107,20 +96,20 @@ export const startAddSupplement = supplement => {
 
 export const requestLogs = () => {
   return {
-    type: REQUEST_LOGS
+    type: types.REQUEST_LOGS
   };
 };
 
 export const requestLogsFailure = error => {
   return {
-    type: REQUEST_LOGS_FAILURE,
+    type: types.REQUEST_LOGS_FAILURE,
     payload: { error }
   };
 };
 
 export const requestLogsSuccess = logs => {
   return {
-    type: REQUEST_LOGS_SUCCESS,
+    type: types.REQUEST_LOGS_SUCCESS,
     payload: { logs }
   };
 };
@@ -156,7 +145,7 @@ export const startGetLogs = () => {
 
 export const removeSupplement = supplement => {
   return {
-    type: REMOVE_SUPPLEMENT,
+    type: types.REMOVE_SUPPLEMENT,
     payload: { supplement }
   };
 };

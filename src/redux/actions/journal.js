@@ -1,16 +1,9 @@
-import {
-  ADD_ENTRY,
-  EDIT_ENTRY,
-  REMOVE_ENTRY,
-  REQUEST_JOURNAL,
-  REQUEST_JOURNAL_FAILURE,
-  REQUEST_JOURNAL_SUCCESS
-} from '../actions';
+import * as types from '../actions';
 import { database } from '../../firebase';
 
 export const addEntry = entry => {
   return {
-    type: ADD_ENTRY,
+    type: types.ADD_ENTRY,
     payload: { entry }
   };
 };
@@ -34,7 +27,7 @@ export const startAddEntry = entry => {
 
 export const editEntry = (editedEntry, id) => {
   return {
-    type: EDIT_ENTRY,
+    type: types.EDIT_ENTRY,
     payload: { editedEntry, id }
   };
 };
@@ -56,20 +49,20 @@ export const startEditEntry = (editedEntry, id) => {
 
 export const requestJournal = () => {
   return {
-    type: REQUEST_JOURNAL
+    type: types.REQUEST_JOURNAL
   };
 };
 
 export const requestJournalFailure = error => {
   return {
-    type: REQUEST_JOURNAL_FAILURE,
+    type: types.REQUEST_JOURNAL_FAILURE,
     payload: { error }
   };
 };
 
 export const requestJournalSuccess = journal => {
   return {
-    type: REQUEST_JOURNAL_SUCCESS,
+    type: types.REQUEST_JOURNAL_SUCCESS,
     payload: { journal }
   };
 };
@@ -110,7 +103,7 @@ export const startGetJournal = () => {
 
 export const removeEntry = id => {
   return {
-    type: REMOVE_ENTRY,
+    type: types.REMOVE_ENTRY,
     payload: { id }
   };
 };

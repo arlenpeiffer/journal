@@ -1,4 +1,4 @@
-import { RESET_FILTERS, SET_FILTERS } from '../actions';
+import * as types from '../actions';
 
 const defaultState = {
   date: {
@@ -11,9 +11,9 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case RESET_FILTERS:
+    case types.RESET_FILTERS:
       return { ...defaultState };
-    case SET_FILTERS:
+    case types.SET_FILTERS:
       const { filters } = action.payload;
       return { ...filters };
     default:

@@ -80,39 +80,3 @@ export const getProfile = () => {
       });
   };
 };
-
-export const login = id => {
-  return {
-    type: types.LOGIN_SUCCESS,
-    payload: { id }
-  };
-};
-
-export const startLogin = values => {
-  const { email, password } = values;
-  return () => {
-    firebase.auth().signInWithEmailAndPassword(email, password);
-    // ? dispatch login() ?
-    // .catch(error => console.log(error));
-  };
-};
-
-export const logout = () => {
-  return {
-    type: types.LOGOUT_SUCCESS
-  };
-};
-
-export const startLogout = () => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    if (userId) {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          dispatch(logout());
-        });
-    }
-  };
-};

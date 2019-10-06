@@ -6,7 +6,7 @@ import { Input, Password } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
-import { startLogin } from '../redux/actions/profile';
+import { login } from '../redux/actions/user';
 
 const initialValues = {
   email: '',
@@ -19,13 +19,13 @@ const validationSchema = Yup.object().shape({
 });
 
 function Login(props) {
-  const { startLogin } = props;
+  const { login } = props;
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={values => {
-        startLogin(values);
+        login(values);
       }}
       validationSchema={validationSchema}
       render={({ handleSubmit }) => (
@@ -64,7 +64,7 @@ function Login(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startLogin: (email, password) => dispatch(startLogin(email, password))
+  login: (email, password) => dispatch(login(email, password))
 });
 
 export default connect(

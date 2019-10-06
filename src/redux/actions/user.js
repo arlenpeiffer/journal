@@ -16,7 +16,7 @@ export const loginSuccess = id => {
 
 export const loginFailure = error => {
   return {
-    type: types.LOGOUT_FAILURE,
+    type: types.LOGIN_FAILURE,
     payload: { error }
   };
 };

@@ -1,5 +1,5 @@
 import * as types from '../actions';
-import { database } from '../../firebase';
+import { firebase } from '../../firebase';
 import sortby from 'lodash.sortby';
 
 // ADD_APPOINTMENT //
@@ -26,10 +26,13 @@ export const addAppointmentFailure = error => {
 export const addAppointment = appointment => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addAppointmentRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/logs/appointments`)
       .push(appointment)
-      .then(dispatch(addAppointmentSuccess(appointment)));
+      .then(dispatch(addAppointmentSuccess(appointment)))
+      .catch(error => dispatch(addAppointmentFailure(error)));
   };
 };
 
@@ -57,10 +60,13 @@ export const addFoodFailure = error => {
 export const addFood = food => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addFoodRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/logs/food`)
       .push(food)
-      .then(dispatch(addFoodSuccess(food)));
+      .then(dispatch(addFoodSuccess(food)))
+      .catch(error => dispatch(addFoodFailure(error)));
   };
 };
 
@@ -88,10 +94,13 @@ export const addMovementFailure = error => {
 export const addMovement = movement => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addMovementRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/logs/movement`)
       .push(movement)
-      .then(dispatch(addMovementSuccess(movement)));
+      .then(dispatch(addMovementSuccess(movement)))
+      .catch(error => dispatch(addMovementFailure(error)));
   };
 };
 
@@ -140,10 +149,13 @@ export const addPractitionerFailure = error => {
 export const addPractitioner = practitioner => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addPractitionerRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/logs/practitioners`)
       .push(practitioner)
-      .then(dispatch(addPractitionerSuccess(practitioner)));
+      .then(dispatch(addPractitionerSuccess(practitioner)))
+      .catch(error => dispatch(addPractitionerFailure(error)));
   };
 };
 
@@ -171,10 +183,13 @@ export const addSupplementFailure = error => {
 export const addSupplement = supplement => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addSupplementRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/logs/supplements`)
       .push(supplement)
-      .then(dispatch(addSupplementSuccess(supplement)));
+      .then(dispatch(addSupplementSuccess(supplement)))
+      .catch(error => dispatch(addSupplementFailure(error)));
   };
 };
 
@@ -203,7 +218,8 @@ export const getLogs = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     dispatch(getLogsRequest());
-    database
+    firebase
+      .database()
       .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
@@ -224,7 +240,8 @@ export const getLogs = () => {
             supplements: generateLog('supplements')
           })
         );
-      });
+      })
+      .catch(error => dispatch(getLogsFailure(error)));
   };
 };
 
@@ -252,18 +269,22 @@ export const removeSupplementFailure = error => {
 export const removeSupplement = supplement => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(removeSupplementRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/logs/supplements`)
       .once('value')
       .then(snapshot => {
         snapshot.forEach(childSnapshot => {
           if (childSnapshot.val() === supplement) {
-            return database
+            return firebase
+              .database()
               .ref(`users/${userId}/logs/supplements/${childSnapshot.key}`)
               .remove()
               .then(dispatch(removeSupplementSuccess(supplement)));
           }
         });
-      });
+      })
+      .catch(error => dispatch(removeSupplementFailure(error)));
   };
 };

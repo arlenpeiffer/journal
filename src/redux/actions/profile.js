@@ -25,6 +25,7 @@ export const addProfileFailure = error => {
 export const addProfile = values => {
   return dispatch => {
     const { email, name, password } = values;
+    dispatch(addProfileRequest());
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -38,7 +39,8 @@ export const addProfile = values => {
             .set(profile)
             .then(dispatch(addProfileSuccess(profile)));
         });
-      });
+      })
+      .catch(error => dispatch(addProfileFailure(error)));
   };
 };
 
@@ -77,6 +79,7 @@ export const getProfile = () => {
         const name = snapshot.child('name').val();
         const profile = { email, id, name };
         dispatch(getProfileSuccess(profile));
-      });
+      })
+      .catch(error => dispatch(getProfileFailure(error)));
   };
 };

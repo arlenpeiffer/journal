@@ -1,5 +1,5 @@
 import * as types from '../actions';
-import { database } from '../../firebase';
+import { firebase } from '../../firebase';
 
 // ADD_ENTRY //
 export const addEntryRequest = () => {
@@ -25,7 +25,9 @@ export const addEntryFailure = error => {
 export const addEntry = entry => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addEntryRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/journal`)
       .push(entry)
       .then(ref => {
@@ -35,7 +37,8 @@ export const addEntry = entry => {
             id: ref.key
           })
         );
-      });
+      })
+      .catch(error => dispatch(addEntryFailure(error)));
   };
 };
 
@@ -63,7 +66,9 @@ export const editEntryFailure = error => {
 export const editEntry = (editedEntry, id) => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(editEntryRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/journal/${id}`)
       .update({
         ...editedEntry,
@@ -71,7 +76,8 @@ export const editEntry = (editedEntry, id) => {
       })
       .then(() => {
         dispatch(editEntrySuccess(editedEntry, id));
-      });
+      })
+      .catch(error => dispatch(editEntryFailure(error)));
   };
 };
 
@@ -100,7 +106,8 @@ export const getJournal = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
     dispatch(getJournalRequest());
-    database
+    firebase
+      .database()
       .ref(`users/${userId}/journal`)
       .once('value')
       .then(snapshot => {
@@ -126,7 +133,8 @@ export const getJournal = () => {
           });
         });
         dispatch(getJournalSuccess(journal));
-      });
+      })
+      .catch(error => dispatch(getJournalFailure(error)));
   };
 };
 
@@ -154,11 +162,14 @@ export const removeEntryFailure = error => {
 export const removeEntry = id => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(removeEntryRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/journal/${id}`)
       .remove()
       .then(() => {
         dispatch(removeEntrySuccess(id));
-      });
+      })
+      .catch(error => dispatch(removeEntryFailure(error)));
   };
 };

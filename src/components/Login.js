@@ -6,6 +6,7 @@ import { Input, Password } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
+import Error from '../components/Error';
 import { login } from '../redux/actions/user';
 
 const initialValues = {
@@ -19,7 +20,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function Login(props) {
-  const { login } = props;
+  const { error, login } = props;
 
   return (
     <Formik
@@ -30,6 +31,7 @@ function Login(props) {
       validationSchema={validationSchema}
       render={({ handleSubmit }) => (
         <div>
+          {error ? <Error message={error} /> : null}
           <Form onSubmit={handleSubmit}>
             <Field
               autoComplete="off"
@@ -63,11 +65,15 @@ function Login(props) {
   );
 }
 
+const mapStateToProps = state => ({
+  error: state.ui.errors.message
+});
+
 const mapDispatchToProps = dispatch => ({
   login: (email, password) => dispatch(login(email, password))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);

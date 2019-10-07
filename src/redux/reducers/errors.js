@@ -4,21 +4,13 @@ const defaultState = {};
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case types.ADD_PROFILE_FAILURE:
     case types.LOGIN_FAILURE:
-      return {
-        ...state,
-        login: action.payload.error
-      };
-    case types.LOGIN_SUCCESS:
-      return {
-        ...state,
-        login: undefined
-      };
     case types.LOGOUT_FAILURE:
-      return {
-        ...state,
-        logout: action.payload.error
-      };
+      const { error } = action.payload;
+      return error;
+    case types.ADD_PROFILE_SUCCESS:
+    case types.LOGIN_SUCCESS:
     case types.LOGOUT_SUCCESS:
       return defaultState;
     default:

@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { Input, Password } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
+import Error from '../components/Error';
 import { addProfile } from '../redux/actions/profile';
 
 const initialValues = {
@@ -36,7 +38,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignUp(props) {
-  const { addProfile } = props;
+  const { addProfile, error } = props;
 
   return (
     <div>
@@ -46,6 +48,7 @@ function SignUp(props) {
         validationSchema={validationSchema}
         render={({ handleSubmit }) => (
           <div>
+            {error ? <Error message={error} /> : null}
             <Form onSubmit={handleSubmit}>
               <Field
                 autoComplete="off"
@@ -91,8 +94,13 @@ function SignUp(props) {
                   <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
               />
-              <Button onClick={handleSubmit}>Sign Up</Button>
+              <Button onClick={handleSubmit} type="primary">
+                Sign Up
+              </Button>
             </Form>
+            <div style={{ marginTop: 24 }}>
+              Already have an account? <Link to="/">Log in</Link>
+            </div>
           </div>
         )}
       />
@@ -100,11 +108,15 @@ function SignUp(props) {
   );
 }
 
+const mapStateToProps = state => ({
+  error: state.ui.errors.message
+});
+
 const mapDispatchToProps = dispatch => ({
   addProfile: (email, password) => dispatch(addProfile(email, password))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SignUp);

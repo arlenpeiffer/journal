@@ -12,6 +12,7 @@ export default (state = defaultState, action) => {
     case types.ADD_PROFILE_SUCCESS:
     case types.LOGIN_SUCCESS:
     case types.LOGOUT_SUCCESS:
+    case types.RESET_ERRORS:
       return defaultState;
     default:
       return state;

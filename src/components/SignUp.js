@@ -7,6 +7,7 @@ import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
 import Error from '../components/Error';
+import { resetErrors } from '../redux/actions/errors';
 import { addProfile } from '../redux/actions/profile';
 
 const initialValues = {
@@ -38,7 +39,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignUp(props) {
-  const { addProfile, error } = props;
+  const { addProfile, error, resetErrors } = props;
 
   return (
     <div>
@@ -99,7 +100,10 @@ function SignUp(props) {
               </Button>
             </Form>
             <div style={{ marginTop: 24 }}>
-              Already have an account? <Link to="/">Log in</Link>
+              Already have an account?{' '}
+              <Link to="/" onClick={resetErrors}>
+                Log in
+              </Link>
             </div>
           </div>
         )}
@@ -113,7 +117,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addProfile: (email, password) => dispatch(addProfile(email, password))
+  addProfile: (email, password) => dispatch(addProfile(email, password)),
+  resetErrors: () => dispatch(resetErrors())
 });
 
 export default connect(

@@ -7,6 +7,7 @@ import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
 import Error from '../components/Error';
+import { resetErrors } from '../redux/actions/errors';
 import { login } from '../redux/actions/user';
 
 const initialValues = {
@@ -20,7 +21,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function Login(props) {
-  const { error, login } = props;
+  const { error, login, resetErrors } = props;
 
   return (
     <Formik
@@ -53,7 +54,10 @@ function Login(props) {
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             />
             <div style={{ marginBottom: 24 }}>
-              Not a user? <Link to="/signup">Sign up!</Link>
+              Not a user?{' '}
+              <Link to="/signup" onClick={resetErrors}>
+                Sign up!
+              </Link>
             </div>
             <Button onClick={handleSubmit} type="primary">
               Submit
@@ -70,7 +74,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: (email, password) => dispatch(login(email, password))
+  login: (email, password) => dispatch(login(email, password)),
+  resetErrors: () => dispatch(resetErrors())
 });
 
 export default connect(

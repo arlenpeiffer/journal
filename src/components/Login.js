@@ -60,7 +60,7 @@ function Login(props) {
               </Link>
             </div>
             <Button onClick={handleSubmit} type="primary">
-              Submit
+              Log In
             </Button>
           </Form>
         </div>

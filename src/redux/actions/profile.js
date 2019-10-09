@@ -1,23 +1,31 @@
-import {
-  ADD_PROFILE,
-  LOGIN,
-  LOGOUT,
-  REQUEST_PROFILE,
-  REQUEST_PROFILE_FAILURE,
-  REQUEST_PROFILE_SUCCESS
-} from '../actions';
+import * as types from '../actions';
 import { firebase } from '../../firebase';
 
-export const addProfile = profile => {
+// ADD_PROFILE //
+export const addProfileRequest = () => {
   return {
-    type: ADD_PROFILE,
+    type: types.ADD_PROFILE_REQUEST
+  };
+};
+
+export const addProfileSuccess = profile => {
+  return {
+    type: types.ADD_PROFILE_SUCCESS,
     payload: { profile }
   };
 };
 
-export const startAddProfile = values => {
+export const addProfileFailure = error => {
+  return {
+    type: types.ADD_PROFILE_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addProfile = values => {
   return dispatch => {
     const { email, name, password } = values;
+    dispatch(addProfileRequest());
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -29,36 +37,38 @@ export const startAddProfile = values => {
             .database()
             .ref(`users/${id}/profile`)
             .set(profile)
-            .then(dispatch(addProfile(profile)));
+            .then(dispatch(addProfileSuccess(profile)));
         });
-      });
+      })
+      .catch(error => dispatch(addProfileFailure(error)));
   };
 };
 
-export const requestProfile = () => {
+// GET_PROFILE //
+export const getProfileRequest = () => {
   return {
-    type: REQUEST_PROFILE
+    type: types.GET_PROFILE_REQUEST
   };
 };
 
-export const requestProfileFailure = error => {
+export const getProfileSuccess = profile => {
   return {
-    type: REQUEST_PROFILE_FAILURE,
-    payload: { error }
-  };
-};
-
-export const requestProfileSuccess = profile => {
-  return {
-    type: REQUEST_PROFILE_SUCCESS,
+    type: types.GET_PROFILE_SUCCESS,
     payload: { profile }
   };
 };
 
-export const startGetProfile = () => {
+export const getProfileFailure = error => {
+  return {
+    type: types.GET_PROFILE_FAILURE,
+    payload: { error }
+  };
+};
+
+export const getProfile = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    dispatch(requestProfile());
+    dispatch(getProfileRequest());
     firebase
       .database()
       .ref(`users/${userId}/profile`)
@@ -68,43 +78,8 @@ export const startGetProfile = () => {
         const id = snapshot.child('id').val();
         const name = snapshot.child('name').val();
         const profile = { email, id, name };
-        dispatch(requestProfileSuccess(profile));
-      });
-  };
-};
-
-export const login = id => {
-  return {
-    type: LOGIN,
-    payload: { id }
-  };
-};
-
-export const startLogin = values => {
-  const { email, password } = values;
-  return () => {
-    firebase.auth().signInWithEmailAndPassword(email, password);
-    // ? dispatch login() ?
-    // .catch(error => console.log(error));
-  };
-};
-
-export const logout = () => {
-  return {
-    type: LOGOUT
-  };
-};
-
-export const startLogout = () => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    if (userId) {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          dispatch(logout());
-        });
-    }
+        dispatch(getProfileSuccess(profile));
+      })
+      .catch(error => dispatch(getProfileFailure(error)));
   };
 };

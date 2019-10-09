@@ -1,84 +1,113 @@
-import {
-  ADD_ENTRY,
-  EDIT_ENTRY,
-  REMOVE_ENTRY,
-  REQUEST_JOURNAL,
-  REQUEST_JOURNAL_FAILURE,
-  REQUEST_JOURNAL_SUCCESS
-} from '../actions';
-import { database } from '../../firebase';
+import * as types from '../actions';
+import { firebase } from '../../firebase';
 
-export const addEntry = entry => {
+// ADD_ENTRY //
+export const addEntryRequest = () => {
   return {
-    type: ADD_ENTRY,
+    type: types.ADD_ENTRY_REQUEST
+  };
+};
+
+export const addEntrySuccess = entry => {
+  return {
+    type: types.ADD_ENTRY_SUCCESS,
     payload: { entry }
   };
 };
 
-export const startAddEntry = entry => {
+export const addEntryFailure = error => {
+  return {
+    type: types.ADD_ENTRY_FAILURE,
+    payload: { error }
+  };
+};
+
+export const addEntry = entry => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
+    dispatch(addEntryRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/journal`)
       .push(entry)
       .then(ref => {
         dispatch(
-          addEntry({
+          addEntrySuccess({
             ...entry,
             id: ref.key
           })
         );
-      });
+      })
+      .catch(error => dispatch(addEntryFailure(error)));
   };
 };
 
-export const editEntry = (editedEntry, id) => {
+// EDIT_ENTRY //
+export const editEntryRequest = () => {
   return {
-    type: EDIT_ENTRY,
+    type: types.ADD_ENTRY_REQUEST
+  };
+};
+
+export const editEntrySuccess = (editedEntry, id) => {
+  return {
+    type: types.EDIT_ENTRY_SUCCESS,
     payload: { editedEntry, id }
   };
 };
 
-export const startEditEntry = (editedEntry, id) => {
+export const editEntryFailure = error => {
+  return {
+    type: types.EDIT_ENTRY_FAILURE,
+    payload: { error }
+  };
+};
+
+export const editEntry = (editedEntry, id) => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
-      .ref(`users/${userId}/journal/` + id)
+    dispatch(editEntryRequest());
+    firebase
+      .database()
+      .ref(`users/${userId}/journal/${id}`)
       .update({
         ...editedEntry,
         id: null
       })
       .then(() => {
-        dispatch(editEntry(editedEntry, id));
-      });
+        dispatch(editEntrySuccess(editedEntry, id));
+      })
+      .catch(error => dispatch(editEntryFailure(error)));
   };
 };
 
-export const requestJournal = () => {
+// GET_JOURNAL //
+export const getJournalRequest = () => {
   return {
-    type: REQUEST_JOURNAL
+    type: types.GET_JOURNAL_REQUEST
   };
 };
 
-export const requestJournalFailure = error => {
+export const getJournalSuccess = journal => {
   return {
-    type: REQUEST_JOURNAL_FAILURE,
-    payload: { error }
-  };
-};
-
-export const requestJournalSuccess = journal => {
-  return {
-    type: REQUEST_JOURNAL_SUCCESS,
+    type: types.GET_JOURNAL_SUCCESS,
     payload: { journal }
   };
 };
 
-export const startGetJournal = () => {
+export const getJournalFailure = error => {
+  return {
+    type: types.GET_JOURNAL_FAILURE,
+    payload: { error }
+  };
+};
+
+export const getJournal = () => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    dispatch(requestJournal());
-    database
+    dispatch(getJournalRequest());
+    firebase
+      .database()
       .ref(`users/${userId}/journal`)
       .once('value')
       .then(snapshot => {
@@ -103,26 +132,44 @@ export const startGetJournal = () => {
             travel: childSnapshot.val().travel
           });
         });
-        dispatch(requestJournalSuccess(journal));
-      });
+        dispatch(getJournalSuccess(journal));
+      })
+      .catch(error => dispatch(getJournalFailure(error)));
   };
 };
 
-export const removeEntry = id => {
+// REMOVE_ENTRY //
+export const removeEntryRequest = () => {
   return {
-    type: REMOVE_ENTRY,
+    type: types.REMOVE_ENTRY_REQUEST
+  };
+};
+
+export const removeEntrySuccess = id => {
+  return {
+    type: types.REMOVE_ENTRY_SUCCESS,
     payload: { id }
   };
 };
 
-export const startRemoveEntry = id => {
+export const removeEntryFailure = error => {
+  return {
+    type: types.REMOVE_ENTRY_FAILURE,
+    payload: { error }
+  };
+};
+
+export const removeEntry = id => {
   return (dispatch, getState) => {
     const userId = getState().user.profile.id;
-    database
-      .ref(`users/${userId}/journal/` + id)
+    dispatch(removeEntryRequest());
+    firebase
+      .database()
+      .ref(`users/${userId}/journal/${id}`)
       .remove()
       .then(() => {
-        dispatch(removeEntry(id));
-      });
+        dispatch(removeEntrySuccess(id));
+      })
+      .catch(error => dispatch(removeEntryFailure(error)));
   };
 };

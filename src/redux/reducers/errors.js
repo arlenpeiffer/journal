@@ -1,17 +1,18 @@
 import * as types from '../actions';
 
-const defaultState = {};
+const defaultState = null;
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case types.ADD_PROFILE_FAILURE:
+    case types.LOGIN_FAILURE:
+    case types.LOGOUT_FAILURE:
+      const { error } = action.payload;
+      return error;
     case types.ADD_PROFILE_SUCCESS:
-    case types.GET_PROFILE_SUCCESS:
-      const { profile } = action.payload;
-      return { ...profile };
     case types.LOGIN_SUCCESS:
-      const { id } = action.payload;
-      return { id };
     case types.LOGOUT_SUCCESS:
+    case types.RESET_ERRORS:
       return defaultState;
     default:
       return state;

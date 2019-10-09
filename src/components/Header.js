@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { startLogout } from '../redux/actions/profile';
+import { logout } from '../redux/actions/user';
 
 function Header(props) {
-  const { isLoggedIn, startLogout } = props;
+  const { isLoggedIn, logout } = props;
 
   return (
     <div>
@@ -13,7 +13,7 @@ function Header(props) {
         <div>
           <Link to="/view">View Entries</Link>
           <Link to="/add">Add Entry</Link>
-          <p onClick={startLogout}>Sign out</p>
+          <p onClick={logout}>Sign out</p>
         </div>
       )}
     </div>
@@ -21,7 +21,7 @@ function Header(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startLogout: () => dispatch(startLogout())
+  logout: () => dispatch(logout())
 });
 
 export default connect(

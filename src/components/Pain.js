@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Field } from 'formik';
 import { Input, InputNumber, Option, RadioGroup, Select } from './AntFields';
 import { Divider, Icon, Radio } from 'antd';
-import { addNsaid } from '../redux/actions/logs';
+
 import AddItem from './AddItem';
+import { addNsaidSuccess } from '../redux/actions/logs';
 
 function Pain(props) {
-  const { addNsaid, logs, pain, setFieldValue } = props;
+  const { addNsaidSuccess, logs, pain, setFieldValue } = props;
 
   const handleAddNsaid = (input, setError, setInput, setIsAddingItem) => {
     if (input.trim() === '') {
@@ -15,7 +16,7 @@ function Pain(props) {
     } else if (logs.nsaid.find(nsaid => input === nsaid)) {
       setError("There's already one of those..");
     } else {
-      addNsaid(input);
+      addNsaidSuccess(input);
       setInput('');
       setError('');
       setIsAddingItem(false);
@@ -110,7 +111,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addNsaid: nsaid => dispatch(addNsaid(nsaid))
+  addNsaidSuccess: nsaid => dispatch(addNsaidSuccess(nsaid))
 });
 
 export default connect(

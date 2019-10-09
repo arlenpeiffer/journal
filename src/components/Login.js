@@ -6,7 +6,10 @@ import { Input, Password } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
-import { startLogin } from '../redux/actions/profile';
+import Error from '../components/Error';
+import { resetErrors } from '../redux/actions/errors';
+import { login } from '../redux/actions/user';
+import { getErrorMessage } from '../shared';
 
 const initialValues = {
   email: '',
@@ -19,17 +22,18 @@ const validationSchema = Yup.object().shape({
 });
 
 function Login(props) {
-  const { startLogin } = props;
+  const { error, login, resetErrors } = props;
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={values => {
-        startLogin(values);
+        login(values);
       }}
       validationSchema={validationSchema}
       render={({ handleSubmit }) => (
         <div>
+          {error ? <Error message={getErrorMessage(error)} /> : null}
           <Form onSubmit={handleSubmit}>
             <Field
               autoComplete="off"
@@ -51,10 +55,13 @@ function Login(props) {
               prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             />
             <div style={{ marginBottom: 24 }}>
-              Not a user? <Link to="/signup">Sign up!</Link>
+              Not a user?{' '}
+              <Link to="/signup" onClick={error ? resetErrors : null}>
+                Sign up!
+              </Link>
             </div>
             <Button onClick={handleSubmit} type="primary">
-              Submit
+              Log In
             </Button>
           </Form>
         </div>
@@ -63,11 +70,16 @@ function Login(props) {
   );
 }
 
+const mapStateToProps = state => ({
+  error: state.ui.errors
+});
+
 const mapDispatchToProps = dispatch => ({
-  startLogin: (email, password) => dispatch(startLogin(email, password))
+  login: (email, password) => dispatch(login(email, password)),
+  resetErrors: () => dispatch(resetErrors())
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);

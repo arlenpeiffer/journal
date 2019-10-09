@@ -91,7 +91,8 @@ function SignUp(props) {
               <Field
                 component={Password}
                 name="passwordConfirm"
-                placeholder="Re-enter password"
+                onPressEnter={handleSubmit}
+                placeholder="Confirm Password"
                 prefix={
                   <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }

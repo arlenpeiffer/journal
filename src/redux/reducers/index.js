@@ -1,14 +1,21 @@
 import { combineReducers } from 'redux';
+import errors from './errors';
 import filters from './filters';
 import journal from './journal';
 import logs from './logs';
-import userInfo from './userInfo';
+import profile from './profile';
+import requests from './requests';
 
-const user = combineReducers({
+const ui = combineReducers({
+  errors,
   filters,
-  journal,
-  logs,
-  userInfo
+  requests
 });
 
-export default combineReducers({ user });
+const user = combineReducers({
+  journal,
+  logs,
+  profile
+});
+
+export default combineReducers({ ui, user });

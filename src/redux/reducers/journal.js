@@ -1,13 +1,13 @@
-import { ADD_ENTRY, EDIT_ENTRY, GET_JOURNAL, REMOVE_ENTRY } from '../actions';
+import * as types from '../actions';
 
 const defaultState = [];
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case ADD_ENTRY:
+    case types.ADD_ENTRY_SUCCESS:
       const { entry } = action.payload;
       return [...state, entry];
-    case EDIT_ENTRY:
+    case types.EDIT_ENTRY_SUCCESS:
       const { editedEntry } = action.payload;
       return state.map(entry => {
         if (entry.id === action.payload.id) {
@@ -16,10 +16,12 @@ export default (state = defaultState, action) => {
           return entry;
         }
       });
-    case GET_JOURNAL:
+    case types.GET_JOURNAL_SUCCESS:
       const { journal } = action.payload;
       return journal;
-    case REMOVE_ENTRY:
+    case types.LOGOUT_SUCCESS:
+      return defaultState;
+    case types.REMOVE_ENTRY_SUCCESS:
       return state.filter(entry => entry.id !== action.payload.id);
     default:
       return state;

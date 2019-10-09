@@ -1,15 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Entries from './Entries';
 import Filters from './Filters';
+import Loading from './Loading';
 
-function ViewEntries() {
+function ViewEntries(props) {
+  const { requests } = props;
+
   return (
     <div>
       ViewEntries.js
       <Filters />
-      <Entries />
+      {requests > 0 ? <Loading tip="Loading User Data..." /> : <Entries />}
     </div>
   );
 }
 
-export default ViewEntries;
+const mapStateToProps = state => ({
+  requests: state.ui.requests
+});
+
+export default connect(mapStateToProps)(ViewEntries);

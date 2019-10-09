@@ -16,10 +16,10 @@ function Entries(props) {
 const mapStateToProps = state => ({
   journal: state.user.journal
     .filter(entry => {
-      const { startDate, endDate } = state.user.filters.date;
+      const { startDate, endDate } = state.ui.filters.date;
       const startDateMatch = startDate ? entry.date >= startDate : true;
       const endDateMatch = endDate ? entry.date <= endDate : true;
-      const { text } = state.user.filters;
+      const { text } = state.ui.filters;
       const textMatch = text
         ? entry.food.diet.notes.toLowerCase().includes(text.toLowerCase()) ||
           entry.food.diet.type.toLowerCase().includes(text.toLowerCase()) ||
@@ -64,7 +64,7 @@ const mapStateToProps = state => ({
       return startDateMatch && endDateMatch && textMatch;
     })
     .sort((a, b) => {
-      const { sortOrder } = state.user.filters;
+      const { sortOrder } = state.ui.filters;
       if (sortOrder === 'newestFirst') return a.date > b.date ? -1 : 1;
       if (sortOrder === 'oldestFirst') return a.date < b.date ? -1 : 1;
     })

@@ -1,14 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Button, Card, Icon, Popconfirm, Tabs } from 'antd';
-import { startRemoveEntry } from '../redux/actions/journal';
-import DataPoint from './DataPoint';
 import moment from 'moment';
 import capitalize from 'lodash.capitalize';
 
+import DataPoint from './DataPoint';
+import { removeEntry } from '../redux/actions/journal';
+
 function Entry(props) {
-  const { entry, startRemoveEntry } = props;
+  const { entry, removeEntry } = props;
   const {
     appointments,
     date,
@@ -74,7 +75,7 @@ function Entry(props) {
     <Popconfirm
       cancelText="No"
       okText="Yes"
-      onConfirm={() => startRemoveEntry(id)}
+      onConfirm={() => removeEntry(id)}
       title={'Are you sure you want to delete this entry?'}
     >
       <Button style={{ marginLeft: 8 }} type="primary">
@@ -207,7 +208,7 @@ function Entry(props) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startRemoveEntry: id => dispatch(startRemoveEntry(id))
+  removeEntry: id => dispatch(removeEntry(id))
 });
 
 export default connect(

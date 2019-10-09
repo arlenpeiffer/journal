@@ -4,7 +4,7 @@ import { firebase } from '../../firebase';
 // ADD_PROFILE //
 export const addProfileRequest = () => {
   return {
-    type: types.ADD_PRACTITIONER_REQUEST
+    type: types.ADD_PROFILE_REQUEST
   };
 };
 

@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import Error from '../components/Error';
 import { resetErrors } from '../redux/actions/errors';
 import { addProfile } from '../redux/actions/profile';
+import { getErrorMessage } from '../shared';
 
 const initialValues = {
   name: {
@@ -49,7 +50,7 @@ function SignUp(props) {
         validationSchema={validationSchema}
         render={({ handleSubmit }) => (
           <div>
-            {error ? <Error message={error} /> : null}
+            {error ? <Error message={getErrorMessage(error)} /> : null}
             <Form onSubmit={handleSubmit}>
               <Field
                 autoComplete="off"
@@ -101,7 +102,7 @@ function SignUp(props) {
             </Form>
             <div style={{ marginTop: 24 }}>
               Already have an account?{' '}
-              <Link to="/" onClick={resetErrors}>
+              <Link to="/" onClick={error ? resetErrors : null}>
                 Log in
               </Link>
             </div>
@@ -113,7 +114,7 @@ function SignUp(props) {
 }
 
 const mapStateToProps = state => ({
-  error: state.ui.errors.message
+  error: state.ui.errors
 });
 
 const mapDispatchToProps = dispatch => ({

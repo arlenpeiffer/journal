@@ -1,6 +1,6 @@
 import * as types from '../actions';
 
-const defaultState = {};
+const defaultState = null;
 
 export default (state = defaultState, action) => {
   switch (action.type) {

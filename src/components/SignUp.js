@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
-import { Input, Password } from './AntFields';
+import { Input, Password, Title } from './AntFields';
 import { Button, Form, Icon } from 'antd';
 import * as Yup from 'yup';
 
@@ -50,6 +50,7 @@ function SignUp(props) {
         validationSchema={validationSchema}
         render={({ handleSubmit }) => (
           <div>
+            <Title level={4}>Sign up to start journaling!</Title>
             {error ? <Error message={getErrorMessage(error)} /> : null}
             <Form onSubmit={handleSubmit}>
               <Field
@@ -104,7 +105,7 @@ function SignUp(props) {
             <div style={{ marginTop: 24 }}>
               Already have an account?{' '}
               <Link to="/" onClick={error ? resetErrors : null}>
-                Log in
+                Sign in!
               </Link>
             </div>
           </div>

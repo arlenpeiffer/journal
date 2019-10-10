@@ -10,7 +10,8 @@ import {
   Rate as AntRate,
   Select as AntSelect,
   Switch as AntSwitch,
-  TimePicker as AntTimePicker
+  TimePicker as AntTimePicker,
+  Typography as AntTypography
 } from 'antd';
 import { getIn } from 'formik';
 
@@ -66,3 +67,4 @@ export const Select = CreateAntField(AntSelect);
 export const Switch = CreateAntField(AntSwitch);
 export const TextArea = CreateAntField(AntInput.TextArea);
 export const TimePicker = CreateAntField(AntTimePicker);
+export const Title = AntTypography.Title;

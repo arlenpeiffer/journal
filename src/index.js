@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import styled from 'styled-components';
 import configureStore from './redux/store';
 import { firebase } from './firebase';
 
@@ -10,11 +11,18 @@ import { getLogs } from './redux/actions/logs';
 import { getProfile } from './redux/actions/profile';
 import { loginSuccess, logout } from './redux/actions/user';
 
+const PageWrapper = styled.div`
+  margin-left: 5.5%;
+  margin-right: 5.5%;
+`;
+
 const store = configureStore();
 
 const app = (
   <Provider store={store}>
-    <AppRouter />
+    <PageWrapper>
+      <AppRouter />
+    </PageWrapper>
   </Provider>
 );
 

@@ -41,7 +41,7 @@ function Mood(props) {
       >
         <Row>
           {moods.map(mood => (
-            <Col key={mood} span={8}>
+            <Col key={mood} xs={12} sm={8} md={6} lg={4}>
               <Checkbox value={mood}>{capitalize(mood)}</Checkbox>
             </Col>
           ))}

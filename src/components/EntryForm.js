@@ -72,7 +72,7 @@ const validationSchema = Yup.object().shape({
       notes: Yup.string()
     })
   ),
-  date: Yup.number().required(),
+  date: Yup.number().typeError('Date is required.'),
   food: Yup.object().shape({
     diet: Yup.object().shape({
       type: Yup.string(),

@@ -7,10 +7,24 @@ import moment from 'moment';
 function Date(props) {
   const { date, entry, journal, setFieldValue } = props;
 
-  const handleDuplicate = selectedDate => {
-    if (entry && entry.date === selectedDate) {
+  const handleChange = date => {
+    setFieldValue(
+      'date',
+      moment(date)
+        .startOf('day')
+        .valueOf()
+    );
+  };
+
+  const handleDisabledDate = date => {
+    // dates greater than current time return true (disabled)
+    return date > moment();
+  };
+
+  const handleDuplicateDate = date => {
+    if (entry && entry.date === date) {
       return undefined;
-    } else if (journal.some(entry => entry.date === selectedDate)) {
+    } else if (journal.some(entry => entry.date === date)) {
       return 'There is already an entry for that date.';
     }
     return undefined;
@@ -21,19 +35,13 @@ function Date(props) {
       <Field
         allowClear={false}
         component={DatePicker}
+        disabledDate={handleDisabledDate}
         format="MMM D, YYYY"
         label="Date"
         name="date"
-        onChange={date =>
-          setFieldValue(
-            'date',
-            moment(date)
-              .startOf('day')
-              .valueOf()
-          )
-        }
-        validate={handleDuplicate}
-        value={moment(date)}
+        onChange={handleChange}
+        validate={handleDuplicateDate}
+        value={date ? moment(date) : null}
       />
     </div>
   );

@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'formik';
-import { DatePicker } from './AntFields';
 import moment from 'moment';
 
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+
 function Date(props) {
-  const { date, entry, journal, setFieldValue } = props;
+  const { date, entry, error, journal, setFieldValue } = props;
 
   const handleChange = date => {
     setFieldValue(
@@ -14,11 +19,6 @@ function Date(props) {
         .startOf('day')
         .valueOf()
     );
-  };
-
-  const handleDisabledDate = date => {
-    // dates greater than current time return true (disabled)
-    return date > moment();
   };
 
   const handleDuplicateDate = date => {
@@ -32,17 +32,23 @@ function Date(props) {
 
   return (
     <div id="date">
-      <Field
-        allowClear={false}
-        component={DatePicker}
-        disabledDate={handleDisabledDate}
-        format="MMM D, YYYY"
-        label="Date"
-        name="date"
-        onChange={handleChange}
-        validate={handleDuplicateDate}
-        value={date ? moment(date) : null}
-      />
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <Field
+          autoOk={true} // default
+          component={KeyboardDatePicker}
+          disableFuture={true} // default ??
+          error={error ? true : false} // default ??
+          format="MMM D, YYYY" // default
+          helperText={error} // default
+          // initialFocusedDate={moment()} // default ??
+          inputProps={{ readOnly: true }} // default ??
+          label="Date"
+          name="date"
+          onChange={handleChange}
+          validate={handleDuplicateDate}
+          value={date ? moment(date) : null}
+        />
+      </MuiPickersUtilsProvider>
     </div>
   );
 }

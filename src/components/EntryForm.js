@@ -182,7 +182,7 @@ function EntryForm(props) {
         handleSubmit,
         // handleChange,
         values,
-        // errors,
+        errors,
         // touched,
         setFieldValue
         // setFieldTouched,
@@ -194,6 +194,7 @@ function EntryForm(props) {
             <Date
               date={values.date}
               entry={entry}
+              error={errors.date}
               setFieldValue={setFieldValue}
             />
             <Food setFieldValue={setFieldValue} />

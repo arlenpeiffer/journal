@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
 import { Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -179,14 +179,11 @@ function EntryForm(props) {
 
   const handleDuplicateDate = date => {
     const entryWithDateExists = journal.some(entry => entry.date === date);
-    const isCurrentEntry = entry && entry.date === date;
+    const isNotCurrentEntry = entry && entry.date !== date;
 
-    if (isCurrentEntry) {
-      return undefined;
-    } else if (entryWithDateExists) {
+    if (entryWithDateExists && isNotCurrentEntry) {
       return 'There is already an entry for that date.';
     }
-    return undefined;
   };
 
   return (
@@ -208,8 +205,7 @@ function EntryForm(props) {
         <div>
           <Form onSubmit={handleSubmit}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
-              <Field
-                component={DatePicker}
+              <DatePicker
                 disableFuture
                 label="Date"
                 name="date"

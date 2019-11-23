@@ -1,31 +1,38 @@
 import React from 'react';
+import { Field } from 'formik';
 import moment from 'moment';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
-const DatePicker = ({ form, field, ...props }) => {
-  const error = form.errors[field.name];
-  const hasError = error && error ? true : false;
-
-  const handleChange = value => {
-    form.setFieldValue(
-      field.name,
-      moment(value)
-        .startOf('day')
-        .valueOf()
-    );
-  };
-
+const DatePicker = ({ validate, ...props }) => {
   return (
-    <KeyboardDatePicker
-      autoOk={true}
-      error={hasError}
-      format="MMM D, YYYY"
-      helperText={error}
-      inputProps={{ readOnly: true }}
-      onChange={handleChange}
-      value={field.value}
-      {...props}
-    />
+    <Field validate={validate} {...props}>
+      {({ field, form, meta }) => {
+        const { error } = meta;
+        const hasError = error ? true : false;
+
+        const handleChange = value => {
+          form.setFieldValue(
+            field.name,
+            moment(value)
+              .startOf('day')
+              .valueOf()
+          );
+        };
+
+        return (
+          <KeyboardDatePicker
+            autoOk={true}
+            error={hasError}
+            format="MMM D, YYYY"
+            helperText={error}
+            inputProps={{ readOnly: true }}
+            onChange={handleChange}
+            value={field.value}
+            {...props}
+          />
+        );
+      }}
+    </Field>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { connect } from 'react-redux';
+import { Formik, Field } from 'formik';
 import { Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -7,7 +8,7 @@ import reduce from 'lodash.reduce';
 import trim from 'lodash.trim';
 
 import Appointments from './Appointments';
-import Date from './Date';
+// import Date from './Date';
 import Food from './Food';
 import Mood from './Mood';
 import Movement from './Movement';
@@ -20,6 +21,9 @@ import Supplements from './Supplements';
 import Travel from './Travel';
 
 import Button from '@material-ui/core/Button';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+import DatePicker from './DatePicker';
 
 const newEntry = {
   appointments: [],
@@ -153,7 +157,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function EntryForm(props) {
-  const { entry, handleSubmitEntry } = props;
+  const { entry, handleSubmitEntry, journal } = props;
 
   const trimValues = (object, container) =>
     reduce(
@@ -173,6 +177,18 @@ function EntryForm(props) {
       container
     );
 
+  const handleDuplicateDate = date => {
+    const entryWithDateExists = journal.some(entry => entry.date === date);
+    const isCurrentEntry = entry && entry.date === date;
+
+    if (isCurrentEntry) {
+      return undefined;
+    } else if (entryWithDateExists) {
+      return 'There is already an entry for that date.';
+    }
+    return undefined;
+  };
+
   return (
     <Formik
       initialValues={entry ? entry : newEntry}
@@ -191,39 +207,46 @@ function EntryForm(props) {
       }) => (
         <div>
           <Form onSubmit={handleSubmit}>
-            <Date
-              date={values.date}
-              entry={entry}
-              error={errors.date}
-              setFieldValue={setFieldValue}
-            />
-            <Food setFieldValue={setFieldValue} />
-            <Supplements
-              setFieldValue={setFieldValue}
-              supplements={values.supplements}
-            />
-            <Appointments
-              appointments={values.appointments}
-              setFieldValue={setFieldValue}
-            />
-            <Mood setFieldValue={setFieldValue} />
-            <Movement
-              movement={values.movement}
-              setFieldValue={setFieldValue}
-            />
-            <Pain pain={values.pain} setFieldValue={setFieldValue} />
-            <Sleep
-              date={values.date}
-              sleep={values.sleep}
-              setFieldValue={setFieldValue}
-            />
-            <Stomach stomach={values.stomach} setFieldValue={setFieldValue} />
-            <Stress />
-            <Travel setFieldValue={setFieldValue} travel={values.travel} />
-            <Notes />
-            <Button onClick={handleSubmit} color="primary" variant="contained">
-              Submit
-            </Button>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Field
+                component={DatePicker}
+                disableFuture
+                label="Date"
+                name="date"
+                validate={handleDuplicateDate}
+              />
+              <Food setFieldValue={setFieldValue} />
+              <Supplements
+                setFieldValue={setFieldValue}
+                supplements={values.supplements}
+              />
+              <Appointments
+                appointments={values.appointments}
+                setFieldValue={setFieldValue}
+              />
+              <Mood setFieldValue={setFieldValue} />
+              <Movement
+                movement={values.movement}
+                setFieldValue={setFieldValue}
+              />
+              <Pain pain={values.pain} setFieldValue={setFieldValue} />
+              <Sleep
+                date={values.date}
+                sleep={values.sleep}
+                setFieldValue={setFieldValue}
+              />
+              <Stomach stomach={values.stomach} setFieldValue={setFieldValue} />
+              <Stress />
+              <Travel setFieldValue={setFieldValue} travel={values.travel} />
+              <Notes />
+              <Button
+                onClick={handleSubmit}
+                color="primary"
+                variant="contained"
+              >
+                Submit
+              </Button>
+            </MuiPickersUtilsProvider>
           </Form>
         </div>
       )}
@@ -231,4 +254,8 @@ function EntryForm(props) {
   );
 }
 
-export default EntryForm;
+const mapStateToProps = state => ({
+  journal: state.user.journal
+});
+
+export default connect(mapStateToProps)(EntryForm);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Button, Form } from 'antd';
+import { Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
 import reduce from 'lodash.reduce';
@@ -18,6 +18,8 @@ import Stomach from './Stomach';
 import Stress from './Stress';
 import Supplements from './Supplements';
 import Travel from './Travel';
+
+import Button from '@material-ui/core/Button';
 
 const newEntry = {
   appointments: [],
@@ -218,7 +220,7 @@ function EntryForm(props) {
             <Stress />
             <Travel setFieldValue={setFieldValue} travel={values.travel} />
             <Notes />
-            <Button onClick={handleSubmit} type="primary">
+            <Button onClick={handleSubmit} color="primary" variant="contained">
               Submit
             </Button>
           </Form>

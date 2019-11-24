@@ -5,9 +5,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import MuiSelect from '@material-ui/core/Select';
 
-const Select = ({ children, ...props }) => {
+const Select = ({ children, label, name, ...props }) => {
   return (
-    <Field {...props}>
+    <Field name={name} {...props}>
       {({ field, form, meta }) => {
         const { error } = meta;
         const hasError = error ? true : false;
@@ -18,7 +18,7 @@ const Select = ({ children, ...props }) => {
 
         return (
           <FormControl error={hasError}>
-            <InputLabel>{props.label}</InputLabel>
+            <InputLabel>{label}</InputLabel>
             <MuiSelect
               error={hasError}
               onChange={handleChange}

@@ -225,10 +225,10 @@ function EntryForm(props) {
                   <MenuItem value="None">None</MenuItem>
                 </Select>
                 <Input
-                  autoComplete="off"
-                  fullWidth
                   label="Notes / Details"
                   name="food.diet.notes"
+                  placeholder="Add notes here.."
+                  type="text"
                 />
               </EntrySection>
 

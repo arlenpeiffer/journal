@@ -25,6 +25,9 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import DatePicker from './DatePicker';
 import EntrySection from './EntrySection';
+import Select from './Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from './Input';
 
 const newEntry = {
   appointments: [],
@@ -214,6 +217,21 @@ function EntryForm(props) {
                   validate={handleDuplicateDate}
                 />
               </EntrySection>
+
+              <EntrySection label="Diet">
+                <Select label="Type" name="food.diet.type">
+                  <MenuItem value="Elimination">Elimination</MenuItem>
+                  <MenuItem value="Low-Starch">Low-Starch</MenuItem>
+                  <MenuItem value="None">None</MenuItem>
+                </Select>
+                <Input
+                  autoComplete="off"
+                  fullWidth
+                  label="Notes / Details"
+                  name="food.diet.notes"
+                />
+              </EntrySection>
+
               <Food setFieldValue={setFieldValue} />
               <Supplements
                 setFieldValue={setFieldValue}

@@ -180,9 +180,9 @@ function EntryForm(props) {
 
   const handleDuplicateDate = date => {
     const entryWithDateExists = journal.some(entry => entry.date === date);
-    const isNotCurrentEntry = entry && entry.date !== date;
+    const isCurrentEntry = entry && entry.date === date;
 
-    if (entryWithDateExists && isNotCurrentEntry) {
+    if (entryWithDateExists && !isCurrentEntry) {
       return 'There is already an entry for that date.';
     }
   };

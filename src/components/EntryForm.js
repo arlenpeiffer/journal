@@ -24,6 +24,7 @@ import Button from '@material-ui/core/Button';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import DatePicker from './DatePicker';
+import EntrySection from './EntrySection';
 
 const newEntry = {
   appointments: [],
@@ -205,12 +206,14 @@ function EntryForm(props) {
         <div>
           <Form onSubmit={handleSubmit}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
-              <DatePicker
-                disableFuture
-                label="Date"
-                name="date"
-                validate={handleDuplicateDate}
-              />
+              <EntrySection label="Date">
+                <DatePicker
+                  disableFuture
+                  label="Date"
+                  name="date"
+                  validate={handleDuplicateDate}
+                />
+              </EntrySection>
               <Food setFieldValue={setFieldValue} />
               <Supplements
                 setFieldValue={setFieldValue}

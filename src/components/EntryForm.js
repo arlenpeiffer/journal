@@ -255,7 +255,17 @@ function EntryForm(props) {
               <Stomach stomach={values.stomach} setFieldValue={setFieldValue} />
               <Stress />
               <Travel setFieldValue={setFieldValue} travel={values.travel} />
-              <Notes />
+
+              <EntrySection label="Notes">
+                <Input
+                  label="Notes"
+                  multiline
+                  name="notes"
+                  placeholder="Overall notes about the day.."
+                  type="text"
+                />
+              </EntrySection>
+
               <Button
                 onClick={handleSubmit}
                 color="primary"

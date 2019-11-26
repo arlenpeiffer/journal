@@ -2,9 +2,10 @@ import React from 'react';
 import { Field } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
 import MuiRating from '@material-ui/lab/Rating';
 import Star from '@material-ui/icons/Star';
+
+import FieldLabel from './FieldLabel';
 
 const Rating = ({ label, ...props }) => {
   return (
@@ -20,7 +21,7 @@ const Rating = ({ label, ...props }) => {
 
         return (
           <FormControl error={hasError}>
-            <FormLabel>{label}</FormLabel>
+            <FieldLabel label={label} />
             <MuiRating
               icon={<Star fontSize="default" />}
               onChange={handleChange}

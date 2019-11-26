@@ -6,17 +6,26 @@ import styled from 'styled-components';
 
 import colors from '../constants/colors';
 
+const Content = styled(CardContent)`
+  display: flex;
+  flex-direction: column;
+`;
+
 const Header = styled(CardHeader)`
   background: ${colors.purple.light};
   color: white;
 `;
 
+const Section = styled(Card)`
+  margin: 1rem 0;
+`;
+
 const EntrySection = ({ children, label }) => {
   return (
-    <Card>
+    <Section>
       <Header title={label} />
-      <CardContent>{children}</CardContent>
-    </Card>
+      <Content>{children}</Content>
+    </Section>
   );
 };
 

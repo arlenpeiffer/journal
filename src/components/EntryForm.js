@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Formik } from 'formik';
+import { Formik, FieldArray } from 'formik';
 import { Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
 import reduce from 'lodash.reduce';
 import trim from 'lodash.trim';
 
-import Appointments from './Appointments';
+// import Appointments from './Appointments';
 // import Date from './Date';
 import Food from './Food';
 import Mood from './Mood';
@@ -28,6 +28,7 @@ import EntrySection from './EntrySection';
 import Select from './Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from './Input';
+import AutoComplete from './AutoComplete';
 
 const newEntry = {
   appointments: [],
@@ -161,7 +162,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function EntryForm(props) {
-  const { entry, handleSubmitEntry, journal } = props;
+  const { entry, handleSubmitEntry, journal, logs } = props;
 
   const trimValues = (object, container) =>
     reduce(
@@ -237,10 +238,57 @@ function EntryForm(props) {
                 setFieldValue={setFieldValue}
                 supplements={values.supplements}
               />
-              <Appointments
-                appointments={values.appointments}
-                setFieldValue={setFieldValue}
-              />
+
+              <EntrySection label="Appointments">
+                <FieldArray
+                  name="appointments"
+                  render={arrayHelpers => (
+                    <div>
+                      {values.appointments.map((appointment, index) => (
+                        <div key={index}>
+                          <AutoComplete
+                            dataSource={logs.appointments}
+                            label="Type"
+                            name={`appointments.${index}.type`}
+                          />
+                          <AutoComplete
+                            dataSource={logs.practitioners}
+                            label="Practitioner"
+                            name={`appointments.${index}.practitioner`}
+                          />
+                          <Input
+                            label="Notes / Details"
+                            multiline
+                            name={`appointments.${index}.notes`}
+                            placeholder="Add notes here.."
+                          />
+                          <Button
+                            color="secondary"
+                            onClick={() => arrayHelpers.remove(index)}
+                            variant="contained"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        color="primary"
+                        onClick={() =>
+                          arrayHelpers.push({
+                            type: '',
+                            practitioner: '',
+                            notes: ''
+                          })
+                        }
+                        variant="contained"
+                      >
+                        Add Appointment
+                      </Button>
+                    </div>
+                  )}
+                />
+              </EntrySection>
+
               <Mood setFieldValue={setFieldValue} />
               <Movement
                 movement={values.movement}
@@ -282,7 +330,8 @@ function EntryForm(props) {
 }
 
 const mapStateToProps = state => ({
-  journal: state.user.journal
+  journal: state.user.journal,
+  logs: state.user.logs
 });
 
 export default connect(mapStateToProps)(EntryForm);

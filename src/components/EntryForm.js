@@ -78,8 +78,8 @@ const newEntry = {
 const validationSchema = Yup.object().shape({
   appointments: Yup.array().of(
     Yup.object().shape({
-      type: Yup.string().required('Appointment type is required.'),
-      practitioner: Yup.string().required('Practitioner name is required.'),
+      type: Yup.string().typeError('Appointment type is required.'),
+      practitioner: Yup.string().typeError('Practitioner name is required.'),
       notes: Yup.string()
     })
   ),

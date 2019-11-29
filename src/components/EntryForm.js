@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Formik, FieldArray } from 'formik';
+import { Formik } from 'formik';
 import { Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -11,7 +11,7 @@ import trim from 'lodash.trim';
 // import Date from './Date';
 import Food from './Food';
 import Mood from './Mood';
-import Movement from './Movement';
+// import Movement from './Movement';
 import Notes from './Notes';
 import Pain from './Pain';
 import Sleep from './Sleep';
@@ -29,6 +29,7 @@ import Select from './Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from './Input';
 import AutoComplete from './AutoComplete';
+import FieldArray from './FieldArray';
 
 const newEntry = {
   appointments: [],
@@ -241,59 +242,51 @@ function EntryForm(props) {
 
               <EntrySection label="Appointments">
                 <FieldArray
+                  label="Appointment"
                   name="appointments"
-                  render={arrayHelpers => (
-                    <div>
-                      {values.appointments.map((appointment, index) => (
-                        <div key={index}>
-                          <AutoComplete
-                            dataSource={logs.appointments}
-                            label="Type"
-                            name={`appointments.${index}.type`}
-                          />
-                          <AutoComplete
-                            dataSource={logs.practitioners}
-                            label="Practitioner"
-                            name={`appointments.${index}.practitioner`}
-                          />
-                          <Input
-                            label="Notes / Details"
-                            multiline
-                            name={`appointments.${index}.notes`}
-                            placeholder="Add notes here.."
-                          />
-                          <Button
-                            color="secondary"
-                            onClick={() => arrayHelpers.remove(index)}
-                            variant="contained"
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      ))}
-                      <Button
-                        color="primary"
-                        onClick={() =>
-                          arrayHelpers.push({
-                            type: '',
-                            practitioner: '',
-                            notes: ''
-                          })
-                        }
-                        variant="contained"
-                      >
-                        Add Appointment
-                      </Button>
-                    </div>
-                  )}
-                />
+                  newField={{ type: '', practitioner: '', notes: '' }}
+                >
+                  <AutoComplete
+                    dataSource={logs.appointments}
+                    field="type"
+                    label="Type"
+                  />
+                  <AutoComplete
+                    dataSource={logs.practitioners}
+                    field="practitioner"
+                    label="Practitioner"
+                  />
+                  <Input
+                    field="notes"
+                    label="Notes / Details"
+                    multiline
+                    placeholder="Add notes here.."
+                  />
+                </FieldArray>
               </EntrySection>
 
               <Mood setFieldValue={setFieldValue} />
-              <Movement
-                movement={values.movement}
-                setFieldValue={setFieldValue}
-              />
+
+              <EntrySection label="Movement">
+                <FieldArray
+                  label="Movement"
+                  name="movement"
+                  newField={{ type: '', details: '' }}
+                >
+                  <AutoComplete
+                    dataSource={logs.movement}
+                    field="type" // TODO: Look into what's happening with validation //
+                    label="Type"
+                  />
+                  <Input
+                    field="details"
+                    label="Notes / Details"
+                    multiline
+                    placeholder="Add notes here.."
+                  />
+                </FieldArray>
+              </EntrySection>
+
               <Pain pain={values.pain} setFieldValue={setFieldValue} />
               <Sleep
                 date={values.date}

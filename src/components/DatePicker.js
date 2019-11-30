@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'formik';
 import moment from 'moment';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import { DatePicker as MuiDatePicker } from '@material-ui/pickers';
 
 const DatePicker = ({ name, validate, ...props }) => {
   return (
@@ -20,12 +20,11 @@ const DatePicker = ({ name, validate, ...props }) => {
         };
 
         return (
-          <KeyboardDatePicker
+          <MuiDatePicker
             autoOk={true}
             error={hasError}
             format="MMM D, YYYY"
             helperText={error}
-            inputProps={{ readOnly: true }}
             onChange={handleChange}
             value={field.value}
             {...props}

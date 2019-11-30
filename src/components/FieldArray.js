@@ -1,27 +1,39 @@
 import React from 'react';
 import { FieldArray as FormikFieldArray, useField } from 'formik';
 import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
 
-const FieldArray = ({ children, label, name, newField }) => {
-  const [field, meta] = useField(name);
+const ArrayItem = styled.div``;
+
+const ItemFields = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FieldArray = ({ buttonText, children, name, newArrayItem, ...props }) => {
+  const [field] = useField(name);
 
   return (
-    <FormikFieldArray name={name}>
+    <FormikFieldArray name={name} {...props}>
       {arrayHelpers => (
         <div>
           {field.value.map((item, index) => (
-            <div key={index}>
-              {React.Children.map(children, child => {
-                const { props } = child;
-                return React.cloneElement(child, {
-                  name: `${name}.${index}.${props.field}`
-                });
-              })}
-              <Button onClick={() => arrayHelpers.remove(index)}>Remove</Button>
-            </div>
+            <ArrayItem key={index}>
+              <ItemFields>
+                {React.Children.map(children, child => {
+                  const { props } = child;
+                  return React.cloneElement(child, {
+                    name: `${name}.${index}.${props.field}`
+                  });
+                })}
+              </ItemFields>
+              <Button onClick={() => arrayHelpers.remove(index)}>
+                Remove {buttonText}
+              </Button>
+            </ArrayItem>
           ))}
-          <Button onClick={() => arrayHelpers.push(newField)}>
-            Add {label}
+          <Button onClick={() => arrayHelpers.push(newArrayItem)}>
+            Add {buttonText}
           </Button>
         </div>
       )}

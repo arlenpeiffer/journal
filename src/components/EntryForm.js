@@ -242,9 +242,9 @@ function EntryForm(props) {
 
               <EntrySection label="Appointments">
                 <FieldArray
-                  label="Appointment"
+                  buttonText="Appointment"
                   name="appointments"
-                  newField={{ type: '', practitioner: '', notes: '' }}
+                  newArrayItem={{ type: '', practitioner: '', notes: '' }}
                 >
                   <AutoComplete
                     dataSource={logs.appointments}
@@ -269,9 +269,9 @@ function EntryForm(props) {
 
               <EntrySection label="Movement">
                 <FieldArray
-                  label="Movement"
+                  buttonText="Movement"
                   name="movement"
-                  newField={{ type: '', details: '' }}
+                  newArrayItem={{ type: '', details: '' }}
                 >
                   <AutoComplete
                     dataSource={logs.movement}

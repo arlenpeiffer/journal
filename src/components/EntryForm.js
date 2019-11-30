@@ -9,7 +9,7 @@ import trim from 'lodash.trim';
 
 // import Appointments from './Appointments';
 // import Date from './Date';
-import Food from './Food';
+// import Food from './Food';
 import Mood from './Mood';
 // import Movement from './Movement';
 import Notes from './Notes';
@@ -30,6 +30,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Input from './Input';
 import AutoComplete from './AutoComplete';
 import FieldArray from './FieldArray';
+import TimePicker from './TimePicker';
 
 const newEntry = {
   appointments: [],
@@ -234,7 +235,59 @@ function EntryForm(props) {
                 />
               </EntrySection>
 
-              <Food setFieldValue={setFieldValue} />
+              <EntrySection label="Meals">
+                <FieldArray
+                  buttonText="Meal"
+                  name="food.meals"
+                  newArrayItem={{
+                    type: undefined,
+                    time: moment().valueOf(),
+                    items: [],
+                    notes: ''
+                  }}
+                >
+                  <Select field="type" label="Type">
+                    <MenuItem value={0}>Breakfast</MenuItem>
+                    <MenuItem value={1}>Lunch</MenuItem>
+                    <MenuItem value={3}>Dinner</MenuItem>
+                    <MenuItem value={2}>Snack</MenuItem>
+                    <MenuItem value={4}>Dessert</MenuItem>
+                  </Select>
+                  <TimePicker field="time" label="Time" />
+                  <FieldArray
+                    buttonText="Item"
+                    field="items"
+                    // name="items"
+                    newArrayItem={{
+                      name: '',
+                      portion: '',
+                      ingredients: '',
+                      notes: ''
+                    }}
+                  >
+                    <AutoComplete
+                      dataSource={logs.food}
+                      field="name"
+                      label="Name"
+                    />
+                    <Input field="portion" label="Portion" />
+                    <Input field="ingredients" label="Ingedients" />
+                    <Input
+                      field="notes"
+                      label="Notes / Details"
+                      multiline
+                      placeholder="Add notes here.."
+                    />
+                  </FieldArray>
+                  <Input
+                    field="notes"
+                    label="Notes"
+                    multiline
+                    placeholder="Add notes here.."
+                  />
+                </FieldArray>
+              </EntrySection>
+
               <Supplements
                 setFieldValue={setFieldValue}
                 supplements={values.supplements}

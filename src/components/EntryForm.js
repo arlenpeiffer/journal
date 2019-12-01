@@ -253,7 +253,11 @@ function EntryForm(props) {
                     <MenuItem value={2}>Snack</MenuItem>
                     <MenuItem value={4}>Dessert</MenuItem>
                   </Select>
-                  <TimePicker field="time" label="Time" />
+                  <TimePicker
+                    field="time"
+                    label="Time"
+                    setFieldValue={setFieldValue}
+                  />
                   <FieldArray
                     buttonText="Item"
                     field="items"

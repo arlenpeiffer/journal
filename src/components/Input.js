@@ -9,12 +9,19 @@ const Input = ({ name, ...props }) => {
         const { error } = meta;
         const hasError = error ? true : false;
 
+        const handleChange = event => {
+          form.setFieldValue(field.name, event.target.value);
+        };
+
         return (
           <TextField
             autoComplete="off"
             error={hasError}
             fullWidth
             helperText={error}
+            // multiline
+            onChange={handleChange}
+            value={field.value}
             {...props}
           />
         );

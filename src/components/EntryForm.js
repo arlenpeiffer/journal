@@ -80,8 +80,8 @@ const newEntry = {
 const validationSchema = Yup.object().shape({
   appointments: Yup.array().of(
     Yup.object().shape({
-      type: Yup.string().typeError('Appointment type is required.'),
-      practitioner: Yup.string().typeError('Practitioner name is required.'),
+      type: Yup.string().required('Appointment type is required.'),
+      practitioner: Yup.string().required('Practitioner name is required.'),
       notes: Yup.string()
     })
   ),
@@ -100,7 +100,7 @@ const validationSchema = Yup.object().shape({
             Yup.object().shape({
               name: Yup.string().required('Meal item name is required.'),
               portion: Yup.string().required('Meal item portion is required.'),
-              ingredients: Yup.string(),
+              ingredients: Yup.array(),
               notes: Yup.string()
             })
           )
@@ -262,10 +262,11 @@ function EntryForm(props) {
                     buttonText="Item"
                     field="items"
                     // name="items"
+                    label="Items"
                     newArrayItem={{
                       name: '',
                       portion: '',
-                      ingredients: '',
+                      ingredients: [],
                       notes: ''
                     }}
                   >
@@ -275,7 +276,12 @@ function EntryForm(props) {
                       label="Name"
                     />
                     <Input field="portion" label="Portion" />
-                    <Input field="ingredients" label="Ingedients" />
+                    <AutoComplete
+                      field="ingredients"
+                      filterSelectedOptions
+                      label="Ingredients"
+                      multiple
+                    />
                     <Input
                       field="notes"
                       label="Notes / Details"

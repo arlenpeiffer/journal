@@ -17,7 +17,16 @@ const AutoComplete = ({ dataSource, label, name, ...props }) => {
         });
 
         const handleChange = (event, value) => {
-          form.setFieldValue(field.name, value);
+          form.setFieldValue(field.name, value || '');
+        };
+
+        const handleInputChange = (event, value) => {
+          console.log(event, value);
+          const isString = typeof field.value === 'string';
+
+          if (isString) {
+            form.setFieldValue(field.name, value);
+          }
         };
 
         const Input = params => (
@@ -34,11 +43,13 @@ const AutoComplete = ({ dataSource, label, name, ...props }) => {
         return (
           <MuiAutocomplete
             autoComplete={true}
-            disableClearable
+            // disableClearable
             disableOpenOnFocus
             filterOptions={filterOptions}
             freeSolo
+            // inputValue={field.value}
             onChange={handleChange}
+            // onInputChange={handleInputChange}
             options={dataSource}
             renderInput={Input}
             value={field.value}

@@ -1,32 +1,50 @@
-import React from 'react';
-import { Field } from 'formik';
+import React, { useState } from 'react';
+import { useField, useFormikContext } from 'formik';
 import TextField from '@material-ui/core/TextField';
 
 const Input = ({ name, ...props }) => {
+  const [field, meta] = useField(name);
+  const { validateField } = useFormikContext();
+
+  const [value, setValue] = useState(field.value);
+
+  const { error, touched } = meta;
+  const hasError = error && touched ? true : false;
+
+  const updateAndValidateField = event => {
+    field.onChange(event);
+    validateField(name);
+  };
+
+  const handleBlur = event => {
+    field.onBlur(event);
+    field.onChange(event);
+  };
+
+  const handleChange = event => {
+    setValue(event.target.value);
+
+    const valueIsEmptyString = event.target.value === '';
+    const valueHasLengthOfOne = event.target.value.length === 1;
+
+    if (valueIsEmptyString || (hasError && valueHasLengthOfOne)) {
+      updateAndValidateField(event);
+    }
+  };
+
   return (
-    <Field name={name} {...props}>
-      {({ field, form, meta }) => {
-        const { error } = meta;
-        const hasError = error ? true : false;
-
-        const handleChange = event => {
-          form.setFieldValue(field.name, event.target.value);
-        };
-
-        return (
-          <TextField
-            autoComplete="off"
-            error={hasError}
-            fullWidth
-            helperText={error}
-            // multiline
-            onChange={handleChange}
-            value={field.value}
-            {...props}
-          />
-        );
-      }}
-    </Field>
+    <TextField
+      autoComplete="off"
+      error={hasError}
+      fullWidth
+      helperText={hasError && error}
+      multiline
+      name={name}
+      onBlur={handleBlur}
+      onChange={handleChange}
+      value={value}
+      {...props}
+    />
   );
 };
 

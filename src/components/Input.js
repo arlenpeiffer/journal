@@ -38,7 +38,6 @@ const Input = ({ name, ...props }) => {
       error={hasError}
       fullWidth
       helperText={hasError && error}
-      multiline
       name={name}
       onBlur={handleBlur}
       onChange={handleChange}

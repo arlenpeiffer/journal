@@ -220,6 +220,7 @@ function EntryForm(props) {
               </Select>
               <Input
                 label="Notes / Details"
+                multiline
                 name="food.diet.notes"
                 placeholder="Add notes here.."
                 type="text"
@@ -272,12 +273,14 @@ function EntryForm(props) {
                   <Input
                     field="notes"
                     label="Notes / Details"
+                    multiline
                     placeholder="Add notes here.."
                   />
                 </FieldArray>
                 <Input
                   field="notes"
                   label="Notes"
+                  multiline
                   placeholder="Add notes here.."
                 />
               </FieldArray>
@@ -310,6 +313,7 @@ function EntryForm(props) {
                 <Input
                   field="notes"
                   label="Notes / Details"
+                  multiline
                   placeholder="Add notes here.."
                 />
               </FieldArray>
@@ -343,6 +347,7 @@ function EntryForm(props) {
               <Rating label="Rating" name="sleep.rating" />
               <Input
                 label="Notes / Details"
+                multiline
                 name="sleep.notes"
                 placeholder="Add notes here.."
               />
@@ -352,6 +357,7 @@ function EntryForm(props) {
               <Rating label="Rating" name="stomach.rating" />
               <Input
                 label="Notes / Details"
+                multiline
                 name="stomach.notes"
                 placeholder="Add notes here.."
               />
@@ -361,6 +367,7 @@ function EntryForm(props) {
               {/* <ToggleButtonGroup name="stress.level"></ToggleButtonGroup> */}
               <Input
                 label="Notes / Details"
+                multiline
                 name="stress.notes"
                 placeholder="Add notes here.."
               />
@@ -371,6 +378,7 @@ function EntryForm(props) {
             <EntrySection label="Notes">
               <Input
                 label="Notes"
+                multiline
                 name="notes"
                 placeholder="Overall notes about the day.."
                 // type="text"

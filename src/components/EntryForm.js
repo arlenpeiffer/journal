@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Formik } from 'formik';
-import { Form } from 'antd';
+import { Formik, Form } from 'formik';
+// import { Form } from 'antd';
 import * as Yup from 'yup';
 import moment from 'moment';
 import reduce from 'lodash.reduce';
@@ -12,11 +12,11 @@ import trim from 'lodash.trim';
 // import Food from './Food';
 import Mood from './Mood';
 // import Movement from './Movement';
-import Notes from './Notes';
+// import Notes from './Notes';
 import Pain from './Pain';
-import Sleep from './Sleep';
-import Stomach from './Stomach';
-import Stress from './Stress';
+// import Sleep from './Sleep';
+// import Stomach from './Stomach';
+// import Stress from './Stress';
 import Supplements from './Supplements';
 import Travel from './Travel';
 
@@ -28,6 +28,7 @@ import EntrySection from './EntrySection';
 import Select from './Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from './Input';
+import Rating from './Rating';
 import AutoComplete from './AutoComplete';
 import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
@@ -198,190 +199,191 @@ function EntryForm(props) {
       initialValues={entry ? entry : newEntry}
       onSubmit={values => handleSubmitEntry(trimValues(values, {}))}
       validationSchema={validationSchema}
-      render={({
-        handleSubmit,
-        // handleChange,
-        values,
-        errors,
-        // touched,
-        setFieldValue
-        // setFieldTouched,
-        // validateField
-        // validateForm
-      }) => (
-        <div>
-          <Form onSubmit={handleSubmit}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <EntrySection label="Date">
-                <DatePicker
-                  disableFuture
-                  label="Date"
-                  name="date"
-                  validate={handleDuplicateDate}
-                />
-              </EntrySection>
+    >
+      {({ errors, setFieldValue, values }) => (
+        <Form>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <EntrySection label="Date">
+              <DatePicker
+                disableFuture
+                label="Date"
+                name="date"
+                validate={handleDuplicateDate}
+              />
+            </EntrySection>
 
-              <EntrySection label="Diet">
-                <Select label="Type" name="food.diet.type">
-                  <MenuItem value="Elimination">Elimination</MenuItem>
-                  <MenuItem value="Low-Starch">Low-Starch</MenuItem>
-                  <MenuItem value="None">None</MenuItem>
+            <EntrySection label="Diet">
+              <Select label="Type" name="food.diet.type">
+                <MenuItem value="Elimination">Elimination</MenuItem>
+                <MenuItem value="Low-Starch">Low-Starch</MenuItem>
+                <MenuItem value="None">None</MenuItem>
+              </Select>
+              <Input
+                label="Notes / Details"
+                name="food.diet.notes"
+                placeholder="Add notes here.."
+                type="text"
+              />
+            </EntrySection>
+
+            <EntrySection label="Meals">
+              <FieldArray
+                buttonText="Meal"
+                name="food.meals"
+                newArrayItem={{
+                  type: undefined,
+                  time: moment().valueOf(),
+                  items: [],
+                  notes: ''
+                }}
+              >
+                <Select field="type" label="Type">
+                  <MenuItem value={0}>Breakfast</MenuItem>
+                  <MenuItem value={1}>Lunch</MenuItem>
+                  <MenuItem value={3}>Dinner</MenuItem>
+                  <MenuItem value={2}>Snack</MenuItem>
+                  <MenuItem value={4}>Dessert</MenuItem>
                 </Select>
-                <Input
-                  label="Notes / Details"
-                  name="food.diet.notes"
-                  placeholder="Add notes here.."
-                  type="text"
-                />
-              </EntrySection>
-
-              <EntrySection label="Meals">
+                <TimePicker field="time" label="Time" />
                 <FieldArray
-                  buttonText="Meal"
-                  name="food.meals"
+                  buttonText="Item"
+                  field="items"
+                  // name="items"
+                  label="Items"
                   newArrayItem={{
-                    type: undefined,
-                    time: moment().valueOf(),
-                    items: [],
+                    name: '',
+                    portion: '',
+                    ingredients: [],
                     notes: ''
                   }}
                 >
-                  <Select field="type" label="Type">
-                    <MenuItem value={0}>Breakfast</MenuItem>
-                    <MenuItem value={1}>Lunch</MenuItem>
-                    <MenuItem value={3}>Dinner</MenuItem>
-                    <MenuItem value={2}>Snack</MenuItem>
-                    <MenuItem value={4}>Dessert</MenuItem>
-                  </Select>
-                  <TimePicker
-                    field="time"
-                    label="Time"
-                    setFieldValue={setFieldValue}
-                  />
-                  <FieldArray
-                    buttonText="Item"
-                    field="items"
-                    // name="items"
-                    label="Items"
-                    newArrayItem={{
-                      name: '',
-                      portion: '',
-                      ingredients: [],
-                      notes: ''
-                    }}
-                  >
-                    <AutoComplete
-                      dataSource={logs.food}
-                      field="name"
-                      label="Name"
-                    />
-                    <Input field="portion" label="Portion" />
-                    <AutoComplete
-                      field="ingredients"
-                      filterSelectedOptions
-                      label="Ingredients"
-                      multiple
-                    />
-                    <Input
-                      field="notes"
-                      label="Notes / Details"
-                      multiline
-                      placeholder="Add notes here.."
-                    />
-                  </FieldArray>
-                  <Input
-                    field="notes"
-                    label="Notes"
-                    multiline
-                    placeholder="Add notes here.."
-                  />
-                </FieldArray>
-              </EntrySection>
-
-              <Supplements
-                setFieldValue={setFieldValue}
-                supplements={values.supplements}
-              />
-
-              <EntrySection label="Appointments">
-                <FieldArray
-                  buttonText="Appointment"
-                  name="appointments"
-                  newArrayItem={{ type: '', practitioner: '', notes: '' }}
-                >
                   <AutoComplete
-                    dataSource={logs.appointments}
-                    field="type"
-                    label="Type"
+                    dataSource={logs.food}
+                    field="name"
+                    label="Name"
                   />
+                  <Input field="portion" label="Portion" />
                   <AutoComplete
-                    dataSource={logs.practitioners}
-                    field="practitioner"
-                    label="Practitioner"
+                    field="ingredients"
+                    filterSelectedOptions
+                    label="Ingredients"
+                    multiple
                   />
                   <Input
                     field="notes"
                     label="Notes / Details"
-                    multiline
                     placeholder="Add notes here.."
                   />
                 </FieldArray>
-              </EntrySection>
-
-              <Mood setFieldValue={setFieldValue} />
-
-              <EntrySection label="Movement">
-                <FieldArray
-                  buttonText="Movement"
-                  name="movement"
-                  newArrayItem={{ type: '', details: '' }}
-                >
-                  <AutoComplete
-                    dataSource={logs.movement}
-                    field="type" // TODO: Look into what's happening with validation //
-                    label="Type"
-                  />
-                  <Input
-                    field="details"
-                    label="Notes / Details"
-                    multiline
-                    placeholder="Add notes here.."
-                  />
-                </FieldArray>
-              </EntrySection>
-
-              <Pain pain={values.pain} setFieldValue={setFieldValue} />
-              <Sleep
-                date={values.date}
-                sleep={values.sleep}
-                setFieldValue={setFieldValue}
-              />
-              <Stomach stomach={values.stomach} setFieldValue={setFieldValue} />
-              <Stress />
-              <Travel setFieldValue={setFieldValue} travel={values.travel} />
-
-              <EntrySection label="Notes">
                 <Input
+                  field="notes"
                   label="Notes"
-                  multiline
-                  name="notes"
-                  placeholder="Overall notes about the day.."
-                  type="text"
+                  placeholder="Add notes here.."
                 />
-              </EntrySection>
+              </FieldArray>
+            </EntrySection>
 
-              <Button
-                onClick={handleSubmit}
-                color="primary"
-                variant="contained"
+            {/* <EntrySection label="Supplements">
+                <CheckboxGroup
+                  dataSource={logs.supplements}
+                  label="Supplements"
+                  name="supplements"
+                />
+              </EntrySection> */}
+
+            <EntrySection label="Appointments">
+              <FieldArray
+                buttonText="Appointment"
+                name="appointments"
+                newArrayItem={{ type: '', practitioner: '', notes: '' }}
               >
-                Submit
-              </Button>
-            </MuiPickersUtilsProvider>
-          </Form>
-        </div>
+                <AutoComplete
+                  dataSource={logs.appointments}
+                  field="type"
+                  label="Type"
+                />
+                <AutoComplete
+                  dataSource={logs.practitioners}
+                  field="practitioner"
+                  label="Practitioner"
+                />
+                <Input
+                  field="notes"
+                  label="Notes / Details"
+                  placeholder="Add notes here.."
+                />
+              </FieldArray>
+            </EntrySection>
+
+            <Mood setFieldValue={setFieldValue} />
+
+            <EntrySection label="Movement">
+              <FieldArray
+                buttonText="Movement"
+                name="movement"
+                newArrayItem={{ type: '', details: '' }}
+              >
+                <AutoComplete
+                  dataSource={logs.movement}
+                  field="type" // TODO: Look into what's happening with validation //
+                  label="Type"
+                />
+                <Input
+                  field="details"
+                  label="Notes / Details"
+                  placeholder="Add notes here.."
+                />
+              </FieldArray>
+            </EntrySection>
+
+            <Pain pain={values.pain} setFieldValue={setFieldValue} />
+
+            <EntrySection label="Sleep">
+              <Slider label="Amount" name="sleep.amount" />
+              <Rating label="Rating" name="sleep.rating" />
+              <Input
+                label="Notes / Details"
+                name="sleep.notes"
+                placeholder="Add notes here.."
+              />
+            </EntrySection>
+
+            <EntrySection label="Stomach">
+              <Rating label="Rating" name="stomach.rating" />
+              <Input
+                label="Notes / Details"
+                name="stomach.notes"
+                placeholder="Add notes here.."
+              />
+            </EntrySection>
+
+            <EntrySection label="Stress">
+              {/* <ToggleButtonGroup name="stress.level"></ToggleButtonGroup> */}
+              <Input
+                label="Notes / Details"
+                name="stress.notes"
+                placeholder="Add notes here.."
+              />
+            </EntrySection>
+
+            <Travel setFieldValue={setFieldValue} travel={values.travel} />
+
+            <EntrySection label="Notes">
+              <Input
+                label="Notes"
+                name="notes"
+                placeholder="Overall notes about the day.."
+                // type="text"
+              />
+            </EntrySection>
+
+            <Button color="primary" type="submit" variant="contained">
+              Submit
+            </Button>
+          </MuiPickersUtilsProvider>
+        </Form>
       )}
-    />
+    </Formik>
   );
 }
 

@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
-import { Field, useField } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import moment from 'moment';
 import { TimePicker as MuiTimePicker } from '@material-ui/pickers';
 
-const TimePicker = ({ name, setFieldValue, ...props }) => {
+const TimePicker = ({ name, ...props }) => {
   const [date] = useField('date');
-  const [field] = useField(name);
+  const [field, meta] = useField(name);
+  const { setFieldValue } = useFormikContext();
+
+  const { error } = meta;
+  const hasError = error ? true : false;
 
   const startOfDay = moment(field.value).startOf('day');
   const timeSinceStartOfDay = moment(field.value).diff(startOfDay);
@@ -14,31 +18,22 @@ const TimePicker = ({ name, setFieldValue, ...props }) => {
     .valueOf();
 
   useEffect(() => {
-    setFieldValue(name, selectedTimeOnCurrentDate);
+    setFieldValue(field.name, selectedTimeOnCurrentDate);
   }, [date.value]);
 
+  const handleChange = value => {
+    setFieldValue(field.name, moment(value).valueOf());
+  };
+
   return (
-    <Field name={name} {...props}>
-      {({ field, form, meta }) => {
-        const { error } = meta;
-        const hasError = error ? true : false;
-
-        const handleChange = value => {
-          form.setFieldValue(field.name, moment(value).valueOf());
-        };
-
-        return (
-          <MuiTimePicker
-            error={hasError}
-            format="h:mm A"
-            helperText={error}
-            onChange={handleChange}
-            value={selectedTimeOnCurrentDate}
-            {...props}
-          />
-        );
-      }}
-    </Field>
+    <MuiTimePicker
+      error={hasError}
+      format="h:mm A"
+      helperText={error}
+      onChange={handleChange}
+      value={selectedTimeOnCurrentDate}
+      {...props}
+    />
   );
 };
 

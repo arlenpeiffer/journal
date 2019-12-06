@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'formik';
+import { useField, useFormikContext } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MuiRating from '@material-ui/lab/Rating';
@@ -7,32 +7,31 @@ import Star from '@material-ui/icons/Star';
 
 import FieldLabel from './FieldLabel';
 
-const Rating = ({ label, ...props }) => {
+const Rating = ({ label, name, ...props }) => {
+  const [field, meta] = useField(name);
+  const { setFieldValue } = useFormikContext();
+
+  const { error, touched } = meta;
+  const hasError = error && touched ? true : false;
+
+  const handleChange = (event, value) => {
+    // TODO: explore ways to clear/reset value
+    setFieldValue(field.name, value);
+  };
+
   return (
-    <Field {...props}>
-      {({ field, form, meta }) => {
-        const { error } = meta;
-        const hasError = error ? true : false;
-
-        const handleChange = (event, value) => {
-          // TODO: explore ways to clear/reset value
-          form.setFieldValue(field.name, value);
-        };
-
-        return (
-          <FormControl error={hasError}>
-            <FieldLabel label={label} />
-            <MuiRating
-              icon={<Star fontSize="default" />}
-              onChange={handleChange}
-              value={field.value}
-              {...props}
-            />
-            <FormHelperText>{error}</FormHelperText>
-          </FormControl>
-        );
-      }}
-    </Field>
+    <FormControl error={hasError}>
+      <FieldLabel label={label} />
+      <MuiRating
+        icon={<Star />}
+        name={name}
+        onBlur={field.onBlur}
+        onChange={handleChange}
+        value={field.value}
+        {...props}
+      />
+      <FormHelperText>{hasError && error}</FormHelperText>
+    </FormControl>
   );
 };
 

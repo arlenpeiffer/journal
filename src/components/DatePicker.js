@@ -1,37 +1,40 @@
 import React from 'react';
-import { Field } from 'formik';
+import { useField, useFormikContext } from 'formik';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import { DatePicker as MuiDatePicker } from '@material-ui/pickers';
 
 const DatePicker = ({ name, validate, ...props }) => {
+  const [field, meta] = useField({ name, validate });
+  const { setFieldValue } = useFormikContext();
+
+  const { error, touched } = meta;
+  const hasError = error && touched ? true : false;
+
+  const handleChange = value => {
+    setFieldValue(
+      field.name,
+      moment(value)
+        .startOf('day')
+        .valueOf()
+    );
+  };
+
   return (
-    <Field name={name} validate={validate} {...props}>
-      {({ field, form, meta }) => {
-        const { error } = meta;
-        const hasError = error ? true : false;
-
-        const handleChange = value => {
-          form.setFieldValue(
-            field.name,
-            moment(value)
-              .startOf('day')
-              .valueOf()
-          );
-        };
-
-        return (
-          <MuiDatePicker
-            autoOk={true}
-            error={hasError}
-            format="MMM D, YYYY"
-            helperText={error}
-            onChange={handleChange}
-            value={field.value}
-            {...props}
-          />
-        );
-      }}
-    </Field>
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <MuiDatePicker
+        autoOk={true}
+        error={hasError}
+        format="MMM D, YYYY"
+        helperText={hasError && error}
+        name={name}
+        onBlur={field.onBlur}
+        onChange={handleChange}
+        value={field.value}
+        {...props}
+      />
+    </MuiPickersUtilsProvider>
   );
 };
 

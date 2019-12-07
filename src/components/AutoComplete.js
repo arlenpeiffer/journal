@@ -11,7 +11,7 @@ const AutoComplete = ({ dataSource, label, name, ...props }) => {
   const { error, touched } = meta;
   const hasError = error && touched ? true : false;
 
-  const inputRef = useRef();
+  const inputRef = useRef(field.value);
 
   const filterOptions = createFilterOptions({
     matchFrom: 'start',
@@ -20,19 +20,24 @@ const AutoComplete = ({ dataSource, label, name, ...props }) => {
 
   const handleBlur = event => {
     field.onBlur(event);
-    setFieldValue(field.name, inputRef.current.value);
+
+    if (!props.multiple) {
+      setFieldValue(field.name, inputRef.current.value);
+    }
   };
 
-  const handleChange = (e, value) => {
+  const handleChange = (event, value) => {
     setFieldValue(field.name, value);
   };
 
-  const handleInputChange = (e, value) => {
-    const valueIsEmptyString = value === '';
-    const valueHasLengthOfOne = value.length === 1;
+  const handleInputChange = (event, value) => {
+    if (!props.multiple) {
+      const valueIsEmptyString = value === '';
+      const valueHasLengthOfOne = value.length === 1;
 
-    if (valueIsEmptyString || (valueHasLengthOfOne && hasError)) {
-      setFieldValue(field.name, value);
+      if (valueIsEmptyString || (valueHasLengthOfOne && hasError)) {
+        setFieldValue(field.name, value);
+      }
     }
   };
 
@@ -55,7 +60,7 @@ const AutoComplete = ({ dataSource, label, name, ...props }) => {
       disableOpenOnFocus
       filterOptions={filterOptions}
       freeSolo
-      id={name}
+      id={name} // Required by Material-UI
       onBlur={handleBlur}
       onChange={handleChange}
       onInputChange={handleInputChange}

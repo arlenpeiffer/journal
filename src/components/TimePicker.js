@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useField, useFormikContext } from 'formik';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import { TimePicker as MuiTimePicker } from '@material-ui/pickers';
 
@@ -8,8 +10,8 @@ const TimePicker = ({ name, ...props }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
 
-  const { error } = meta;
-  const hasError = error ? true : false;
+  const { error, touched } = meta;
+  const hasError = error && touched ? true : false;
 
   const startOfDay = moment(field.value).startOf('day');
   const timeSinceStartOfDay = moment(field.value).diff(startOfDay);
@@ -26,14 +28,18 @@ const TimePicker = ({ name, ...props }) => {
   };
 
   return (
-    <MuiTimePicker
-      error={hasError}
-      format="h:mm A"
-      helperText={error}
-      onChange={handleChange}
-      value={selectedTimeOnCurrentDate}
-      {...props}
-    />
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <MuiTimePicker
+        error={hasError}
+        format="h:mm A"
+        helperText={error}
+        name={name}
+        onBlur={field.onBlur}
+        onChange={handleChange}
+        value={selectedTimeOnCurrentDate}
+        {...props}
+      />
+    </MuiPickersUtilsProvider>
   );
 };
 

@@ -6,10 +6,10 @@ const Input = ({ name, ...props }) => {
   const [field, meta] = useField(name);
   const { validateField } = useFormikContext();
 
-  const [value, setValue] = useState(field.value);
-
   const { error, touched } = meta;
   const hasError = error && touched ? true : false;
+
+  const [value, setValue] = useState(field.value);
 
   const updateAndValidateField = event => {
     field.onChange(event);
@@ -27,7 +27,7 @@ const Input = ({ name, ...props }) => {
     const valueIsEmptyString = event.target.value === '';
     const valueHasLengthOfOne = event.target.value.length === 1;
 
-    if (valueIsEmptyString || (hasError && valueHasLengthOfOne)) {
+    if (valueIsEmptyString || (valueHasLengthOfOne && hasError)) {
       updateAndValidateField(event);
     }
   };

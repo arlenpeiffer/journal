@@ -198,7 +198,7 @@ function EntryForm(props) {
       onSubmit={values => handleSubmitEntry(trimValues(values, {}))}
       validationSchema={validationSchema}
     >
-      {({ errors, setFieldValue, values }) => (
+      {({ errors, handleSubmit, setFieldValue, values }) => (
         <Form>
           <EntrySection label="Date">
             <DatePicker
@@ -382,7 +382,7 @@ function EntryForm(props) {
             />
           </EntrySection>
 
-          <Button color="primary" type="submit" variant="contained">
+          <Button color="primary" onClick={handleSubmit} variant="contained">
             Submit
           </Button>
         </Form>

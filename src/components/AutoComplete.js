@@ -1,63 +1,69 @@
-import React from 'react';
-import { Field } from 'formik';
+import React, { useRef } from 'react';
+import { useField, useFormikContext } from 'formik';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import MuiAutocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
 const AutoComplete = ({ dataSource, label, name, ...props }) => {
+  const [field, meta] = useField(name);
+  const { setFieldValue } = useFormikContext();
+
+  const { error, touched } = meta;
+  const hasError = error && touched ? true : false;
+
+  const inputRef = useRef();
+
+  const filterOptions = createFilterOptions({
+    matchFrom: 'start',
+    trim: 'true'
+  });
+
+  const handleBlur = event => {
+    field.onBlur(event);
+    setFieldValue(field.name, inputRef.current.value);
+  };
+
+  const handleChange = (e, value) => {
+    setFieldValue(field.name, value);
+  };
+
+  const handleInputChange = (e, value) => {
+    const valueIsEmptyString = value === '';
+    const valueHasLengthOfOne = value.length === 1;
+
+    if (valueIsEmptyString || (valueHasLengthOfOne && hasError)) {
+      setFieldValue(field.name, value);
+    }
+  };
+
+  const Input = params => (
+    <TextField
+      error={hasError}
+      fullWidth
+      helperText={hasError && error}
+      InputProps={{ ...params.InputProps, type: 'search' }}
+      inputRef={inputRef}
+      label={label}
+      {...params}
+    />
+  );
+
   return (
-    <Field name={name} {...props}>
-      {({ field, form, meta }) => {
-        const { error } = meta;
-        const hasError = error ? true : false;
-
-        const filterOptions = createFilterOptions({
-          matchFrom: 'start',
-          trim: 'true' // ??
-        });
-
-        const handleChange = (event, value) => {
-          form.setFieldValue(field.name, value || '');
-        };
-
-        const handleInputChange = (event, value) => {
-          console.log(event, value);
-          const isString = typeof field.value === 'string';
-
-          if (isString) {
-            form.setFieldValue(field.name, value);
-          }
-        };
-
-        const Input = params => (
-          <TextField
-            error={hasError}
-            fullWidth
-            helperText={error}
-            InputProps={{ ...params.InputProps, type: 'search' }}
-            label={label}
-            {...params}
-          />
-        );
-
-        return (
-          <MuiAutocomplete
-            autoComplete={true}
-            // disableClearable
-            disableOpenOnFocus
-            filterOptions={filterOptions}
-            freeSolo
-            // inputValue={field.value}
-            onChange={handleChange}
-            // onInputChange={handleInputChange}
-            options={dataSource}
-            renderInput={Input}
-            value={field.value}
-            {...props}
-          />
-        );
-      }}
-    </Field>
+    <MuiAutocomplete
+      autoComplete={true}
+      disableClearable
+      disableOpenOnFocus
+      filterOptions={filterOptions}
+      freeSolo
+      id={name}
+      onBlur={handleBlur}
+      onChange={handleChange}
+      onInputChange={handleInputChange}
+      options={dataSource}
+      renderInput={Input}
+      value={field.value}
+      {...props}
+    />
   );
 };
 

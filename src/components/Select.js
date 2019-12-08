@@ -1,37 +1,30 @@
 import React from 'react';
-import { Field } from 'formik';
+import { useField } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import MuiSelect from '@material-ui/core/Select';
 
 const Select = ({ children, label, name, ...props }) => {
+  const [field, meta] = useField(name);
+
+  const { error, touched } = meta;
+  const hasError = error && touched ? true : false;
+
   return (
-    <Field name={name} {...props}>
-      {({ field, form, meta }) => {
-        const { error } = meta;
-        const hasError = error ? true : false;
-
-        const handleChange = event => {
-          form.setFieldValue(field.name, event.target.value);
-        };
-
-        return (
-          <FormControl error={hasError}>
-            <InputLabel>{label}</InputLabel>
-            <MuiSelect
-              error={hasError}
-              onChange={handleChange}
-              value={field.value}
-              {...props}
-            >
-              {children}
-            </MuiSelect>
-            <FormHelperText>{error}</FormHelperText>
-          </FormControl>
-        );
-      }}
-    </Field>
+    <FormControl error={hasError}>
+      <InputLabel>{label}</InputLabel>
+      <MuiSelect
+        name={field.name}
+        onBlur={field.onBlur}
+        onChange={field.onChange}
+        value={field.value}
+        {...props}
+      >
+        {children}
+      </MuiSelect>
+      <FormHelperText>{hasError && error}</FormHelperText>
+    </FormControl>
   );
 };
 

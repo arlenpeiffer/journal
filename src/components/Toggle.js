@@ -5,13 +5,18 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MuiToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 
 import FieldLabel from './FieldLabel';
 
+const ToggleBorder = styled(Paper)`
+  border: ${props => `1px solid ${props.color}`};
+`;
+
 const ToggleButtonGroup = styled(MuiToggleButtonGroup)`
   display: flex;
-  flex-direction: ${props => props.flexdirection};
+  flex-direction: ${props => props.direction};
 `;
 
 const Toggle = ({ children, label, name, ...props }) => {
@@ -22,6 +27,11 @@ const Toggle = ({ children, label, name, ...props }) => {
   const hasError = error && touched ? true : false;
 
   const theme = useTheme();
+
+  const borderColor = hasError
+    ? `${theme.palette.error.main}`
+    : `${theme.palette.divider}`;
+
   const flexDirection = useMediaQuery(theme.breakpoints.up('sm'))
     ? 'row'
     : 'column';
@@ -40,16 +50,18 @@ const Toggle = ({ children, label, name, ...props }) => {
   return (
     <FormControl error={hasError}>
       <FieldLabel label={label} />
-      <ToggleButtonGroup
-        flexdirection={flexDirection}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        size="small"
-        value={field.value}
-        {...props}
-      >
-        {children}
-      </ToggleButtonGroup>
+      <ToggleBorder color={borderColor} elevation={0}>
+        <ToggleButtonGroup
+          direction={flexDirection}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          size="small"
+          value={field.value}
+          {...props}
+        >
+          {children}
+        </ToggleButtonGroup>
+      </ToggleBorder>
       <FormHelperText>{hasError && error}</FormHelperText>
     </FormControl>
   );

@@ -12,6 +12,7 @@ import { getProfile } from './redux/actions/profile';
 import { loginSuccess, logout } from './redux/actions/user';
 
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import colors from './constants/colors';
 
 const PageWrapper = styled.div`
   margin-left: 5.5%;
@@ -20,11 +21,13 @@ const PageWrapper = styled.div`
 
 const store = configureStore();
 
+const defaultTheme = createMuiTheme();
+
 const theme = createMuiTheme({
   breakpoints: {
     values: {
       xs: 0, // default = 0
-      sm: 400, // default = 600
+      sm: 432, // default = 600
       md: 960, // default = 960
       lg: 1280, // default = 1280
       xl: 1920 // default = 1920
@@ -32,11 +35,48 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      dark: '#4300A6',
-      main: '#6100EE',
-      light: '#8033F1'
+      dark: colors.purple.dark,
+      main: colors.purple.main,
+      light: colors.purple.light
     }
     // secondary: decide on color
+  },
+  overrides: {
+    MuiToggleButton: {
+      root: {
+        border: 'none',
+        // display: 'flex',
+        '&:first-child': {
+          borderRadius: defaultTheme.shape.borderRadius
+          // padding: defaultTheme.spacing(1)
+        },
+        '&:not(:first-child)': {
+          borderRadius: defaultTheme.shape.borderRadius,
+          margin: defaultTheme.spacing(0.5),
+          padding: defaultTheme.spacing(1)
+        },
+        '&$selected': {
+          color: colors.purple.main
+        }
+      }
+    },
+    MuiToggleButtonGroup: {
+      groupedSizeSmall: {
+        // display: 'flex',
+        flex: 1,
+        margin: defaultTheme.spacing(0.5)
+        // padding: defaultTheme.spacing(1)
+      },
+      root: {
+        display: 'flex'
+        // flex: 1
+      }
+    }
+  },
+  props: {
+    MuiToggleButton: {
+      disableRipple: true
+    }
   }
   // status: {
   //   danger: 'orange'

@@ -32,6 +32,7 @@ import Toggle from './Toggle';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
+import CheckboxGroup from './CheckboxGroup';
 
 const newEntry = {
   appointments: [],
@@ -285,13 +286,13 @@ function EntryForm(props) {
             </FieldArray>
           </EntrySection>
 
-          {/* <EntrySection label="Supplements">
-                <CheckboxGroup
-                  dataSource={logs.supplements}
-                  label="Supplements"
-                  name="supplements"
-                />
-              </EntrySection> */}
+          <EntrySection label="Supplements">
+            <CheckboxGroup
+              dataSource={logs.supplements}
+              label="Supplements"
+              name="supplements"
+            />
+          </EntrySection>
 
           <EntrySection label="Appointments">
             <FieldArray

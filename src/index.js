@@ -42,6 +42,23 @@ const theme = createMuiTheme({
     // secondary: decide on color
   },
   overrides: {
+    MuiCheckbox: {
+      colorSecondary: {
+        '&$checked': {
+          '&:hover': {
+            backgroundColor: 'transparent'
+          }
+        }
+      },
+      root: {
+        marginRight: defaultTheme.spacing(0.5),
+        padding: 0,
+        '&:hover': {
+          backgroundColor: 'transparent',
+          color: colors.purple.main
+        }
+      }
+    },
     MuiToggleButton: {
       root: {
         border: 'none',
@@ -74,6 +91,9 @@ const theme = createMuiTheme({
     }
   },
   props: {
+    MuiCheckbox: {
+      disableRipple: true
+    },
     MuiToggleButton: {
       disableRipple: true
     }

@@ -28,9 +28,9 @@ const theme = createMuiTheme({
     values: {
       xs: 0, // default = 0
       sm: 432, // default = 600
-      md: 960, // default = 960
-      lg: 1280, // default = 1280
-      xl: 1920 // default = 1920
+      md: 576, // default = 960
+      lg: 768, // default = 1280
+      xl: 992 // default = 1920
     }
   },
   palette: {

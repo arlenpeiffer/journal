@@ -10,14 +10,14 @@ import trim from 'lodash.trim';
 // import Appointments from './Appointments';
 // import Date from './Date';
 // import Food from './Food';
-import Mood from './Mood';
+// import Mood from './Mood';
 // import Movement from './Movement';
 // import Notes from './Notes';
-import Pain from './Pain';
+// import Pain from './Pain';
 // import Sleep from './Sleep';
 // import Stomach from './Stomach';
 // import Stress from './Stress';
-import Supplements from './Supplements';
+// import Supplements from './Supplements';
 import Travel from './Travel';
 
 import Button from '@material-ui/core/Button';
@@ -28,8 +28,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Input from './Input';
 import Rating from './Rating';
 import AutoComplete from './AutoComplete';
+import Toggle from './Toggle';
+import ToggleButton from '@material-ui/lab/ToggleButton';
 import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
+import CheckboxGroup from './CheckboxGroup';
 
 const newEntry = {
   appointments: [],
@@ -283,13 +286,13 @@ function EntryForm(props) {
             </FieldArray>
           </EntrySection>
 
-          {/* <EntrySection label="Supplements">
-                <CheckboxGroup
-                  dataSource={logs.supplements}
-                  label="Supplements"
-                  name="supplements"
-                />
-              </EntrySection> */}
+          <EntrySection label="Supplements">
+            <CheckboxGroup
+              dataSource={logs.supplements}
+              label="Supplements"
+              name="supplements"
+            />
+          </EntrySection>
 
           <EntrySection label="Appointments">
             <FieldArray
@@ -316,7 +319,13 @@ function EntryForm(props) {
             </FieldArray>
           </EntrySection>
 
-          <Mood setFieldValue={setFieldValue} />
+          <EntrySection label="Mood">
+            <CheckboxGroup
+              dataSource={['logs.moods']}
+              label="Mood"
+              name="mood"
+            />
+          </EntrySection>
 
           <EntrySection label="Movement">
             <FieldArray
@@ -337,7 +346,21 @@ function EntryForm(props) {
             </FieldArray>
           </EntrySection>
 
-          <Pain pain={values.pain} setFieldValue={setFieldValue} />
+          <EntrySection label="Pain">
+            <Toggle exclusive label="Level" name="pain.level">
+              <ToggleButton value={0}>None</ToggleButton>
+              <ToggleButton value={1}>Low</ToggleButton>
+              <ToggleButton value={2}>Moderate</ToggleButton>
+              <ToggleButton value={3}>High</ToggleButton>
+              <ToggleButton value={4}>Extreme</ToggleButton>
+            </Toggle>
+            <Input
+              label="Notes / Details"
+              multiline
+              name="pain.details"
+              placeholder="Add notes here.."
+            />
+          </EntrySection>
 
           <EntrySection label="Sleep">
             <Slider label="Amount" name="sleep.amount" />
@@ -361,7 +384,13 @@ function EntryForm(props) {
           </EntrySection>
 
           <EntrySection label="Stress">
-            {/* <ToggleButtonGroup name="stress.level"></ToggleButtonGroup> */}
+            <Toggle exclusive label="Level" name="stress.level">
+              <ToggleButton value={0}>None</ToggleButton>
+              <ToggleButton value={1}>Low</ToggleButton>
+              <ToggleButton value={2}>Moderate</ToggleButton>
+              <ToggleButton value={3}>High</ToggleButton>
+              <ToggleButton value={4}>Extreme</ToggleButton>
+            </Toggle>
             <Input
               label="Notes / Details"
               multiline

@@ -62,10 +62,9 @@ const theme = createMuiTheme({
     MuiToggleButton: {
       root: {
         border: 'none',
-        // display: 'flex',
         '&:first-child': {
-          borderRadius: defaultTheme.shape.borderRadius
-          // padding: defaultTheme.spacing(1)
+          borderRadius: defaultTheme.shape.borderRadius,
+          padding: defaultTheme.spacing(1)
         },
         '&:not(:first-child)': {
           borderRadius: defaultTheme.shape.borderRadius,
@@ -79,14 +78,11 @@ const theme = createMuiTheme({
     },
     MuiToggleButtonGroup: {
       groupedSizeSmall: {
-        // display: 'flex',
         flex: 1,
         margin: defaultTheme.spacing(0.5)
-        // padding: defaultTheme.spacing(1)
       },
       root: {
         display: 'flex'
-        // flex: 1
       }
     }
   },

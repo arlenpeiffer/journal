@@ -15,7 +15,7 @@ const Select = ({ children, label, name, ...props }) => {
     <FormControl error={hasError}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
-        name={field.name}
+        name={name}
         onBlur={field.onBlur}
         onChange={field.onChange}
         value={field.value}

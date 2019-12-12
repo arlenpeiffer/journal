@@ -13,10 +13,9 @@ import MuiCheckbox from '@material-ui/core/Checkbox';
 import FieldLabel from './FieldLabel';
 
 const CheckboxWithLabel = styled(FormControlLabel)`
-  span {
-    &.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
-      font-size: 14px;
-    }
+  margin: 0px !important;
+  & > :last-child {
+    font-size: 14px;
   }
 `;
 

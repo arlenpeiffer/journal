@@ -35,6 +35,8 @@ import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
 import CheckboxGroup from './CheckboxGroup';
 
+import { formatSleepAmount } from '../utils';
+
 const newEntry = {
   appointments: [],
   date: moment()
@@ -61,7 +63,7 @@ const newEntry = {
     }
   },
   sleep: {
-    amount: null,
+    amount: -1,
     rating: 0,
     notes: ''
   },
@@ -366,21 +368,8 @@ function EntryForm(props) {
 
           <EntrySection label="Sleep">
             <Slider
-              displayDefault="Select an amount"
-              displayFormat={value => {
-                let numberOfHours = Math.floor(value);
-                let numberOfMinutes = (value - numberOfHours) * 60;
-
-                const plural = number => (number > 1 ? 's' : '');
-                const hours = numberOfHours
-                  ? `${numberOfHours} hr${plural(numberOfHours)}`
-                  : '';
-                const minutes = `${numberOfMinutes} min${plural(
-                  numberOfMinutes
-                )}`;
-
-                return `${hours} ${minutes}`;
-              }}
+              defaultDisplayText="Select an amount"
+              formatDisplayText={formatSleepAmount}
               label="Amount"
               max={12}
               min={0}

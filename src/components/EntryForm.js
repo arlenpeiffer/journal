@@ -27,6 +27,7 @@ import Select from './Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from './Input';
 import Rating from './Rating';
+import Slider from './Slider';
 import AutoComplete from './AutoComplete';
 import Toggle from './Toggle';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -146,7 +147,7 @@ const validationSchema = Yup.object().shape({
     })
   }),
   sleep: Yup.object().shape({
-    amount: Yup.number().typeError('Sleep amount is required.'),
+    amount: Yup.number().min(0, 'Sleep amount is required.'),
     rating: Yup.number().min(1, 'Sleep rating is required.'),
     notes: Yup.string()
   }),
@@ -203,6 +204,7 @@ function EntryForm(props) {
     >
       {({ errors, handleSubmit, setFieldValue, values }) => (
         <Form>
+          {console.log(values)}
           <EntrySection label="Date">
             <DatePicker
               disableFuture
@@ -363,7 +365,28 @@ function EntryForm(props) {
           </EntrySection>
 
           <EntrySection label="Sleep">
-            <Slider label="Amount" name="sleep.amount" />
+            <Slider
+              displayDefault="Select an amount"
+              displayFormat={value => {
+                let numberOfHours = Math.floor(value);
+                let numberOfMinutes = (value - numberOfHours) * 60;
+
+                const plural = number => (number > 1 ? 's' : '');
+                const hours = numberOfHours
+                  ? `${numberOfHours} hr${plural(numberOfHours)}`
+                  : '';
+                const minutes = `${numberOfMinutes} min${plural(
+                  numberOfMinutes
+                )}`;
+
+                return `${hours} ${minutes}`;
+              }}
+              label="Amount"
+              max={12}
+              min={0}
+              name="sleep.amount"
+              step={0.25}
+            />
             <Rating label="Rating" name="sleep.rating" />
             <Input
               label="Notes / Details"

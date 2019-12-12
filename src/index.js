@@ -28,9 +28,9 @@ const theme = createMuiTheme({
     values: {
       xs: 0, // default = 0
       sm: 432, // default = 600
-      md: 960, // default = 960
-      lg: 1280, // default = 1280
-      xl: 1920 // default = 1920
+      md: 576, // default = 960
+      lg: 768, // default = 1280
+      xl: 992 // default = 1920
     }
   },
   palette: {
@@ -42,6 +42,23 @@ const theme = createMuiTheme({
     // secondary: decide on color
   },
   overrides: {
+    MuiCheckbox: {
+      colorSecondary: {
+        '&$checked': {
+          '&:hover': {
+            backgroundColor: 'transparent'
+          }
+        }
+      },
+      root: {
+        marginRight: defaultTheme.spacing(0.5),
+        padding: 0,
+        '&:hover': {
+          backgroundColor: 'transparent',
+          color: colors.purple.main
+        }
+      }
+    },
     MuiToggleButton: {
       root: {
         border: 'none',
@@ -74,6 +91,9 @@ const theme = createMuiTheme({
     }
   },
   props: {
+    MuiCheckbox: {
+      disableRipple: true
+    },
     MuiToggleButton: {
       disableRipple: true
     }

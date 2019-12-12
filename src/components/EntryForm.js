@@ -10,14 +10,14 @@ import trim from 'lodash.trim';
 // import Appointments from './Appointments';
 // import Date from './Date';
 // import Food from './Food';
-import Mood from './Mood';
+// import Mood from './Mood';
 // import Movement from './Movement';
 // import Notes from './Notes';
 // import Pain from './Pain';
 // import Sleep from './Sleep';
 // import Stomach from './Stomach';
 // import Stress from './Stress';
-import Supplements from './Supplements';
+// import Supplements from './Supplements';
 import Travel from './Travel';
 
 import Button from '@material-ui/core/Button';
@@ -32,6 +32,7 @@ import Toggle from './Toggle';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
+import CheckboxGroup from './CheckboxGroup';
 
 const newEntry = {
   appointments: [],
@@ -285,13 +286,13 @@ function EntryForm(props) {
             </FieldArray>
           </EntrySection>
 
-          {/* <EntrySection label="Supplements">
-                <CheckboxGroup
-                  dataSource={logs.supplements}
-                  label="Supplements"
-                  name="supplements"
-                />
-              </EntrySection> */}
+          <EntrySection label="Supplements">
+            <CheckboxGroup
+              dataSource={logs.supplements}
+              label="Supplements"
+              name="supplements"
+            />
+          </EntrySection>
 
           <EntrySection label="Appointments">
             <FieldArray
@@ -318,7 +319,13 @@ function EntryForm(props) {
             </FieldArray>
           </EntrySection>
 
-          <Mood setFieldValue={setFieldValue} />
+          <EntrySection label="Mood">
+            <CheckboxGroup
+              dataSource={['logs.moods']}
+              label="Mood"
+              name="mood"
+            />
+          </EntrySection>
 
           <EntrySection label="Movement">
             <FieldArray

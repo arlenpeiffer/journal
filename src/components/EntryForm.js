@@ -335,7 +335,7 @@ function EntryForm(props) {
             >
               <AutoComplete
                 dataSource={logs.movement}
-                field="type" // TODO: Look into what's happening with validation //
+                field="type"
                 label="Type"
               />
               <Input

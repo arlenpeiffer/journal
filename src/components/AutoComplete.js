@@ -33,9 +33,8 @@ const AutoComplete = ({ dataSource, label, name, ...props }) => {
   const handleInputChange = (event, value) => {
     if (!props.multiple) {
       const valueIsEmptyString = value === '';
-      const valueHasLengthOfOne = value.length === 1;
 
-      if (valueIsEmptyString || (valueHasLengthOfOne && hasError)) {
+      if (valueIsEmptyString) {
         setFieldValue(field.name, value);
       }
     }

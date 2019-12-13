@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { Input, Password, Title } from './AntFields';
 import { Button, Form, Icon } from 'antd';
-import * as Yup from 'yup';
 
 import Error from '../components/Error';
 import { resetErrors } from '../redux/actions/errors';
 import { addProfile } from '../redux/actions/profile';
 import { getErrorMessage } from '../shared';
+import { signupSchema } from '../schemas/signupSchema';
 
 const initialValues = {
   name: {
@@ -21,24 +21,6 @@ const initialValues = {
   passwordConfirm: ''
 };
 
-const validationSchema = Yup.object().shape({
-  name: Yup.object().shape({
-    first: Yup.string().required('First name is required.'),
-    last: Yup.string().required('Last name is required.')
-  }),
-  email: Yup.string()
-    .email('Must be a valid email.')
-    .required('Email is required.'),
-  password: Yup.string()
-    .matches(/^[\S]+$/, 'Sorry, spaces are not allowed in password.')
-    .min(6, 'Password must be at least 6 characters long.')
-    .required('Password is required.'),
-  passwordConfirm: Yup.string().oneOf(
-    [Yup.ref('password')],
-    'Passwords do not match.'
-  )
-});
-
 function SignUp(props) {
   const { addProfile, error, resetErrors } = props;
 
@@ -47,7 +29,7 @@ function SignUp(props) {
       <Formik
         initialValues={initialValues}
         onSubmit={values => addProfile(values)}
-        validationSchema={validationSchema}
+        validationSchema={signupSchema}
         render={({ handleSubmit }) => (
           <div>
             <Title level={4}>Sign up to start journaling!</Title>

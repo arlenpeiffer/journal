@@ -4,22 +4,17 @@ import { connect } from 'react-redux';
 import { Field, Formik } from 'formik';
 import { Input, Password, Title } from './AntFields';
 import { Button, Form, Icon } from 'antd';
-import * as Yup from 'yup';
 
 import Error from '../components/Error';
 import { resetErrors } from '../redux/actions/errors';
 import { login } from '../redux/actions/user';
 import { getErrorMessage } from '../shared';
+import { loginSchema } from '../schemas/loginSchema';
 
 const initialValues = {
   email: '',
   password: ''
 };
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string().required('Email is required.'),
-  password: Yup.string().required('Password is required.')
-});
 
 function Login(props) {
   const { error, login, resetErrors } = props;
@@ -30,7 +25,7 @@ function Login(props) {
       onSubmit={values => {
         login(values);
       }}
-      validationSchema={validationSchema}
+      validationSchema={loginSchema}
       render={({ handleSubmit }) => (
         <div>
           <Title level={4}>Welcome, please sign in.</Title>

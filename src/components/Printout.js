@@ -33,6 +33,16 @@ const formatLevel = level => {
   }
 };
 
+const formatSleepAmount = amountInMilliseconds => {
+  const amountInHours = amountInMilliseconds / 3600000;
+  const numberOfHours = Math.floor(amountInHours);
+  const numberOfMinutes = (amountInHours - numberOfHours) * 60;
+  const s = numberOfHours > 1 ? 's' : '';
+  const hours = numberOfHours ? `${numberOfHours} hr${s}` : '';
+  const minutes = `${numberOfMinutes} mins`;
+  return `${hours} ${minutes}`;
+};
+
 const Printout = props => {
   const { journal, user } = props;
 
@@ -110,8 +120,7 @@ const Printout = props => {
               <b>Sleep:</b>
             </Typography>
             <Typography>
-              <em>— Amount:</em>{' '}
-              {moment(entry.sleep.amount).format('h [hr] m [min]')}
+              <em>— Amount:</em> {formatSleepAmount(entry.sleep.amount)}
             </Typography>
             <Typography>
               <em>— Rating:</em> {entry.sleep.rating}

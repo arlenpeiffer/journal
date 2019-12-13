@@ -18,7 +18,7 @@ import trim from 'lodash.trim';
 // import Stomach from './Stomach';
 // import Stress from './Stress';
 // import Supplements from './Supplements';
-import Travel from './Travel';
+// import Travel from './Travel';
 
 import Button from '@material-ui/core/Button';
 import DatePicker from './DatePicker';
@@ -34,6 +34,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
 import CheckboxGroup from './CheckboxGroup';
+import Switch from './Switch';
 
 import { formatSleepAmount } from '../utils';
 
@@ -164,7 +165,11 @@ const validationSchema = Yup.object().shape({
   supplements: Yup.array(),
   travel: Yup.object().shape({
     isTraveling: Yup.boolean(),
-    location: Yup.string().required('Location name is required.')
+    location: Yup.string().when('isTraveling', {
+      is: true,
+      then: Yup.string().required('Location name is required.'),
+      otherwise: Yup.string()
+    })
   })
 });
 
@@ -411,7 +416,19 @@ function EntryForm(props) {
             />
           </EntrySection>
 
-          <Travel setFieldValue={setFieldValue} travel={values.travel} />
+          <EntrySection label="Travel">
+            <Switch
+              label="Are you traveling?"
+              labelPlacement="end"
+              name="travel.isTraveling"
+            />
+            <Input
+              disabled={!values.travel.isTraveling}
+              label="Location"
+              name="travel.location"
+              placeholder="Where ya at?"
+            />
+          </EntrySection>
 
           <EntrySection label="Notes">
             <Input

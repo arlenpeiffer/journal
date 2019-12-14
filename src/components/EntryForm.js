@@ -419,11 +419,7 @@ function EntryForm(props) {
             </EntrySection>
 
             <EntrySection label="Travel">
-              <Switch
-                label="Are you traveling?"
-                labelPlacement="end"
-                name="travel.isTraveling"
-              />
+              <Switch label="Are you traveling?" name="travel.isTraveling" />
               <Input
                 allowReset
                 disabled={!isTraveling}

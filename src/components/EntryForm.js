@@ -423,10 +423,13 @@ function EntryForm(props) {
               name="travel.isTraveling"
             />
             <Input
+              allowReset
               disabled={!values.travel.isTraveling}
               label="Location"
               name="travel.location"
               placeholder="Where ya at?"
+              resetDependencies={[values.travel.isTraveling]}
+              resetValue={values.travel.isTraveling ? '' : 'Home'}
             />
           </EntrySection>
 

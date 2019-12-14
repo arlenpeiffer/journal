@@ -7,7 +7,7 @@ import MuiSwitch from '@material-ui/core/Switch';
 
 import FieldLabel from './FieldLabel';
 
-const Switch = ({ label, name, ...props }) => {
+const Switch = ({ label, name, onChange, ...props }) => {
   const [field, meta] = useField(name);
 
   const { error, touched } = meta;

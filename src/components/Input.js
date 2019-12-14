@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useField, useFormikContext } from 'formik';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 
-const Input = ({ name, ...props }) => {
+const Input = ({
+  allowReset,
+  name,
+  resetDependencies,
+  resetValue,
+  ...props
+}) => {
   const [field, meta] = useField(name);
-  const { validateField } = useFormikContext();
+  const { setFieldTouched, setFieldValue, validateField } = useFormikContext();
 
   const { error, touched } = meta;
   const hasError = error && touched ? true : false;
 
   const [value, setValue] = useState(field.value);
 
-  const updateAndValidateField = event => {
-    field.onChange(event);
-    validateField(name);
-  };
+  useEffect(() => {
+    if (allowReset) {
+      setValue(resetValue);
+      setFieldValue(field.name, resetValue);
+      setFieldTouched(field.name, false);
+    }
+  }, resetDependencies);
 
   const handleBlur = event => {
     field.onBlur(event);
@@ -22,14 +32,19 @@ const Input = ({ name, ...props }) => {
   };
 
   const handleChange = event => {
-    setValue(event.target.value);
-
     const valueIsEmptyString = event.target.value === '';
     const valueHasLengthOfOne = event.target.value.length === 1;
+
+    setValue(event.target.value);
 
     if (valueIsEmptyString || (valueHasLengthOfOne && hasError)) {
       updateAndValidateField(event);
     }
+  };
+
+  const updateAndValidateField = event => {
+    field.onChange(event);
+    validateField(name);
   };
 
   return (
@@ -48,3 +63,9 @@ const Input = ({ name, ...props }) => {
 };
 
 export default Input;
+
+Input.propTypes = {
+  allowReset: PropTypes.bool,
+  resetDependencies: PropTypes.array,
+  resetValue: PropTypes.string
+};

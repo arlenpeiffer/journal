@@ -34,7 +34,8 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import FieldArray from './FieldArray';
 import TimePicker from './TimePicker';
 import CheckboxGroup from './CheckboxGroup';
-import Switch from './Switch';
+import RadioGroup from './RadioGroup';
+import RadioButton from './RadioButton';
 
 import { formatSleepAmount } from '../utils';
 
@@ -419,11 +420,10 @@ function EntryForm(props) {
             </EntrySection>
 
             <EntrySection label="Travel">
-              <Switch
-                label="Are you traveling?"
-                labelPlacement="end"
-                name="travel.isTraveling"
-              />
+              <RadioGroup label="Are you traveling?" name="travel.isTraveling">
+                <RadioButton label="Yes" value={true} />
+                <RadioButton label="No" value={false} />
+              </RadioGroup>
               <Input
                 allowReset
                 disabled={!isTraveling}

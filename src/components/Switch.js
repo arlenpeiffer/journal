@@ -14,6 +14,7 @@ const Switch = ({ label, name, ...props }) => {
   return (
     <FormControl error={hasError}>
       <FormControlLabel
+        checked={field.value}
         control={<MuiSwitch color="primary" />}
         label={label}
         name={name}

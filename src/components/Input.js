@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useField, useFormikContext } from 'formik';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
@@ -18,12 +18,15 @@ const Input = ({
 
   const [value, setValue] = useState(field.value);
 
+  const componentIsMounted = useRef(false);
+
   useEffect(() => {
-    if (allowReset) {
+    if (componentIsMounted.current && allowReset) {
       setValue(resetValue);
       setFieldValue(field.name, resetValue);
       setFieldTouched(field.name, false);
     }
+    componentIsMounted.current = true;
   }, resetDependencies);
 
   const handleBlur = event => {

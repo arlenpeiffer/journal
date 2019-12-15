@@ -1,39 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form } from 'formik';
-// import { Form } from 'antd';
 import moment from 'moment';
 import reduce from 'lodash.reduce';
 import trim from 'lodash.trim';
 
-// import Appointments from './Appointments';
-// import Date from './Date';
-// import Food from './Food';
-// import Mood from './Mood';
-// import Movement from './Movement';
-// import Notes from './Notes';
-// import Pain from './Pain';
-// import Sleep from './Sleep';
-// import Stomach from './Stomach';
-// import Stress from './Stress';
-// import Supplements from './Supplements';
-// import Travel from './Travel';
-
+import AutoComplete from './AutoComplete';
 import Button from '@material-ui/core/Button';
+import CheckboxGroup from './CheckboxGroup';
 import DatePicker from './DatePicker';
 import EntrySection from './EntrySection';
-import Select from './Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import FieldArray from './FieldArray';
 import Input from './Input';
+import MenuItem from '@material-ui/core/MenuItem';
 import Rating from './Rating';
+import Select from './Select';
 import Slider from './Slider';
-import AutoComplete from './AutoComplete';
+import Switch from './Switch';
+import TimePicker from './TimePicker';
 import Toggle from './Toggle';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-import FieldArray from './FieldArray';
-import TimePicker from './TimePicker';
-import CheckboxGroup from './CheckboxGroup';
-import Switch from './Switch';
 
 import { entryFormSchema } from '../schemas/entryFormSchema';
 import { formatSleepAmount } from '../utils';

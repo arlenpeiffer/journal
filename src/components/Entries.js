@@ -25,7 +25,9 @@ const mapStateToProps = state => ({
           entry.food.diet.type.toLowerCase().includes(text.toLowerCase()) ||
           entry.food.meals.some(meal =>
             meal.items.some(item =>
-              item.ingredients.toLowerCase().includes(text.toLowerCase())
+              item.ingredients.some(ingredient =>
+                ingredient.toLowerCase().includes(text.toLowerCase())
+              )
             )
           ) ||
           entry.food.meals.some(meal =>

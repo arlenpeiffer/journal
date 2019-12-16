@@ -15,9 +15,11 @@ const DatePicker = ({ name, validate, ...props }) => {
   const handleChange = value => {
     setFieldValue(
       field.name,
-      moment(value)
-        .startOf('day')
-        .valueOf()
+      value
+        ? moment(value)
+            .startOf('day')
+            .valueOf()
+        : null
     );
   };
 

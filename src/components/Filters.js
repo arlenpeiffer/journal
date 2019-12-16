@@ -1,112 +1,119 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Option } from './AntFields';
-import { Button, DatePicker, Form, Input, Select } from 'antd';
-import { resetFilters, setFilters } from '../redux/actions/filters';
-import moment from 'moment';
+import { Form, Formik } from 'formik';
+import styled from 'styled-components';
+import isEqual from 'lodash.isequal';
+import MenuItem from '@material-ui/core/MenuItem';
 
-function Filters(props) {
-  const [endDate, setEndDate] = useState(null);
-  const [endDateIsOpen, setEndDateIsOpen] = useState(false);
-  const [sortOrder, setSortOrder] = useState('newestFirst');
-  const [startDate, setStartDate] = useState(null);
-  const [text, setText] = useState('');
+import { setFilters } from '../redux/actions/filters';
+import ButtonPrimary from './ButtonPrimary';
+import DatePicker from './DatePicker';
+import Input from './Input';
+import Select from './Select';
 
-  const { resetFilters, setFilters } = props;
+// TODO: replace with emotion css prop //
+const FiltersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-  const handleDisabledEndDate = endDate => {
-    if (!endDate || !startDate) {
-      return false;
-    }
-    return endDate < startDate;
+const initialValues = {
+  date: {
+    startDate: null,
+    endDate: null
+  },
+  sortOrder: 'newestFirst',
+  text: ''
+};
+
+const Filters = ({ filters, setFilters }) => {
+  const handleDisableEndDates = (date, startDate) => {
+    if (!startDate) return false;
+    return date < startDate;
   };
 
-  const handleDisabledStartDate = startDate => {
-    if (!startDate || !endDate) {
-      return false;
-    }
-    return startDate < endDate;
-  };
-
-  const handleOpenChangeEndDate = isOpen => {
-    setEndDateIsOpen(isOpen);
-  };
-
-  const handleOpenChangeStartDate = isOpen => {
-    if (!isOpen) {
-      setEndDateIsOpen(true);
-    }
+  const handleDisableStartDates = (date, endDate) => {
+    if (!endDate) return false;
+    return date > endDate;
   };
 
   return (
-    <div>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Input
-          onChange={event => setText(event.target.value)}
-          placeholder="Search.."
-          value={text}
-        />
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Select onChange={value => setSortOrder(value)} value={sortOrder}>
-          <Option value={'newestFirst'}>Newest First</Option>
-          <Option value={'oldestFirst'}>Oldest First</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <DatePicker
-          disabledDate={handleDisabledStartDate}
-          format="MMM D, YYYY"
-          onChange={date => setStartDate(date && date.startOf('day').valueOf())}
-          onOpenChange={handleOpenChangeStartDate}
-          placeholder="Start"
-          value={startDate && moment(startDate)}
-        />
-      </Form.Item>
-      <Form.Item style={{ marginBottom: 0 }}>
-        <DatePicker
-          disabledDate={handleDisabledEndDate}
-          format="MMM D, YYYY"
-          onChange={date => setEndDate(date && date.startOf('day').valueOf())}
-          onOpenChange={handleOpenChangeEndDate}
-          open={endDateIsOpen}
-          placeholder="End"
-          value={endDate && moment(endDate)}
-        />
-      </Form.Item>
-      <Form.Item>
-        <Button
-          onClick={() => {
-            setFilters({ endDate, sortOrder, startDate, text });
-          }}
-          type="primary"
-        >
-          Apply Filters
-        </Button>
-        <Button
-          onClick={() => {
-            resetFilters();
-            setEndDate(null);
-            setSortOrder('newestFirst');
-            setStartDate(null);
-            setText('');
-          }}
-          style={{ marginLeft: 8 }}
-          type="primary"
-        >
-          Clear Filters
-        </Button>
-      </Form.Item>
-    </div>
+    <Formik initialValues={filters} onSubmit={values => console.log(values)}>
+      {({ setValues, values }) => {
+        const { date, text } = values;
+        const { endDate, startDate } = date;
+
+        const filtersEqualInitialValues = isEqual(values, initialValues);
+        const filtersTextValueIsEmptyString = filters.text === '';
+
+        const handleApplyFilters = () => {
+          setFilters(values);
+        };
+
+        const handleClearFilters = () => {
+          setFilters(initialValues);
+          setValues(initialValues);
+        };
+
+        return (
+          <Form>
+            <FiltersContainer>
+              <Input
+                allowReset
+                label="Search"
+                name="text"
+                placeholder="Search for specific text.."
+                resetValue={filtersTextValueIsEmptyString ? '' : text}
+                resetDependencies={[filters]}
+              />
+              <Select label="Sort Order" name="sortOrder">
+                <MenuItem value="newestFirst">Newest First</MenuItem>
+                <MenuItem value="oldestFirst">Oldest First</MenuItem>
+              </Select>
+              <DatePicker
+                clearable
+                label="Start Date"
+                name="date.startDate"
+                placeholder="Select a date"
+                shouldDisableDate={date =>
+                  handleDisableStartDates(date, endDate)
+                }
+              />
+              <DatePicker
+                clearable
+                label="End Date"
+                name="date.endDate"
+                placeholder="Select a date"
+                shouldDisableDate={date =>
+                  handleDisableEndDates(date, startDate)
+                }
+              />
+            </FiltersContainer>
+            <ButtonPrimary
+              disabled={filtersEqualInitialValues}
+              onClick={handleApplyFilters}
+            >
+              Apply Filters
+            </ButtonPrimary>
+            <ButtonPrimary
+              disabled={filtersEqualInitialValues}
+              onClick={handleClearFilters}
+            >
+              Clear Filters
+            </ButtonPrimary>
+          </Form>
+        );
+      }}
+    </Formik>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  filters: state.ui.filters
+});
 
 const mapDispatchToProps = dispatch => ({
-  resetFilters: () => dispatch(resetFilters()),
   setFilters: filters => dispatch(setFilters(filters))
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Filters);
+export default connect(mapStateToProps, mapDispatchToProps)(Filters);

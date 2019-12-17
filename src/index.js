@@ -43,8 +43,13 @@ const theme = responsiveFontSizes(
         dark: colors.purple.dark,
         main: colors.purple.main,
         light: colors.purple.light
-      }
+      },
       // secondary: decide on color
+      warning: {
+        dark: colors.orange.dark,
+        main: colors.orange.main,
+        light: colors.orange.light
+      }
     },
     overrides: {
       MuiCheckbox: {

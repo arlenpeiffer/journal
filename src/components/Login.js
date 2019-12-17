@@ -9,7 +9,7 @@ import ButtonPrimary from './ButtonPrimary';
 import Input from './Input';
 import { resetErrors } from '../redux/actions/errors';
 import { login } from '../redux/actions/user';
-import { getErrorMessage } from '../shared';
+import { getErrorMessage } from '../utils';
 import { loginSchema } from '../schemas/loginSchema';
 
 const initialValues = {

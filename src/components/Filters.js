@@ -63,8 +63,8 @@ const Filters = ({ filters, setFilters }) => {
                 label="Search"
                 name="text"
                 placeholder="Search for specific text.."
-                resetValue={filtersTextValueIsEmptyString ? '' : text}
                 resetDependencies={[filters]}
+                resetValue={filtersTextValueIsEmptyString ? '' : text}
               />
               <Select label="Sort Order" name="sortOrder">
                 <MenuItem value="newestFirst">Newest First</MenuItem>

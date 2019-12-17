@@ -6,7 +6,7 @@ const colors = {
   },
   red: {
     dark: '#932020', // Mandarian Orange
-    main: '#D32E2f', // Persian Red
+    main: '#D32E2F', // Persian Red
     light: '#DB5758' // Roman
   },
   orange: {

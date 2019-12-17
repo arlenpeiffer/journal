@@ -5,11 +5,11 @@ import styled from 'styled-components';
 import isEqual from 'lodash.isequal';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { setFilters } from '../redux/actions/filters';
 import ButtonPrimary from './ButtonPrimary';
 import DatePicker from './DatePicker';
 import Input from './Input';
 import Select from './Select';
+import { setFilters } from '../redux/actions/filters';
 
 // TODO: replace with emotion css prop //
 const FiltersContainer = styled.div`

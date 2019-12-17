@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Field, Formik } from 'formik';
-import { Input, Password, Title } from './AntFields';
-import { Button, Form, Icon } from 'antd';
+import { Form, Formik } from 'formik';
+import Typography from '@material-ui/core/Typography';
 
-import Error from '../components/Error';
+import ButtonPrimary from './ButtonPrimary';
+import Input from './Input';
 import { resetErrors } from '../redux/actions/errors';
 import { addProfile } from '../redux/actions/profile';
 import { getErrorMessage } from '../shared';
@@ -21,81 +21,62 @@ const initialValues = {
   passwordConfirm: ''
 };
 
-function SignUp(props) {
-  const { addProfile, error, resetErrors } = props;
-
+const SignUp = ({ addProfile, error, resetErrors }) => {
   return (
-    <div>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={values => addProfile(values)}
-        validationSchema={signupSchema}
-        render={({ handleSubmit }) => (
-          <div>
-            <Title level={4}>Sign up to start journaling!</Title>
-            {error ? <Error message={getErrorMessage(error)} /> : null}
-            <Form onSubmit={handleSubmit}>
-              <Field
-                autoComplete="off"
-                autoFocus
-                component={Input}
-                name="name.first"
-                placeholder="First Name"
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-              />
-              <Field
-                autoComplete="off"
-                component={Input}
-                name="name.last"
-                placeholder="Last Name"
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-              />
-              <Field
-                autoComplete="off"
-                component={Input}
-                name="email"
-                placeholder="Email"
-                prefix={
-                  <Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-              />
-              <Field
-                component={Password}
-                name="password"
-                placeholder="Password"
-                prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-              />
-              <Field
-                component={Password}
-                name="passwordConfirm"
-                onPressEnter={handleSubmit}
-                placeholder="Confirm Password"
-                prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-              />
-              <Button onClick={handleSubmit} type="primary">
-                Sign Up
-              </Button>
-            </Form>
-            <div style={{ marginTop: 24 }}>
-              Already have an account?{' '}
-              <Link to="/" onClick={error ? resetErrors : null}>
-                Sign in!
-              </Link>
-            </div>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={values => addProfile(values)}
+      validationSchema={signupSchema}
+    >
+      {({ handleSubmit }) => (
+        <>
+          <Typography gutterBottom variant="h1">
+            Sign up to start journaling!
+          </Typography>
+          <Form>
+            <Input
+              label="First Name"
+              name="name.first"
+              placeholder="Enter your first name"
+              type="text"
+            />
+            <Input
+              label="Last Name"
+              name="name.last"
+              placeholder="Enter your last name"
+              type="text"
+            />
+            <Input
+              label="Email"
+              name="email"
+              placeholder="Enter your email"
+              type="email"
+            />
+            <Input
+              label="Password"
+              name="password"
+              placeholder="Enter a password"
+              type="password"
+            />
+            <Input
+              label="Confirm Password"
+              name="passwordConfirm"
+              placeholder="Re-enter your password"
+              type="password"
+            />
+            <ButtonPrimary onClick={handleSubmit}>Sign Up</ButtonPrimary>
+          </Form>
+          <div style={{ marginTop: 24 }}>
+            <Typography>Already have an account? </Typography>
+            <Link to="/" onClick={error ? resetErrors : null}>
+              <Typography>Sign in!</Typography>
+            </Link>
           </div>
-        )}
-      />
-    </div>
+        </>
+      )}
+    </Formik>
   );
-}
+};
 
 const mapStateToProps = state => ({
   error: state.ui.errors
@@ -106,7 +87,4 @@ const mapDispatchToProps = dispatch => ({
   resetErrors: () => dispatch(resetErrors())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

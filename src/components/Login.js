@@ -23,7 +23,7 @@ const Login = ({ error, login, resetErrors }) => (
     onSubmit={values => login(values)}
     validationSchema={loginSchema}
   >
-    {({ values }) => {
+    {({ handleSubmit, values }) => {
       const { email, password } = values;
 
       return (
@@ -57,14 +57,14 @@ const Login = ({ error, login, resetErrors }) => (
               resetValue={!error ? '' : password}
               type="password"
             />
-            <div style={{ marginTop: 24 }}>
-              <Typography>Not a user? </Typography>
-              <Link to="/signup" onClick={error && resetErrors}>
-                <Typography>Sign up!</Typography>
-              </Link>
-            </div>
-            <ButtonPrimary type="submit">Sign In</ButtonPrimary>
+            <ButtonPrimary onClick={handleSubmit}>Sign In</ButtonPrimary>
           </Form>
+          <div>
+            <Typography>Not a user? </Typography>
+            <Link to="/signup" onClick={error && resetErrors}>
+              <Typography>Sign up!</Typography>
+            </Link>
+          </div>
         </>
       );
     }}

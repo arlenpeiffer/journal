@@ -28,7 +28,7 @@ const SignUp = ({ addProfile, error, resetErrors }) => (
     onSubmit={values => addProfile(values)}
     validationSchema={signupSchema}
   >
-    {({ values }) => {
+    {({ handleSubmit, values }) => {
       const { email, name, password, passwordConfirm } = values;
 
       return (
@@ -89,7 +89,7 @@ const SignUp = ({ addProfile, error, resetErrors }) => (
               resetValue={!error ? '' : passwordConfirm}
               type="password"
             />
-            <ButtonPrimary type="submit">Sign Up</ButtonPrimary>
+            <ButtonPrimary onClick={handleSubmit}>Sign Up</ButtonPrimary>
           </Form>
           <div style={{ marginTop: 24 }}>
             <Typography>Already have an account? </Typography>

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import Typography from '@material-ui/core/Typography';
 
+import Alert from './Alert';
 import ButtonPrimary from './ButtonPrimary';
 import Input from './Input';
 import { resetErrors } from '../redux/actions/errors';
@@ -16,56 +17,59 @@ const initialValues = {
   password: ''
 };
 
-const Login = ({ error, login, resetErrors }) => {
-  return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={values => login(values)}
-      validationSchema={loginSchema}
-    >
-      {({ handleSubmit, values }) => {
-        const { email, password } = values;
+const Login = ({ error, login, resetErrors }) => (
+  <Formik
+    initialValues={initialValues}
+    onSubmit={values => login(values)}
+    validationSchema={loginSchema}
+  >
+    {({ values }) => {
+      const { email, password } = values;
 
-        return (
-          <>
-            <Typography gutterBottom variant="h1">
-              Welcome, please sign in.
-            </Typography>
-            <Form>
-              <Input
-                allowReset
-                label="Email"
-                name="email"
-                placeholder="Enter your email"
-                resetDependencies={[error]}
-                resetValue={!error ? '' : email}
-                type="text"
-              />
-              <Input
-                allowReset
-                label="Password"
-                name="password"
-                placeholder="Enter your password"
-                type="password"
-                resetDependencies={[error]}
-                resetValue={!error ? '' : password}
-              />
-              <div style={{ marginTop: 24 }}>
-                <Typography>Not a user? </Typography>
-                <Link to="/signup" onClick={error && resetErrors}>
-                  <Typography>Sign up!</Typography>
-                </Link>
-              </div>
-              <ButtonPrimary onClick={handleSubmit} type="submit">
-                Sign In
-              </ButtonPrimary>
-            </Form>
-          </>
-        );
-      }}
-    </Formik>
-  );
-};
+      return (
+        <>
+          <Typography gutterBottom variant="h1">
+            Welcome, please sign in.
+          </Typography>
+          {error && (
+            <Alert
+              action={resetErrors}
+              message={getErrorMessage(error)}
+              variant="error"
+            />
+          )}
+          <Form>
+            <Input
+              allowReset
+              label="Email"
+              name="email"
+              placeholder="Enter your email"
+              resetDependencies={[error]}
+              resetValue={!error ? '' : email}
+              type="text"
+            />
+            <Input
+              allowReset
+              label="Password"
+              name="password"
+              placeholder="Enter your password"
+              type="password"
+              resetDependencies={[error]}
+              resetValue={!error ? '' : password}
+            />
+            <div style={{ marginTop: 24 }}>
+              <Typography>Not a user? </Typography>
+              <Link to="/signup" onClick={error && resetErrors}>
+                <Typography>Sign up!</Typography>
+              </Link>
+            </div>
+            <ButtonPrimary type="submit">Sign In</ButtonPrimary>
+          </Form>
+        </>
+      );
+    }}
+  </Formik>
+);
 
 const mapStateToProps = state => ({
   error: state.ui.errors

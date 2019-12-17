@@ -53,9 +53,9 @@ const Login = ({ error, login, resetErrors }) => (
               label="Password"
               name="password"
               placeholder="Enter your password"
-              type="password"
               resetDependencies={[error]}
               resetValue={!error ? '' : password}
+              type="password"
             />
             <div style={{ marginTop: 24 }}>
               <Typography>Not a user? </Typography>

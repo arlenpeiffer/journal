@@ -1,30 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import moment from 'moment';
-import reduce from 'lodash.reduce';
-import trim from 'lodash.trim';
+import MenuItem from '@material-ui/core/MenuItem';
+import ToggleButton from '@material-ui/lab/ToggleButton';
 
 import AutoComplete from './AutoComplete';
-import Button from '@material-ui/core/Button';
+import ButtonPrimary from './ButtonPrimary';
 import CheckboxGroup from './CheckboxGroup';
 import DatePicker from './DatePicker';
 import EntrySection from './EntrySection';
 import FieldArray from './FieldArray';
 import Input from './Input';
-import MenuItem from '@material-ui/core/MenuItem';
 import Rating from './Rating';
 import Select from './Select';
 import Slider from './Slider';
 import Switch from './Switch';
 import TimePicker from './TimePicker';
 import Toggle from './Toggle';
-import ToggleButton from '@material-ui/lab/ToggleButton';
 
 import { entryFormSchema } from '../schemas/entryFormSchema';
-import { formatSleepAmount } from '../utils';
+import { formatSleepAmount, trimValues } from '../utils';
 
-const newEntry = {
+const initialValues = {
   appointments: [],
   date: moment()
     .startOf('day')
@@ -69,27 +67,7 @@ const newEntry = {
   }
 };
 
-function EntryForm(props) {
-  const { entry, handleSubmitEntry, journal, logs } = props;
-
-  const trimValues = (object, container) =>
-    reduce(
-      object,
-      function(acc, value, key) {
-        typeof value === 'object'
-          ? Array.isArray(value)
-            ? value.some(item => typeof item === 'object')
-              ? (acc[key] = trimValues(value, []))
-              : (acc[key] = value)
-            : (acc[key] = trimValues(value, {}))
-          : typeof value === 'string'
-          ? (acc[key] = trim(value))
-          : (acc[key] = value);
-        return acc;
-      },
-      container
-    );
-
+const EntryForm = ({ entry, handleSubmitEntry, journal, logs }) => {
   const handleDuplicateDate = date => {
     const entryWithDateExists = journal.some(entry => entry.date === date);
     const isCurrentEntry = entry && entry.date === date;
@@ -101,7 +79,7 @@ function EntryForm(props) {
 
   return (
     <Formik
-      initialValues={entry ? entry : newEntry}
+      initialValues={entry ? entry : initialValues}
       onSubmit={values => handleSubmitEntry(trimValues(values, {}))}
       validationSchema={entryFormSchema}
     >
@@ -130,7 +108,6 @@ function EntryForm(props) {
                 multiline
                 name="food.diet.notes"
                 placeholder="Add notes here.."
-                type="text"
               />
             </EntrySection>
 
@@ -156,7 +133,6 @@ function EntryForm(props) {
                 <FieldArray
                   buttonText="Item"
                   field="items"
-                  // name="items"
                   label="Items"
                   newArrayItem={{
                     name: '',
@@ -333,19 +309,16 @@ function EntryForm(props) {
                 multiline
                 name="notes"
                 placeholder="Overall notes about the day.."
-                // type="text"
               />
             </EntrySection>
 
-            <Button color="primary" onClick={handleSubmit} variant="contained">
-              Submit
-            </Button>
+            <ButtonPrimary onClick={handleSubmit}>Submit</ButtonPrimary>
           </Form>
         );
       }}
     </Formik>
   );
-}
+};
 
 const mapStateToProps = state => ({
   journal: state.user.journal,

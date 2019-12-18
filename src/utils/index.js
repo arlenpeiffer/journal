@@ -1,3 +1,6 @@
+import reduce from 'lodash.reduce';
+import trim from 'lodash.trim';
+
 export const formatSleepAmount = value => {
   const numberOfHours = Math.floor(value);
   const numberOfMinutes = (value - numberOfHours) * 60;
@@ -27,3 +30,21 @@ export const getErrorMessage = error => {
       return `Uh oh, looks like we've got an error of some sort.`;
   }
 };
+
+export const trimValues = (object, container) =>
+  reduce(
+    object,
+    function(acc, value, key) {
+      typeof value === 'object'
+        ? Array.isArray(value)
+          ? value.some(item => typeof item === 'object')
+            ? (acc[key] = trimValues(value, []))
+            : (acc[key] = value)
+          : (acc[key] = trimValues(value, {}))
+        : typeof value === 'string'
+        ? (acc[key] = trim(value))
+        : (acc[key] = value);
+      return acc;
+    },
+    container
+  );

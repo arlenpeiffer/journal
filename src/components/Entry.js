@@ -19,6 +19,8 @@ import capitalize from 'lodash.capitalize';
 import DataPoint from './DataPoint';
 import { removeEntry } from '../redux/actions/journal';
 
+import { formatLevel, formatMealType } from '../utils';
+
 const Entry = ({ entry, removeEntry }) => {
   const {
     appointments,

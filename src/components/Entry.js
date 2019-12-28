@@ -10,13 +10,10 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import IconButton from '@material-ui/core/IconButton';
 import RemoveIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
-
-import Popup from './Popup';
-
 import moment from 'moment';
-import capitalize from 'lodash.capitalize';
 
 import DataPoint from './DataPoint';
+import Popup from './Popup';
 import { removeEntry } from '../redux/actions/journal';
 
 import { formatLevel, formatMealType } from '../utils';

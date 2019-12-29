@@ -23,7 +23,7 @@ const Select = ({ children, label, name, ...props }) => {
       >
         {children}
       </MuiSelect>
-      <FormHelperText>{hasError && error}</FormHelperText>
+      {hasError && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };

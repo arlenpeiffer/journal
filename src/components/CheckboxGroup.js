@@ -67,7 +67,7 @@ const CheckboxGroup = ({ dataSource, label, name, ...props }) => {
           ))}
         </Grid>
       </FormGroup>
-      <FormHelperText>{hasError && error}</FormHelperText>
+      {hasError && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };

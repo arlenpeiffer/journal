@@ -70,7 +70,7 @@ const Slider = ({
           {...props}
         />
       </div>
-      <FormHelperText>{hasError && error}</FormHelperText>
+      {hasError && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };

@@ -23,7 +23,7 @@ const Switch = ({ label, name, ...props }) => {
         value={field.value}
         {...props}
       />
-      <FormHelperText>{hasError && error}</FormHelperText>
+      {hasError && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };

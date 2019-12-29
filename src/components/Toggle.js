@@ -62,7 +62,7 @@ const Toggle = ({ children, label, name, ...props }) => {
           {children}
         </ToggleButtonGroup>
       </ToggleBorder>
-      <FormHelperText>{hasError && error}</FormHelperText>
+      {hasError && <FormHelperText>{error}</FormHelperText>}
     </FormControl>
   );
 };

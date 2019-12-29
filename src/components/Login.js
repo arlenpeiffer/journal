@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Field, Formik } from 'formik';
-import { Input, Password, Title } from './AntFields';
-import { Button, Form, Icon } from 'antd';
+import { Form, Formik } from 'formik';
+import Typography from '@material-ui/core/Typography';
 
-import Error from '../components/Error';
+import Alert from './Alert';
+import ButtonPrimary from './ButtonPrimary';
+import Input from './Input';
 import { resetErrors } from '../redux/actions/errors';
 import { login } from '../redux/actions/user';
-import { getErrorMessage } from '../shared';
+import { getErrorMessage } from '../utils';
 import { loginSchema } from '../schemas/loginSchema';
 
 const initialValues = {
@@ -16,55 +17,59 @@ const initialValues = {
   password: ''
 };
 
-function Login(props) {
-  const { error, login, resetErrors } = props;
+const Login = ({ error, login, resetErrors }) => (
+  <Formik
+    initialValues={initialValues}
+    onSubmit={values => login(values)}
+    validationSchema={loginSchema}
+  >
+    {({ handleSubmit, values }) => {
+      const { email, password } = values;
 
-  return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={values => {
-        login(values);
-      }}
-      validationSchema={loginSchema}
-      render={({ handleSubmit }) => (
-        <div>
-          <Title level={4}>Welcome, please sign in.</Title>
-          {error ? <Error message={getErrorMessage(error)} /> : null}
-          <Form onSubmit={handleSubmit}>
-            <Field
-              autoComplete="off"
-              autoFocus
-              component={Input}
+      return (
+        <>
+          <Typography gutterBottom variant="h1">
+            Welcome, please sign in.
+          </Typography>
+          {error && (
+            <Alert
+              action={resetErrors}
+              message={getErrorMessage(error)}
+              variant="error"
+            />
+          )}
+          <Form>
+            <Input
+              allowReset
               label="Email"
               name="email"
-              onPressEnter={handleSubmit}
-              placeholder="Email"
-              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="Enter your email"
+              resetDependencies={[error]}
+              resetValue={!error ? '' : email}
+              type="text"
             />
-            <Field
-              autoComplete="off"
-              component={Password}
+            <Input
+              allowReset
               label="Password"
               name="password"
-              onPressEnter={handleSubmit}
-              placeholder="Password"
-              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="Enter your password"
+              resetDependencies={[error]}
+              resetValue={!error ? '' : password}
+              type="password"
             />
-            <div style={{ marginBottom: 24 }}>
-              Not a user?{' '}
-              <Link to="/signup" onClick={error ? resetErrors : null}>
-                Sign up!
-              </Link>
-            </div>
-            <Button onClick={handleSubmit} type="primary">
-              Sign In
-            </Button>
+            <ButtonPrimary onClick={handleSubmit}>Sign In</ButtonPrimary>
           </Form>
-        </div>
-      )}
-    />
-  );
-}
+          <div>
+            <Typography>Not a user? </Typography>
+            <Link to="/signup" onClick={error && resetErrors}>
+              <Typography>Sign up!</Typography>
+            </Link>
+          </div>
+        </>
+      );
+    }}
+  </Formik>
+);
 
 const mapStateToProps = state => ({
   error: state.ui.errors
@@ -75,7 +80,4 @@ const mapDispatchToProps = dispatch => ({
   resetErrors: () => dispatch(resetErrors())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

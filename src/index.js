@@ -11,7 +11,11 @@ import { getLogs } from './redux/actions/logs';
 import { getProfile } from './redux/actions/profile';
 import { loginSuccess, logout } from './redux/actions/user';
 
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  createMuiTheme,
+  responsiveFontSizes
+} from '@material-ui/core/styles';
 import colors from './constants/colors';
 
 const PageWrapper = styled.div`
@@ -23,81 +27,85 @@ const store = configureStore();
 
 const defaultTheme = createMuiTheme();
 
-const theme = createMuiTheme({
-  breakpoints: {
-    values: {
-      xs: 0, // default = 0
-      sm: 432, // default = 600
-      md: 576, // default = 960
-      lg: 768, // default = 1280
-      xl: 992 // default = 1920
-    }
-  },
-  palette: {
-    primary: {
-      dark: colors.purple.dark,
-      main: colors.purple.main,
-      light: colors.purple.light
-    }
-    // secondary: decide on color
-  },
-  overrides: {
-    MuiCheckbox: {
-      colorSecondary: {
-        '&$checked': {
+const theme = responsiveFontSizes(
+  createMuiTheme({
+    breakpoints: {
+      values: {
+        xs: 0, // default = 0
+        sm: 432, // default = 600
+        md: 576, // default = 960
+        lg: 768, // default = 1280
+        xl: 992 // default = 1920
+      }
+    },
+    palette: {
+      primary: {
+        dark: colors.purple.dark,
+        main: colors.purple.main,
+        light: colors.purple.light
+      },
+      // secondary: decide on color
+      warning: {
+        dark: colors.orange.dark,
+        main: colors.orange.main,
+        light: colors.orange.light
+      }
+    },
+    overrides: {
+      MuiCheckbox: {
+        colorSecondary: {
+          '&$checked': {
+            '&:hover': {
+              backgroundColor: 'transparent'
+            }
+          }
+        },
+        root: {
+          marginRight: defaultTheme.spacing(0.5),
+          padding: 0,
           '&:hover': {
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            color: colors.purple.main
           }
         }
       },
-      root: {
-        marginRight: defaultTheme.spacing(0.5),
-        padding: 0,
-        '&:hover': {
-          backgroundColor: 'transparent',
-          color: colors.purple.main
+      MuiToggleButton: {
+        root: {
+          border: 'none',
+          '&:first-child': {
+            borderRadius: defaultTheme.shape.borderRadius,
+            padding: defaultTheme.spacing(1)
+          },
+          '&:not(:first-child)': {
+            borderRadius: defaultTheme.shape.borderRadius,
+            margin: defaultTheme.spacing(0.5),
+            padding: defaultTheme.spacing(1)
+          },
+          '&$selected': {
+            color: colors.purple.main
+          }
         }
-      }
-    },
-    MuiToggleButton: {
-      root: {
-        border: 'none',
-        '&:first-child': {
-          borderRadius: defaultTheme.shape.borderRadius,
-          padding: defaultTheme.spacing(1)
-        },
-        '&:not(:first-child)': {
-          borderRadius: defaultTheme.shape.borderRadius,
-          margin: defaultTheme.spacing(0.5),
-          padding: defaultTheme.spacing(1)
-        },
-        '&$selected': {
-          color: colors.purple.main
-        }
-      }
-    },
-    MuiToggleButtonGroup: {
-      groupedSizeSmall: {
-        flex: 1,
-        margin: defaultTheme.spacing(0.5)
       },
-      root: {
-        display: 'flex'
+      MuiToggleButtonGroup: {
+        groupedSizeSmall: {
+          flex: 1,
+          margin: defaultTheme.spacing(0.5)
+        },
+        root: {
+          display: 'flex'
+        }
+      }
+    },
+    props: {
+      MuiCheckbox: {
+        disableRipple: true
+      },
+      MuiToggleButton: {
+        disableRipple: true
       }
     }
-  },
-  props: {
-    MuiCheckbox: {
-      disableRipple: true
-    },
-    MuiToggleButton: {
-      disableRipple: true
-    }
-  }
-  // status: {
-  //   danger: 'orange'
-  // }
-});
+  })
+);
 
 const app = (
   <Provider store={store}>

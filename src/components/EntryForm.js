@@ -1,44 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Formik, Form } from 'formik';
-// import { Form } from 'antd';
+import { Form, Formik } from 'formik';
 import moment from 'moment';
-import reduce from 'lodash.reduce';
-import trim from 'lodash.trim';
+import MenuItem from '@material-ui/core/MenuItem';
+import ToggleButton from '@material-ui/lab/ToggleButton';
 
-// import Appointments from './Appointments';
-// import Date from './Date';
-// import Food from './Food';
-// import Mood from './Mood';
-// import Movement from './Movement';
-// import Notes from './Notes';
-// import Pain from './Pain';
-// import Sleep from './Sleep';
-// import Stomach from './Stomach';
-// import Stress from './Stress';
-// import Supplements from './Supplements';
-// import Travel from './Travel';
-
-import Button from '@material-ui/core/Button';
+import AutoComplete from './AutoComplete';
+import ButtonPrimary from './ButtonPrimary';
+import CheckboxGroup from './CheckboxGroup';
 import DatePicker from './DatePicker';
 import EntrySection from './EntrySection';
-import Select from './Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import FieldArray from './FieldArray';
 import Input from './Input';
 import Rating from './Rating';
+import Select from './Select';
 import Slider from './Slider';
-import AutoComplete from './AutoComplete';
-import Toggle from './Toggle';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import FieldArray from './FieldArray';
-import TimePicker from './TimePicker';
-import CheckboxGroup from './CheckboxGroup';
 import Switch from './Switch';
+import TimePicker from './TimePicker';
+import Toggle from './Toggle';
 
 import { entryFormSchema } from '../schemas/entryFormSchema';
-import { formatSleepAmount } from '../utils';
+import { formatSleepAmount, trimValues } from '../utils';
 
-const newEntry = {
+const initialValues = {
   appointments: [],
   date: moment()
     .startOf('day')
@@ -83,27 +67,7 @@ const newEntry = {
   }
 };
 
-function EntryForm(props) {
-  const { entry, handleSubmitEntry, journal, logs } = props;
-
-  const trimValues = (object, container) =>
-    reduce(
-      object,
-      function(acc, value, key) {
-        typeof value === 'object'
-          ? Array.isArray(value)
-            ? value.some(item => typeof item === 'object')
-              ? (acc[key] = trimValues(value, []))
-              : (acc[key] = value)
-            : (acc[key] = trimValues(value, {}))
-          : typeof value === 'string'
-          ? (acc[key] = trim(value))
-          : (acc[key] = value);
-        return acc;
-      },
-      container
-    );
-
+const EntryForm = ({ entry, handleSubmitEntry, journal, logs }) => {
   const handleDuplicateDate = date => {
     const entryWithDateExists = journal.some(entry => entry.date === date);
     const isCurrentEntry = entry && entry.date === date;
@@ -115,7 +79,7 @@ function EntryForm(props) {
 
   return (
     <Formik
-      initialValues={entry ? entry : newEntry}
+      initialValues={entry ? entry : initialValues}
       onSubmit={values => handleSubmitEntry(trimValues(values, {}))}
       validationSchema={entryFormSchema}
     >
@@ -144,7 +108,6 @@ function EntryForm(props) {
                 multiline
                 name="food.diet.notes"
                 placeholder="Add notes here.."
-                type="text"
               />
             </EntrySection>
 
@@ -170,7 +133,6 @@ function EntryForm(props) {
                 <FieldArray
                   buttonText="Item"
                   field="items"
-                  // name="items"
                   label="Items"
                   newArrayItem={{
                     name: '',
@@ -347,19 +309,16 @@ function EntryForm(props) {
                 multiline
                 name="notes"
                 placeholder="Overall notes about the day.."
-                // type="text"
               />
             </EntrySection>
 
-            <Button color="primary" onClick={handleSubmit} variant="contained">
-              Submit
-            </Button>
+            <ButtonPrimary onClick={handleSubmit}>Submit</ButtonPrimary>
           </Form>
         );
       }}
     </Formik>
   );
-}
+};
 
 const mapStateToProps = state => ({
   journal: state.user.journal,

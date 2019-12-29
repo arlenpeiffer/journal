@@ -1,6 +1,40 @@
 import reduce from 'lodash.reduce';
 import trim from 'lodash.trim';
 
+export const formatLevel = level => {
+  switch (level) {
+    case 0:
+      return 'None';
+    case 1:
+      return 'Low';
+    case 2:
+      return 'Moderate';
+    case 3:
+      return 'High';
+    case 4:
+      return 'Extreme';
+    default:
+      return;
+  }
+};
+
+export const formatMealType = type => {
+  switch (type) {
+    case 0:
+      return 'Breakfast';
+    case 1:
+      return 'Lunch';
+    case 2:
+      return 'Snack';
+    case 3:
+      return 'Dinner';
+    case 4:
+      return 'Dessert';
+    default:
+      return;
+  }
+};
+
 export const formatSleepAmount = value => {
   const numberOfHours = Math.floor(value);
   const numberOfMinutes = (value - numberOfHours) * 60;

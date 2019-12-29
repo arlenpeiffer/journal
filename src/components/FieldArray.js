@@ -1,7 +1,9 @@
 import React from 'react';
 import { FieldArray as FormikFieldArray, useField } from 'formik';
-import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
+
+import ButtonPrimary from './ButtonPrimary';
+import Popup from './Popup';
 
 const ArrayItem = styled.div``;
 
@@ -12,6 +14,8 @@ const ItemFields = styled.div`
 
 const FieldArray = ({ buttonText, children, name, newArrayItem, ...props }) => {
   const [field] = useField(name);
+
+  const RemoveButton = <ButtonPrimary>Remove {buttonText}</ButtonPrimary>;
 
   return (
     <FormikFieldArray name={name} {...props}>
@@ -27,14 +31,19 @@ const FieldArray = ({ buttonText, children, name, newArrayItem, ...props }) => {
                   });
                 })}
               </ItemFields>
-              <Button onClick={() => arrayHelpers.remove(index)}>
-                Remove {buttonText}
-              </Button>
+              <Popup
+                button={RemoveButton}
+                onConfirm={() => arrayHelpers.remove(index)}
+                text={`Are you sure you want to remove this ${buttonText.toLowerCase()}?`}
+              />
             </ArrayItem>
           ))}
-          <Button onClick={() => arrayHelpers.push(newArrayItem)}>
+          <ButtonPrimary
+            onClick={() => arrayHelpers.push(newArrayItem)}
+            variant="outlined"
+          >
             Add {buttonText}
-          </Button>
+          </ButtonPrimary>
         </div>
       )}
     </FormikFieldArray>

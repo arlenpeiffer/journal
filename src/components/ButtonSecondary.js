@@ -9,10 +9,6 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: 'transparent',
       color: theme.palette.primary.dark
     }
-  },
-  text: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5)
   }
 }));
 
@@ -20,12 +16,7 @@ const ButtonPrimary = props => {
   const classes = useStyles();
 
   return (
-    <Button
-      className={`${classes.root} ${classes.text}`}
-      color="primary"
-      // disableRipple
-      {...props}
-    />
+    <Button className={classes.root} color="primary" disableRipple {...props} />
   );
 };
 

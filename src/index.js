@@ -126,7 +126,7 @@ firebase
   .then(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        history.push('/add');
+        history.push('/view');
         store.dispatch(loginSuccess(user.uid));
         store.dispatch(getJournal());
         store.dispatch(getLogs());

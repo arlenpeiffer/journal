@@ -1,30 +1,55 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink as Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
+
 import { logout } from '../redux/actions/user';
 
-function Header(props) {
-  const { isLoggedIn, logout } = props;
+const HeaderWrapper = styled.div`
+  margin-bottom: 24px;
+`;
+
+const Navigation = styled.div`
+  * {
+    cursor: pointer;
+    margin-right: 8px;
+    padding-bottom: 4px;
+    text-decoration: none;
+  }
+
+  & > .selected span {
+    border-bottom: 4px solid;
+  }
+`;
+
+const Header = ({ isLoggedIn, logout }) => {
+  const NavItem = ({ children, ...props }) => (
+    <Typography color="primary" variant="button" {...props}>
+      {children}
+    </Typography>
+  );
 
   return (
-    <div>
-      <h1>Callie's Journal</h1>
+    <HeaderWrapper>
+      <Typography variant="h4">Callie's Journal</Typography>
       {isLoggedIn && (
-        <div>
-          <Link to="/view">View Entries</Link>
-          <Link to="/add">Add Entry</Link>
-          <p onClick={logout}>Sign out</p>
-        </div>
+        <Navigation>
+          <Link to="/view" activeClassName="selected">
+            <NavItem>View Entries</NavItem>
+          </Link>
+          <Link to="/add" activeClassName="selected">
+            <NavItem>Add Entry</NavItem>
+          </Link>
+          <NavItem onClick={logout}>Sign Out</NavItem>
+        </Navigation>
       )}
-    </div>
+    </HeaderWrapper>
   );
-}
+};
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Header);
+export default connect(null, mapDispatchToProps)(Header);

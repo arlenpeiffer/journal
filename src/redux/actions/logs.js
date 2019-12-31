@@ -1,6 +1,7 @@
 import * as types from '../actions';
 import { firebase } from '../../firebase';
 import sortby from 'lodash.sortby';
+import { setupAddToLogFunction, setupCallbacksObject } from '../../utils';
 
 // ADD_APPOINTMENT //
 export const addAppointmentRequest = () => {
@@ -24,16 +25,13 @@ export const addAppointmentFailure = error => {
 };
 
 export const addAppointment = appointment => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    dispatch(addAppointmentRequest());
-    firebase
-      .database()
-      .ref(`users/${userId}/logs/appointments`)
-      .push(appointment)
-      .then(dispatch(addAppointmentSuccess(appointment)))
-      .catch(error => dispatch(addAppointmentFailure(error)));
-  };
+  const callbacks = setupCallbacksObject(
+    addAppointmentRequest,
+    addAppointmentSuccess,
+    addAppointmentFailure
+  );
+
+  return setupAddToLogFunction(appointment, 'appointments', callbacks);
 };
 
 // ADD_FOOD //
@@ -58,16 +56,13 @@ export const addFoodFailure = error => {
 };
 
 export const addFood = food => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    dispatch(addFoodRequest());
-    firebase
-      .database()
-      .ref(`users/${userId}/logs/food`)
-      .push(food)
-      .then(dispatch(addFoodSuccess(food)))
-      .catch(error => dispatch(addFoodFailure(error)));
-  };
+  const callbacks = setupCallbacksObject(
+    addFoodRequest,
+    addFoodSuccess,
+    addFoodFailure
+  );
+
+  return setupAddToLogFunction(food, 'food', callbacks);
 };
 
 // ADD_MOVEMENT //
@@ -92,16 +87,13 @@ export const addMovementFailure = error => {
 };
 
 export const addMovement = movement => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    dispatch(addMovementRequest());
-    firebase
-      .database()
-      .ref(`users/${userId}/logs/movement`)
-      .push(movement)
-      .then(dispatch(addMovementSuccess(movement)))
-      .catch(error => dispatch(addMovementFailure(error)));
-  };
+  const callbacks = setupCallbacksObject(
+    addMovementRequest,
+    addMovementSuccess,
+    addMovementFailure
+  );
+
+  return setupAddToLogFunction(movement, 'movement', callbacks);
 };
 
 // ADD_NSAID //
@@ -147,16 +139,13 @@ export const addPractitionerFailure = error => {
 };
 
 export const addPractitioner = practitioner => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    dispatch(addPractitionerRequest());
-    firebase
-      .database()
-      .ref(`users/${userId}/logs/practitioners`)
-      .push(practitioner)
-      .then(dispatch(addPractitionerSuccess(practitioner)))
-      .catch(error => dispatch(addPractitionerFailure(error)));
-  };
+  const callbacks = setupCallbacksObject(
+    addPractitionerRequest,
+    addPractitionerSuccess,
+    addPractitionerFailure
+  );
+
+  return setupAddToLogFunction(practitioner, 'practitioners', callbacks);
 };
 
 // ADD_SUPPLEMENT //
@@ -181,16 +170,13 @@ export const addSupplementFailure = error => {
 };
 
 export const addSupplement = supplement => {
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    dispatch(addSupplementRequest());
-    firebase
-      .database()
-      .ref(`users/${userId}/logs/supplements`)
-      .push(supplement)
-      .then(dispatch(addSupplementSuccess(supplement)))
-      .catch(error => dispatch(addSupplementFailure(error)));
-  };
+  const callbacks = setupCallbacksObject(
+    addSupplementRequest,
+    addSupplementSuccess,
+    addSupplementFailure
+  );
+
+  return setupAddToLogFunction(supplement, 'supplements', callbacks);
 };
 
 // GET_LOGS //

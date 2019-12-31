@@ -5,6 +5,7 @@ import moment from 'moment';
 import MenuItem from '@material-ui/core/MenuItem';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 
+import AddItem from './AddItem';
 import AutoComplete from './AutoComplete';
 import ButtonPrimary from './ButtonPrimary';
 import CheckboxGroup from './CheckboxGroup';
@@ -19,6 +20,7 @@ import Switch from './Switch';
 import TimePicker from './TimePicker';
 import Toggle from './Toggle';
 
+import { addSupplement } from '../redux/actions/logs';
 import { entryFormSchema } from '../schemas/entryFormSchema';
 import { formatSleepAmount, trimValues } from '../utils';
 
@@ -67,7 +69,13 @@ const initialValues = {
   }
 };
 
-const EntryForm = ({ entry, handleSubmitEntry, journal, logs }) => {
+const EntryForm = ({
+  addSupplement,
+  entry,
+  handleSubmitEntry,
+  journal,
+  logs
+}) => {
   const handleDuplicateDate = date => {
     const entryWithDateExists = journal.some(entry => entry.date === date);
     const isCurrentEntry = entry && entry.date === date;
@@ -174,6 +182,11 @@ const EntryForm = ({ entry, handleSubmitEntry, journal, logs }) => {
                 dataSource={logs.supplements}
                 label="Supplements"
                 name="supplements"
+              />
+              <AddItem
+                callback={addSupplement}
+                dataSource={logs.supplements}
+                label="Supplement"
               />
             </EntrySection>
 
@@ -325,4 +338,8 @@ const mapStateToProps = state => ({
   logs: state.user.logs
 });
 
-export default connect(mapStateToProps)(EntryForm);
+const mapDispatchToProps = dispatch => ({
+  addSupplement: supplement => dispatch(addSupplement(supplement))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EntryForm);

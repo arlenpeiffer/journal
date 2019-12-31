@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddItem = ({ dataSource, onClick, ...props }) => {
+const AddItem = ({ callback, dataSource, ...props }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState('');
 
@@ -46,16 +46,8 @@ const AddItem = ({ dataSource, onClick, ...props }) => {
   };
 
   const handleClick = () => {
-    const valueExists = dataSource.some(
-      item => item.toLowerCase() === value.toLowerCase()
-    );
-
-    if (!valueExists) {
-      onClick(value);
-      setValue('');
-    }
-    // display error message
-    // reset value
+    callback(value);
+    setValue('');
   };
 
   const toggleExpanded = () => {

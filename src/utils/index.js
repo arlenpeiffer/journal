@@ -1,5 +1,6 @@
 import reduce from 'lodash.reduce';
 import trim from 'lodash.trim';
+import { firebase } from '../firebase';
 
 export const formatLevel = level => {
   switch (level) {
@@ -82,3 +83,40 @@ export const trimValues = (object, container) =>
     },
     container
   );
+
+// ----- LOGS ----- //
+export const valueExists = (snapshot, inputValue) => {
+  const values = Object.values(snapshot.val());
+  const valueExists = values.some(
+    value => value.toLowerCase() === inputValue.toLowerCase().trim()
+  );
+  return valueExists;
+};
+
+export const setupAddToLogFunction = (input, logName, callbacks) => {
+  const { requestCallback, successCallback, failureCallback } = callbacks;
+
+  return (dispatch, getState) => {
+    const userId = getState().user.profile.id;
+    const pathToLog = firebase
+      .database()
+      .ref(`users/${userId}/logs/${logName}`);
+
+    dispatch(requestCallback());
+
+    pathToLog.once('value').then(snapshot => {
+      if (valueExists(snapshot, input)) {
+        return console.log('failure');
+        // dispatch(failureCallback('error message'));
+      } else {
+        return pathToLog.push(input).then(dispatch(successCallback(input)));
+      }
+    });
+  };
+};
+
+export const setupCallbacksObject = (request, success, failure) => ({
+  requestCallback: request,
+  successCallback: success,
+  failureCallback: failure
+});

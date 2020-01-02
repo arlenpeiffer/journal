@@ -45,7 +45,7 @@ export const addEntry = entry => {
 // EDIT_ENTRY //
 export const editEntryRequest = () => {
   return {
-    type: types.ADD_ENTRY_REQUEST
+    type: types.EDIT_ENTRY_REQUEST
   };
 };
 

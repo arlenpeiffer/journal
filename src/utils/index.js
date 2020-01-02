@@ -1,6 +1,7 @@
 import reduce from 'lodash.reduce';
 import sortBy from 'lodash.sortby';
 import trim from 'lodash.trim';
+import * as actions from '../redux/actions/logs';
 
 export const formatLevel = level => {
   switch (level) {
@@ -105,4 +106,28 @@ export const logValues = (values, thunk) => {
 
 export const sortLog = log => {
   return sortBy(log, [logItem => logItem.toLowerCase()]);
+};
+
+export const updateLogs = (entry, logs) => {
+  const appointments = determineValuesToLog(
+    entry.appointments,
+    'type',
+    logs.appointments
+  );
+  logValues(appointments, actions.addAppointment);
+
+  entry.food.meals.forEach(meal => {
+    const food = determineValuesToLog(meal.items, 'name', logs.food);
+    logValues(food, actions.addFood);
+  });
+
+  const movement = determineValuesToLog(entry.movement, 'type', logs.movement);
+  logValues(movement, actions.addMovement);
+
+  const practitioners = determineValuesToLog(
+    entry.appointments,
+    'practitioner',
+    logs.practitioners
+  );
+  logValues(practitioners, actions.addPractitioner);
 };

@@ -183,11 +183,7 @@ const EntryForm = ({
                 label="Supplements"
                 name="supplements"
               />
-              <AddItem
-                callback={addSupplement}
-                dataSource={logs.supplements}
-                label="Supplement"
-              />
+              <AddItem callback={addSupplement} log={logs.supplements} />
             </EntrySection>
 
             <EntrySection label="Appointments">

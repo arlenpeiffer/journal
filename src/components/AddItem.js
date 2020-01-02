@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Icon from '@material-ui/core/Icon';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Typography from '@material-ui/core/Typography';
 
 import ButtonPrimary from './ButtonPrimary';
+import { checkIfLogContainsValue } from '../utils';
 
 const useStyles = makeStyles(theme => ({
+  button: {
+    margin: 0
+  },
   inputInner: {
-    paddingTop: '9px',
-    paddingBottom: '9px'
+    paddingTop: '8.5px',
+    paddingBottom: '8.5px'
   },
   inputOuter: {
     marginRight: theme.spacing(1)
@@ -33,9 +39,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddItem = ({ callback, dataSource, ...props }) => {
+const AddItem = ({ callback, log, ...props }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState('');
+  const [error, setError] = useState('');
 
   const classes = useStyles();
 
@@ -46,7 +53,16 @@ const AddItem = ({ callback, dataSource, ...props }) => {
   };
 
   const handleClick = () => {
+    const logContainsValue = checkIfLogContainsValue(log, value);
+    const valueIsEmptyString = value === '';
+
+    if (valueIsEmptyString) {
+      return setError('Uh oh, needs a name..');
+    } else if (logContainsValue) {
+      return setError(`There's already one of those..`);
+    }
     callback(value);
+    setError('');
     setValue('');
   };
 
@@ -61,16 +77,21 @@ const AddItem = ({ callback, dataSource, ...props }) => {
         <Typography variant="button">Add new</Typography>
       </span>
       <Collapse in={isOpen} timeout={150}>
-        <div className={classes.row}>
-          <OutlinedInput
-            classes={{ input: classes.inputInner }}
-            className={classes.inputOuter}
-            onChange={handleChange}
-            value={value}
-            variant="outlined"
-          />
-          <ButtonPrimary onClick={handleClick}>Add</ButtonPrimary>
-        </div>
+        <FormControl error={!!error}>
+          <div className={classes.row}>
+            <OutlinedInput
+              classes={{ input: classes.inputInner }}
+              className={classes.inputOuter}
+              onChange={handleChange}
+              value={value}
+              variant="outlined"
+            />
+            <ButtonPrimary className={classes.button} onClick={handleClick}>
+              Add
+            </ButtonPrimary>
+          </div>
+          {error && <FormHelperText>{error}</FormHelperText>}
+        </FormControl>
       </Collapse>
     </div>
   );

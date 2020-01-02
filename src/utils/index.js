@@ -1,6 +1,6 @@
 import reduce from 'lodash.reduce';
+import sortBy from 'lodash.sortby';
 import trim from 'lodash.trim';
-import { firebase } from '../firebase';
 
 export const formatLevel = level => {
   switch (level) {
@@ -85,38 +85,24 @@ export const trimValues = (object, container) =>
   );
 
 // ----- LOGS ----- //
-export const valueExists = (snapshot, inputValue) => {
-  const values = Object.values(snapshot.val());
-  const valueExists = values.some(
-    value => value.toLowerCase() === inputValue.toLowerCase().trim()
-  );
-  return valueExists;
+export const checkIfLogContainsValue = (log, value) => {
+  return log.some(logItem => logItem.toLowerCase() === value.toLowerCase());
 };
 
-export const setupAddToLogFunction = (input, logName, callbacks) => {
-  const { requestCallback, successCallback, failureCallback } = callbacks;
-
-  return (dispatch, getState) => {
-    const userId = getState().user.profile.id;
-    const pathToLog = firebase
-      .database()
-      .ref(`users/${userId}/logs/${logName}`);
-
-    dispatch(requestCallback());
-
-    pathToLog.once('value').then(snapshot => {
-      if (valueExists(snapshot, input)) {
-        return console.log('failure');
-        // dispatch(failureCallback('error message'));
-      } else {
-        return pathToLog.push(input).then(dispatch(successCallback(input)));
-      }
-    });
-  };
+export const determineValuesToLog = (entrySection, sectionProperty, log) => {
+  const valuesToLog = [];
+  entrySection.map(sectionItem => {
+    return checkIfLogContainsValue(log, sectionItem[sectionProperty])
+      ? null
+      : valuesToLog.push(sectionItem[sectionProperty]);
+  });
+  return valuesToLog;
 };
 
-export const setupCallbacksObject = (request, success, failure) => ({
-  requestCallback: request,
-  successCallback: success,
-  failureCallback: failure
-});
+export const logValues = (values, thunk) => {
+  return values.map(value => thunk(value));
+};
+
+export const sortLog = log => {
+  return sortBy(log, [logItem => logItem.toLowerCase()]);
+};

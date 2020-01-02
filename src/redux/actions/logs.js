@@ -1,6 +1,6 @@
 import * as types from '../actions';
 import { firebase } from '../../firebase';
-import sortby from 'lodash.sortby';
+import { sortLog } from '../../utils';
 
 // ADD_APPOINTMENT //
 export const addAppointmentRequest = () => {
@@ -223,17 +223,23 @@ export const getLogs = () => {
       .ref(`users/${userId}/logs`)
       .once('value')
       .then(snapshot => {
-        function generateLog(logName) {
-          let log = [];
+        const generateLog = logName => {
+          const log = [];
           snapshot.child(`${logName}`).forEach(childSnapshot => {
             log.push(childSnapshot.val());
           });
-          return sortby(log, [logItem => logItem.toLowerCase()]);
-        }
+          return sortLog(log);
+        };
+
         dispatch(
           getLogsSuccess({
             appointments: generateLog('appointments'),
+            diets: generateLog('diets'),
             food: generateLog('food'),
+            ingredients: generateLog('ingredients'),
+            meals: generateLog('meals'),
+            medications: generateLog('medication'),
+            moods: generateLog('moods'),
             movement: generateLog('movement'),
             nsaid: generateLog('nsaid'),
             practitioners: generateLog('practitioners'),

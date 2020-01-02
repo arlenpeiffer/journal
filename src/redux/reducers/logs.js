@@ -1,10 +1,16 @@
 import * as types from '../actions';
+import { sortLog } from '../../utils';
 
 const defaultState = {
   appointments: [],
-  food: [],
-  movement: [],
-  nsaid: [],
+  diets: [],
+  food: [], // renamed 'meals', remove
+  ingredients: [],
+  meals: [],
+  medications: [],
+  moods: [],
+  movement: [], // rename 'movements'
+  nsaid: [], // remove
   practitioners: [],
   supplements: []
 };
@@ -14,17 +20,20 @@ export default (state = defaultState, action) => {
     case types.ADD_APPOINTMENT_SUCCESS:
       return {
         ...state,
-        appointments: [...state.appointments, action.payload.appointment].sort()
+        appointments: sortLog([
+          ...state.appointments,
+          action.payload.appointment
+        ])
       };
     case types.ADD_FOOD_SUCCESS:
       return {
         ...state,
-        food: [...state.food, action.payload.food].sort()
+        food: sortLog([...state.food, action.payload.food])
       };
     case types.ADD_MOVEMENT_SUCCESS:
       return {
         ...state,
-        movement: [...state.movement, action.payload.movement].sort()
+        movement: sortLog([...state.movement, action.payload.movement])
       };
     case types.ADD_NSAID_SUCCESS:
       return {
@@ -34,15 +43,15 @@ export default (state = defaultState, action) => {
     case types.ADD_PRACTITIONER_SUCCESS:
       return {
         ...state,
-        practitioners: [
+        practitioners: sortLog([
           ...state.practitioners,
           action.payload.practitioner
-        ].sort()
+        ])
       };
     case types.ADD_SUPPLEMENT_SUCCESS:
       return {
         ...state,
-        supplements: [...state.supplements, action.payload.supplement]
+        supplements: sortLog([...state.supplements, action.payload.supplement])
       };
     case types.GET_LOGS_SUCCESS:
       const { logs } = action.payload;

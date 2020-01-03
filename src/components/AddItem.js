@@ -14,6 +14,13 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: 0
   },
+  errorText: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  formControl: {
+    maxWidth: '100%'
+  },
   inputInner: {
     paddingTop: '8.5px',
     paddingBottom: '8.5px'
@@ -40,34 +47,50 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AddItem = ({ callback, log, ...props }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
 
   const classes = useStyles();
 
-  const icon = isOpen ? 'expand_more' : 'add';
+  const icon = isExpanded ? 'expand_more' : 'add';
 
   const handleChange = event => {
     setValue(event.target.value);
   };
 
   const handleClick = () => {
-    const logContainsValue = checkIfLogContainsValue(log, value);
-    const valueIsEmptyString = value === '';
+    const formattedValue = value.trim();
+    const logContainsValue = checkIfLogContainsValue(log, formattedValue);
+    const valueIsEmptyString = formattedValue === '';
+
+    const handleLogContainsValue = () => {
+      setError(`${value} is already on the list.`);
+      setValue('');
+    };
+
+    const handleValueIsEmptyString = () => {
+      setError(`Please enter a value.`);
+      setValue('');
+    };
+
+    const handleSubmit = () => {
+      callback(formattedValue);
+      setError('');
+      setValue('');
+    };
 
     if (valueIsEmptyString) {
-      return setError('Uh oh, needs a name..');
+      return handleValueIsEmptyString();
     } else if (logContainsValue) {
-      return setError(`There's already one of those..`);
+      return handleLogContainsValue();
+    } else {
+      return handleSubmit();
     }
-    callback(value);
-    setError('');
-    setValue('');
   };
 
   const toggleExpanded = () => {
-    setIsOpen(!isOpen);
+    setIsExpanded(!isExpanded);
   };
 
   return (
@@ -76,8 +99,8 @@ const AddItem = ({ callback, log, ...props }) => {
         <Icon fontSize="small">{icon}</Icon>
         <Typography variant="button">Add new</Typography>
       </span>
-      <Collapse in={isOpen} timeout={150}>
-        <FormControl error={!!error}>
+      <Collapse in={isExpanded} timeout={150}>
+        <FormControl className={classes.formControl} error={!!error}>
           <div className={classes.row}>
             <OutlinedInput
               classes={{ input: classes.inputInner }}
@@ -90,7 +113,11 @@ const AddItem = ({ callback, log, ...props }) => {
               Add
             </ButtonPrimary>
           </div>
-          {error && <FormHelperText>{error}</FormHelperText>}
+          {error && (
+            <FormHelperText className={classes.errorText}>
+              {error}
+            </FormHelperText>
+          )}
         </FormControl>
       </Collapse>
     </div>

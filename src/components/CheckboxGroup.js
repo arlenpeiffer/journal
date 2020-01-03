@@ -14,8 +14,12 @@ import FieldLabel from './FieldLabel';
 
 const CheckboxWithLabel = styled(FormControlLabel)`
   margin: 0px !important;
+  max-width: 100%;
   & > :last-child {
     font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 

@@ -5,8 +5,13 @@ const defaultState = 0;
 export default (state = defaultState, action) => {
   switch (action.type) {
     case types.ADD_APPOINTMENT_REQUEST:
+    case types.ADD_DIET_REQUEST:
     case types.ADD_ENTRY_REQUEST:
     case types.ADD_FOOD_REQUEST:
+    case types.ADD_INGREDIENT_REQUEST:
+    case types.ADD_MEAL_REQUEST:
+    case types.ADD_MEDICATION_REQUEST:
+    case types.ADD_MOOD_REQUEST:
     case types.ADD_MOVEMENT_REQUEST:
     case types.ADD_NSAID_REQUEST:
     case types.ADD_PRACTITIONER_REQUEST:
@@ -23,10 +28,20 @@ export default (state = defaultState, action) => {
       return state + 1;
     case types.ADD_APPOINTMENT_SUCCESS:
     case types.ADD_APPOINTMENT_FAILURE:
+    case types.ADD_DIET_SUCCESS:
+    case types.ADD_DIET_FAILURE:
     case types.ADD_ENTRY_SUCCESS:
     case types.ADD_ENTRY_FAILURE:
     case types.ADD_FOOD_SUCCESS:
     case types.ADD_FOOD_FAILURE:
+    case types.ADD_INGREDIENT_SUCCESS:
+    case types.ADD_INGREDIENT_FAILURE:
+    case types.ADD_MEAL_SUCCESS:
+    case types.ADD_MEAL_FAILURE:
+    case types.ADD_MEDICATION_SUCCESS:
+    case types.ADD_MEDICATION_FAILURE:
+    case types.ADD_MOOD_SUCCESS:
+    case types.ADD_MOOD_FAILURE:
     case types.ADD_MOVEMENT_SUCCESS:
     case types.ADD_MOVEMENT_FAILURE:
     case types.ADD_NSAID_SUCCESS:

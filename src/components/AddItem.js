@@ -85,6 +85,7 @@ const AddItem = ({ callback, dataSource, ...props }) => {
       callback(formattedValue);
       setError('');
       setValue('');
+      setIsExpanded(false);
     };
 
     if (valueIsEmptyString) {

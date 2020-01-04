@@ -8,7 +8,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Typography from '@material-ui/core/Typography';
 
 import ButtonPrimary from './ButtonPrimary';
-import { checkIfLogContainsValue } from '../utils';
+import { checkIfLogContainsValue, handlePressEnter } from '../utils';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AddItem = ({ callback, log, ...props }) => {
+const AddItem = ({ callback, dataSource, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
@@ -59,22 +59,29 @@ const AddItem = ({ callback, log, ...props }) => {
     setValue(event.target.value);
   };
 
-  const handleClick = () => {
+  const handleKeyPress = event => {
+    handlePressEnter(event, handleSubmit);
+  };
+
+  const handleSubmit = () => {
     const formattedValue = value.trim();
-    const logContainsValue = checkIfLogContainsValue(log, formattedValue);
+    const valueIsDuplicate = checkIfLogContainsValue(
+      dataSource,
+      formattedValue
+    );
     const valueIsEmptyString = formattedValue === '';
 
-    const handleLogContainsValue = () => {
+    const handleValueIsDuplicate = () => {
       setError(`${value} is already on the list.`);
       setValue('');
     };
 
     const handleValueIsEmptyString = () => {
-      setError(`Please enter a value.`);
+      setError('Please enter a value.');
       setValue('');
     };
 
-    const handleSubmit = () => {
+    const handleSubmitValue = () => {
       callback(formattedValue);
       setError('');
       setValue('');
@@ -82,10 +89,10 @@ const AddItem = ({ callback, log, ...props }) => {
 
     if (valueIsEmptyString) {
       return handleValueIsEmptyString();
-    } else if (logContainsValue) {
-      return handleLogContainsValue();
+    } else if (valueIsDuplicate) {
+      return handleValueIsDuplicate();
     } else {
-      return handleSubmit();
+      handleSubmitValue();
     }
   };
 
@@ -106,10 +113,11 @@ const AddItem = ({ callback, log, ...props }) => {
               classes={{ input: classes.inputInner }}
               className={classes.inputOuter}
               onChange={handleChange}
+              onKeyPress={handleKeyPress}
               value={value}
               variant="outlined"
             />
-            <ButtonPrimary className={classes.button} onClick={handleClick}>
+            <ButtonPrimary className={classes.button} onClick={handleSubmit}>
               Add
             </ButtonPrimary>
           </div>

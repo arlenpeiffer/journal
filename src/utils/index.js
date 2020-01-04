@@ -67,6 +67,12 @@ export const getErrorMessage = error => {
   }
 };
 
+export const handlePressEnter = (event, callback) => {
+  if (event.key === 'Enter') {
+    callback();
+  }
+};
+
 export const trimValues = (object, container) =>
   reduce(
     object,

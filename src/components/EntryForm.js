@@ -20,7 +20,7 @@ import Switch from './Switch';
 import TimePicker from './TimePicker';
 import Toggle from './Toggle';
 
-import { addSupplement } from '../redux/actions/logs';
+import { addSupplement, addMood } from '../redux/actions/logs';
 import { entryFormSchema } from '../schemas/entryFormSchema';
 import { formatSleepAmount, trimValues } from '../utils';
 
@@ -70,6 +70,7 @@ const initialValues = {
 };
 
 const EntryForm = ({
+  addMood,
   addSupplement,
   entry,
   handleSubmitEntry,
@@ -180,10 +181,11 @@ const EntryForm = ({
             <EntrySection label="Supplements">
               <CheckboxGroup
                 dataSource={logs.supplements}
+                emptyPrompt="Add supplements here.."
                 label="Supplements"
                 name="supplements"
               />
-              <AddItem callback={addSupplement} log={logs.supplements} />
+              <AddItem callback={addSupplement} dataSource={logs.supplements} />
             </EntrySection>
 
             <EntrySection label="Appointments">
@@ -213,10 +215,12 @@ const EntryForm = ({
 
             <EntrySection label="Mood">
               <CheckboxGroup
-                dataSource={['logs.moods']}
+                dataSource={logs.moods}
+                emptyPrompt="Add moods here.."
                 label="Mood"
                 name="mood"
               />
+              <AddItem callback={addMood} dataSource={logs.moods} />
             </EntrySection>
 
             <EntrySection label="Movement">
@@ -335,6 +339,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  addMood: mood => dispatch(addMood(mood)),
   addSupplement: supplement => dispatch(addSupplement(supplement))
 });
 

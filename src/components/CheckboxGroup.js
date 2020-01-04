@@ -9,12 +9,13 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
 import MuiCheckbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
 
 import FieldLabel from './FieldLabel';
 
 const CheckboxWithLabel = styled(FormControlLabel)`
   margin: 0px !important;
-  max-width: 100%;
+  max-width: 95%;
   & > :last-child {
     font-size: 14px;
     overflow: hidden;
@@ -23,7 +24,7 @@ const CheckboxWithLabel = styled(FormControlLabel)`
   }
 `;
 
-const CheckboxGroup = ({ dataSource, label, name, ...props }) => {
+const CheckboxGroup = ({ dataSource, emptyPrompt, label, name, ...props }) => {
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
 
@@ -43,6 +44,8 @@ const CheckboxGroup = ({ dataSource, label, name, ...props }) => {
     );
   };
 
+  const dataSourceIsEmpty = dataSource.length === 0 || !dataSource;
+
   const Checkbox = (
     <MuiCheckbox
       checkedIcon={<CheckboxFilled color="primary" fontSize="small" />}
@@ -55,20 +58,26 @@ const CheckboxGroup = ({ dataSource, label, name, ...props }) => {
       <FieldLabel label={label} />
       <FormGroup>
         <Grid container>
-          {dataSource.map(item => (
-            <Grid item key={item} xs={6} md={4} lg={3} xl={2}>
-              <CheckboxWithLabel
-                control={Checkbox}
-                key={item}
-                label={item}
-                name={name}
-                onBlur={field.onBlur}
-                onChange={handleChange}
-                value={item}
-                {...props}
-              />
-            </Grid>
-          ))}
+          {dataSourceIsEmpty ? (
+            <Typography color="textSecondary" variant="body2">
+              <i>{emptyPrompt}</i>
+            </Typography>
+          ) : (
+            dataSource.map(item => (
+              <Grid item key={item} xs={6} md={4} lg={3} xl={2}>
+                <CheckboxWithLabel
+                  control={Checkbox}
+                  key={item}
+                  label={item}
+                  name={name}
+                  onBlur={field.onBlur}
+                  onChange={handleChange}
+                  value={item}
+                  {...props}
+                />
+              </Grid>
+            ))
+          )}
         </Grid>
       </FormGroup>
       {hasError && <FormHelperText>{error}</FormHelperText>}

@@ -42,7 +42,8 @@ const useStyles = makeStyles(theme => ({
   },
   wrapper: {
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    marginLeft: props => props.leftMargin && theme.spacing(1.5)
   }
 }));
 
@@ -51,7 +52,7 @@ const AddItem = ({ callback, dataSource, ...props }) => {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
 
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const icon = isExpanded ? 'expand_more' : 'add';
 

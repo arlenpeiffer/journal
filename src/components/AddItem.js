@@ -41,9 +41,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex'
   },
   wrapper: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: props => props.leftMargin && theme.spacing(1.5)
+    paddingTop: theme.spacing(1),
+    paddingRight: props => props.padSides && theme.spacing(1.5),
+    paddingBottom: theme.spacing(1),
+    paddingLeft: props => props.padSides && theme.spacing(1.5)
   }
 }));
 

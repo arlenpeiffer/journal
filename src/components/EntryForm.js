@@ -20,7 +20,7 @@ import Switch from './Switch';
 import TimePicker from './TimePicker';
 import Toggle from './Toggle';
 
-import { addSupplement, addMood } from '../redux/actions/logs';
+import { addDiet, addMood, addSupplement } from '../redux/actions/logs';
 import { entryFormSchema } from '../schemas/entryFormSchema';
 import { formatSleepAmount, trimValues } from '../utils';
 
@@ -31,7 +31,7 @@ const initialValues = {
     .valueOf(),
   food: {
     diet: {
-      type: 'Low-Starch',
+      type: 'None',
       notes: ''
     },
     meals: []
@@ -70,6 +70,7 @@ const initialValues = {
 };
 
 const EntryForm = ({
+  addDiet,
   addMood,
   addSupplement,
   entry,
@@ -107,10 +108,13 @@ const EntryForm = ({
             </EntrySection>
 
             <EntrySection label="Diet">
-              <Select label="Type" name="food.diet.type">
-                <MenuItem value="Elimination">Elimination</MenuItem>
-                <MenuItem value="Low-Starch">Low-Starch</MenuItem>
-                <MenuItem value="None">None</MenuItem>
+              <Select
+                dataSource={logs.diets}
+                defaultOption="None"
+                label="Type"
+                name="food.diet.type"
+              >
+                <AddItem callback={addDiet} dataSource={logs.diets} padSides />
               </Select>
               <Input
                 label="Notes / Details"
@@ -339,6 +343,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  addDiet: diet => dispatch(addDiet(diet)),
   addMood: mood => dispatch(addMood(mood)),
   addSupplement: supplement => dispatch(addSupplement(supplement))
 });

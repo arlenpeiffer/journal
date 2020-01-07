@@ -47,6 +47,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const stopPropagation = event => event.stopPropagation();
+
 const AddItem = ({ callback, dataSource, ...props }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [value, setValue] = useState('');
@@ -56,8 +58,24 @@ const AddItem = ({ callback, dataSource, ...props }) => {
 
   const icon = isExpanded ? 'expand_more' : 'add';
 
+  const handleBlur = () => {
+    document.removeEventListener(
+      'keydown',
+      stopPropagation,
+      true // useCapture
+    );
+  };
+
   const handleChange = event => {
     setValue(event.target.value);
+  };
+
+  const handleFocus = () => {
+    document.addEventListener(
+      'keydown',
+      stopPropagation,
+      true // useCapture
+    );
   };
 
   const handleKeyPress = event => {
@@ -114,7 +132,9 @@ const AddItem = ({ callback, dataSource, ...props }) => {
             <OutlinedInput
               classes={{ input: classes.inputInner }}
               className={classes.inputOuter}
+              onBlur={handleBlur}
               onChange={handleChange}
+              onFocus={handleFocus}
               onKeyPress={handleKeyPress}
               value={value}
               variant="outlined"

@@ -387,10 +387,9 @@ export const getLogs = () => {
             food: generateLog('food'),
             ingredients: generateLog('ingredients'),
             meals: generateLog('meals'),
-            medications: generateLog('medication'),
+            medications: generateLog('medications'),
             moods: generateLog('moods'),
             movement: generateLog('movement'),
-            nsaid: generateLog('nsaid'),
             practitioners: generateLog('practitioners'),
             supplements: generateLog('supplements')
           })

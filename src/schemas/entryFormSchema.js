@@ -32,6 +32,15 @@ export const entryFormSchema = Yup.object().shape({
       })
     )
   }),
+  medication: Yup.array().of(
+    Yup.object().shape({
+      type: Yup.string().required('Medication type is required.'),
+      dose: Yup.number()
+        .required('Medication dose is required.')
+        .typeError('Medication dose must be a number.'),
+      notes: Yup.string()
+    })
+  ),
   mood: Yup.array(),
   movement: Yup.array().of(
     Yup.object().shape({

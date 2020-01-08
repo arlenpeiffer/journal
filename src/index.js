@@ -100,6 +100,9 @@ const theme = responsiveFontSizes(
       MuiCheckbox: {
         disableRipple: true
       },
+      MuiInputAdornment: {
+        disablePointerEvents: true
+      },
       MuiToggleButton: {
         disableRipple: true
       }

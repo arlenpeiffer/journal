@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 
@@ -20,9 +21,14 @@ import Switch from './Switch';
 import TimePicker from './TimePicker';
 import Toggle from './Toggle';
 
-import { addDiet, addMood, addSupplement } from '../redux/actions/logs';
+import {
+  addDiet,
+  addMedication,
+  addMood,
+  addSupplement
+} from '../redux/actions/logs';
 import { entryFormSchema } from '../schemas/entryFormSchema';
-import { formatSleepAmount, trimValues } from '../utils';
+import { formatMealType, formatSleepAmount, trimValues } from '../utils';
 
 const initialValues = {
   appointments: [],
@@ -36,18 +42,13 @@ const initialValues = {
     },
     meals: []
   },
+  medication: [],
   mood: [],
   movement: [],
   notes: '',
   pain: {
     level: null,
-    details: '',
-    nsaid: {
-      amountTaken: 0,
-      isTaken: false,
-      timesTaken: 0,
-      type: ''
-    }
+    details: ''
   },
   sleep: {
     amount: -1,
@@ -71,6 +72,7 @@ const initialValues = {
 
 const EntryForm = ({
   addDiet,
+  addMedication,
   addMood,
   addSupplement,
   entry,
@@ -109,12 +111,14 @@ const EntryForm = ({
 
             <EntrySection label="Diet">
               <Select
+                addItemCallback={addDiet}
                 dataSource={logs.diets}
-                defaultOption="None"
+                emptyPrompt="No diets added yet.."
+                includeAddItem
                 label="Type"
                 name="food.diet.type"
               >
-                <AddItem callback={addDiet} dataSource={logs.diets} padSides />
+                <MenuItem value="None">None</MenuItem>
               </Select>
               <Input
                 label="Notes / Details"
@@ -135,7 +139,7 @@ const EntryForm = ({
                   notes: ''
                 }}
               >
-                <Select field="type" label="Type">
+                <Select field="type" formatValue={formatMealType} label="Type">
                   <MenuItem value={0}>Breakfast</MenuItem>
                   <MenuItem value={1}>Lunch</MenuItem>
                   <MenuItem value={3}>Dinner</MenuItem>
@@ -185,7 +189,7 @@ const EntryForm = ({
             <EntrySection label="Supplements">
               <CheckboxGroup
                 dataSource={logs.supplements}
-                emptyPrompt="Add supplements here.."
+                emptyPrompt="No supplements added yet.."
                 label="Supplements"
                 name="supplements"
               />
@@ -220,7 +224,7 @@ const EntryForm = ({
             <EntrySection label="Mood">
               <CheckboxGroup
                 dataSource={logs.moods}
-                emptyPrompt="Add moods here.."
+                emptyPrompt="No moods added yet.."
                 label="Mood"
                 name="mood"
               />
@@ -260,6 +264,37 @@ const EntryForm = ({
                 name="pain.details"
                 placeholder="Add notes here.."
               />
+            </EntrySection>
+
+            <EntrySection label="Medication">
+              <FieldArray
+                buttonText="Medication"
+                name="medication"
+                newArrayItem={{ type: '', dose: '', notes: '' }}
+              >
+                <Select
+                  addItemCallback={addMedication}
+                  dataSource={logs.medications}
+                  emptyPrompt="No medications added yet.."
+                  field="type"
+                  includeAddItem
+                  label="Type"
+                />
+                <Input
+                  field="dose"
+                  InputProps={{
+                    endAdornment: <InputAdornment>mg</InputAdornment>
+                  }}
+                  label="Dose"
+                  placeholder="Amount taken (in mg)"
+                />
+                <Input
+                  field="notes"
+                  label="Notes / Details"
+                  multiline
+                  placeholder="Add notes here.."
+                />
+              </FieldArray>
             </EntrySection>
 
             <EntrySection label="Sleep">
@@ -344,6 +379,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addDiet: diet => dispatch(addDiet(diet)),
+  addMedication: medication => dispatch(addMedication(medication)),
   addMood: mood => dispatch(addMood(mood)),
   addSupplement: supplement => dispatch(addSupplement(supplement))
 });

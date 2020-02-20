@@ -8,7 +8,8 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Typography from '@material-ui/core/Typography';
 
 import ButtonPrimary from './ButtonPrimary';
-import { checkIfLogContainsValue, handlePressEnter } from '../utils';
+import { handlePressEnter } from '../utils';
+import { checkIfLogContainsValue } from '../utils/logs';
 
 const useStyles = makeStyles(theme => ({
   button: {

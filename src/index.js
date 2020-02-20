@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import store from './redux/store';
+
 import styled from 'styled-components';
-import configureStore from './redux/store';
 import { firebase } from './firebase';
 
 import AppRouter, { history } from './routers/AppRouter';
@@ -22,8 +23,6 @@ const PageWrapper = styled.div`
   margin-left: 5.5%;
   margin-right: 5.5%;
 `;
-
-const store = configureStore();
 
 const defaultTheme = createMuiTheme();
 

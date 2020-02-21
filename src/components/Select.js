@@ -44,7 +44,7 @@ const Select = ({
   const classes = useStyles();
 
   const handleRenderValue = value => {
-    const valueIsEmpty = value === '' || value === undefined;
+    const valueIsEmpty = value === '' || value === null;
 
     if (valueIsEmpty)
       return (

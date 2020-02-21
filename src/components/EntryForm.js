@@ -133,7 +133,7 @@ const EntryForm = ({
                 buttonText="Meal"
                 name="food.meals"
                 newArrayItem={{
-                  type: undefined,
+                  type: null,
                   time: moment().valueOf(),
                   items: [],
                   notes: ''

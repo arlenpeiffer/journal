@@ -6,12 +6,12 @@ export const checkIfLogContainsValue = (log, value) => {
 };
 
 const gather = (array, properties) => {
-  const values = array.reduce((acc, item) => {
+  const values = array.reduce((values, item) => {
     const property = properties[0];
     const value = item[property];
-    const isArray = Array.isArray(value);
-    isArray ? acc.push(...value) : acc.push(value);
-    return acc;
+    const valueIsArray = Array.isArray(value);
+    valueIsArray ? values.push(...value) : value && values.push(value);
+    return values;
   }, []);
 
   const isLastProperty = properties.length === 1;

@@ -105,7 +105,7 @@ const validationSchema = Yup.object().shape({
   ),
   notes: Yup.string(),
   pain: Yup.object().shape({
-    level: Yup.number().typeError('Pain level is required.'),
+    // level: Yup.number().typeError('Pain level is required.'),
     details: Yup.string(),
     nsaid: Yup.object().shape({
       amountTaken: Yup.number().when('isTaken', {
@@ -131,8 +131,8 @@ const validationSchema = Yup.object().shape({
     })
   }),
   sleep: Yup.object().shape({
-    amount: Yup.number().typeError('Sleep amount is required.'),
-    rating: Yup.number().min(1, 'Sleep rating is required.'),
+    // amount: Yup.number().typeError('Sleep amount is required.'),
+    // rating: Yup.number().min(1, 'Sleep rating is required.'),
     notes: Yup.string()
   }),
   stomach: Yup.object().shape({

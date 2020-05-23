@@ -7,6 +7,7 @@ import AddEntry from '../components/AddEntry';
 import EditEntry from '../components/EditEntry';
 import Header from '../components/Header';
 import Login from '../components/Login';
+import Printout from '../components/Printout';
 import SignUp from '../components/SignUp';
 import ViewEntries from '../components/ViewEntries';
 
@@ -25,6 +26,7 @@ function AppRouter(props) {
           <Route path="/view" component={ViewEntries} />
           <Route path="/add" component={AddEntry} />
           <Route path="/edit/:id" component={EditEntry} />
+          <Route path="/print" component={Printout} />
         </Switch>
       </div>
     </Router>

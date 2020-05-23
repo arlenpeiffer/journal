@@ -11,8 +11,6 @@ import { getLogs } from './redux/actions/logs';
 import { getProfile } from './redux/actions/profile';
 import { loginSuccess, logout } from './redux/actions/user';
 
-import Printout from './components/Printout';
-
 const PageWrapper = styled.div`
   margin-left: 5.5%;
   margin-right: 5.5%;
@@ -23,7 +21,7 @@ const store = configureStore();
 const app = (
   <Provider store={store}>
     <PageWrapper>
-      <Printout />
+      <AppRouter />
     </PageWrapper>
   </Provider>
 );
@@ -37,7 +35,7 @@ firebase
   .then(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        history.push('/view');
+        history.push('/print');
         store.dispatch(loginSuccess(user.uid));
         store.dispatch(getJournal());
         store.dispatch(getLogs());
